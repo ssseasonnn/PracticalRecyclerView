@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SuperRecyclerView">
+        <attr name="empty_layout" format="reference"/>
+        <attr name="error_layout" format="reference"/>
+        <attr name="loading_layout" format="reference"/>
+        <attr name="load_more_layout" format="reference"/>
+        <attr name="no_more_layout" format="reference"/>
+        <attr name="load_more_error_layout" format="reference"/>
+    </declare-styleable>
+
+</resources>
