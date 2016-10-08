@@ -1,4 +1,4 @@
-package zlc.season.demo.viewholder;
+package zlc.season.demo.singleitem;
 
 import android.content.Context;
 import android.net.Uri;
@@ -11,7 +11,6 @@ import com.squareup.picasso.Picasso;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import zlc.season.demo.R;
-import zlc.season.demo.data.NormalBean;
 import zlc.season.practicalrecyclerview.viewholder.BaseViewHolder;
 
 /**
@@ -21,7 +20,7 @@ import zlc.season.practicalrecyclerview.viewholder.BaseViewHolder;
  * FIXME
  */
 
-public class NormalViewHolder extends BaseViewHolder<NormalBean> {
+class NormalViewHolder extends BaseViewHolder<NormalBean> {
     @BindView(R.id.head)
     ImageView mHead;
     @BindView(R.id.title)
@@ -31,7 +30,7 @@ public class NormalViewHolder extends BaseViewHolder<NormalBean> {
 
     private Context mContext;
 
-    public NormalViewHolder(ViewGroup parent) {
+    NormalViewHolder(ViewGroup parent) {
         super(parent, R.layout.normal_item);
         mContext = parent.getContext();
         ButterKnife.bind(this, itemView);
@@ -39,8 +38,8 @@ public class NormalViewHolder extends BaseViewHolder<NormalBean> {
 
     @Override
     public void setData(NormalBean data) {
-        Picasso.with(mContext).load(Uri.parse(data.getImg())).into(mHead);
-        mTitle.setText(data.getTitle());
-        mContent.setText(data.getContent());
+        Picasso.with(mContext).load(Uri.parse(data.mImg)).into(mHead);
+        mTitle.setText(data.mTitle);
+        mContent.setText(data.mContent);
     }
 }

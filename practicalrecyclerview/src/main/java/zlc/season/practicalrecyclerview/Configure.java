@@ -8,7 +8,7 @@ import android.view.View;
  * Time: 15:05
  * FIXME
  */
-public interface ConfigureView {
+public interface Configure {
     void configureEmptyView(View emptyView);
 
     void configureErrorView(View errorView);

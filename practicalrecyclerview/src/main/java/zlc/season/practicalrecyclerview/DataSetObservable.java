@@ -87,17 +87,19 @@ class DataSetObservable<E> extends Observable {
         super.notifyObservers(new Bridge.AutoLoadMore());
     }
 
-    private abstract class Segment {
+    private abstract class Segment<T> {
 
         abstract int size();
 
         abstract void clear();
 
-        abstract void add(SectionItem item);
+        abstract void add(T item);
 
-        abstract List<SectionItem> getAll();
+        abstract void addAll(List<? extends T> items);
 
-        final SectionItem get(int adapterPosition) {
+        abstract List<T> getAll();
+
+        final T get(int adapterPosition) {
             if (is(adapterPosition)) {
                 return getImpl(adapterPosition - positionImpl());
             } else {
@@ -114,7 +116,7 @@ class DataSetObservable<E> extends Observable {
             return adapterPosition >= 0 && size() >= 0 && adapterPosition - positionImpl() < size();
         }
 
-        final void set(int adapterPosition, SectionItem newItem) {
+        final void set(int adapterPosition, T newItem) {
             if (is(adapterPosition)) {
                 setImpl(adapterPosition - positionImpl(), newItem);
             }
@@ -126,7 +128,7 @@ class DataSetObservable<E> extends Observable {
             }
         }
 
-        final void remove(SectionItem needRemove) {
+        final void remove(T needRemove) {
             if (size() != 0) {
                 removeImpl(needRemove);
             }
@@ -134,17 +136,17 @@ class DataSetObservable<E> extends Observable {
 
         abstract int positionImpl();
 
-        abstract SectionItem getImpl(int position);
+        abstract T getImpl(int position);
 
-        abstract void setImpl(int position, SectionItem newItem);
+        abstract void setImpl(int position, T newItem);
 
         abstract void removeImpl(int position);
 
-        abstract void removeImpl(SectionItem needRemove);
+        abstract void removeImpl(T needRemove);
 
     }
 
-    class HeaderSegment extends Segment {
+    class HeaderSegment extends Segment<SectionItem> {
 
         @Override
         int size() {
@@ -167,86 +169,90 @@ class DataSetObservable<E> extends Observable {
         }
 
         @Override
-        protected int positionImpl() {
+        void addAll(List<? extends SectionItem> items) {
+            mHeader.addAll(items);
+        }
+
+        @Override
+        int positionImpl() {
             return 0;
         }
 
         @Override
-        protected SectionItem getImpl(int position) {
+        SectionItem getImpl(int position) {
             return mHeader.get(position);
         }
 
         @Override
-        protected void setImpl(int position, SectionItem newItem) {
+        void setImpl(int position, SectionItem newItem) {
             mHeader.set(position, newItem);
         }
 
         @Override
-        protected void removeImpl(int position) {
+        void removeImpl(int position) {
             mHeader.remove(position);
         }
 
         @Override
-        protected void removeImpl(SectionItem needRemove) {
+        void removeImpl(SectionItem needRemove) {
             mHeader.remove(needRemove);
         }
     }
 
-    public class DataSegment {
+    class DataSegment extends Segment<E> {
 
-        public int dataSize() {
+        @Override
+        int size() {
             return mData.size();
         }
 
-        public boolean isData(int adapterPosition) {
-            return adapterPosition >= header.size() && adapterPosition < header.size() +
-                    dataSize();
+        @Override
+        void clear() {
+            mData.clear();
         }
 
-        public int position() {
-            if (dataSize() == 0) return -1;
-            return header.size();
+        @Override
+        void add(E item) {
+            mData.add(item);
         }
 
-        public List<E> getAll() {
+        @Override
+        void addAll(List<? extends E> items) {
+            mData.addAll(items);
+        }
+
+        @Override
+        List<E> getAll() {
             return mData;
         }
 
-        public List<E> getDataSetCopy() {
-            return new ArrayList<>(mData);
+        @Override
+        int positionImpl() {
+            return header.size();
         }
 
-        public E get(int dataPosition) {
-            return mData.get(dataPosition);
+        @Override
+        E getImpl(int position) {
+            return mData.get(position);
         }
 
-        public E getDataByAdapterPosition(int adapterPosition) {
-            return mData.get(adapterPosition - header.size());
+        @Override
+        void setImpl(int position, E newItem) {
+            mData.set(position, newItem);
         }
 
-        public void add(E data) {
-            mData.add(data);
+        @Override
+        void removeImpl(int position) {
+            mData.remove(position);
         }
 
-        public void addAll(List<? extends E> data) {
-            mData.addAll(data);
-        }
-
-        public E remove(int dataPosition) {
-            return mData.remove(dataPosition);
-        }
-
-        public boolean remove(E data) {
-            return mData.remove(data);
-        }
-
-
-        public void clear() {
-            mData.clear();
+        @Override
+        void removeImpl(E needRemove) {
+            mData.remove(needRemove);
         }
     }
 
-    class FooterSegment extends Segment {
+    class FooterSegment extends Segment<SectionItem> {
 
         @Override
         int size() {
@@ -263,39 +269,43 @@ class DataSetObservable<E> extends Observable {
             return mFooter;
         }
 
-
         @Override
         void add(SectionItem item) {
             mFooter.add(item);
         }
 
         @Override
-        protected int positionImpl() {
-            return header.size() + data.dataSize();
+        void addAll(List<? extends SectionItem> items) {
+            mFooter.addAll(items);
         }
 
         @Override
-        protected SectionItem getImpl(int position) {
+        int positionImpl() {
+            return header.size() + data.size();
+        }
+
+        @Override
+        SectionItem getImpl(int position) {
             return mFooter.get(position);
         }
 
         @Override
-        protected void setImpl(int position, SectionItem newItem) {
+        void setImpl(int position, SectionItem newItem) {
             mFooter.set(position, newItem);
         }
 
         @Override
-        protected void removeImpl(int position) {
+        void removeImpl(int position) {
             mFooter.remove(position);
         }
 
         @Override
-        protected void removeImpl(SectionItem needRemove) {
+        void removeImpl(SectionItem needRemove) {
             mFooter.remove(needRemove);
         }
     }
 
-    class ExtraSegment extends Segment {
+    class ExtraSegment extends Segment<SectionItem> {
 
         @Override
         int size() {
@@ -318,27 +328,32 @@ class DataSetObservable<E> extends Observable {
         }
 
         @Override
-        protected int positionImpl() {
-            return header.size() + data.dataSize() + footer.size();
+        void addAll(List<? extends SectionItem> items) {
+            mExtra.addAll(items);
         }
 
         @Override
-        protected SectionItem getImpl(int position) {
+        int positionImpl() {
+            return header.size() + data.size() + footer.size();
+        }
+
+        @Override
+        SectionItem getImpl(int position) {
             return mExtra.get(position);
         }
 
         @Override
-        protected void setImpl(int position, SectionItem newItem) {
+        void setImpl(int position, SectionItem newItem) {
             mExtra.set(position, newItem);
         }
 
         @Override
-        protected void removeImpl(int position) {
+        void removeImpl(int position) {
             mExtra.remove(position);
         }
 
         @Override
-        protected void removeImpl(SectionItem needRemove) {
+        void removeImpl(SectionItem needRemove) {
             mExtra.remove(needRemove);
         }
     }

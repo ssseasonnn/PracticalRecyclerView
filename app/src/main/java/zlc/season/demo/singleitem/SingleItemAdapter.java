@@ -2,8 +2,6 @@ package zlc.season.demo.singleitem;
 
 import android.view.ViewGroup;
 
-import zlc.season.demo.data.NormalBean;
-import zlc.season.demo.viewholder.NormalViewHolder;
 import zlc.season.practicalrecyclerview.AbstractAdapter;
 
 /**
@@ -12,7 +10,7 @@ import zlc.season.practicalrecyclerview.AbstractAdapter;
  * Time: 09:47
  * FIXME
  */
-public class SingleItemAdapter extends AbstractAdapter<NormalBean, NormalViewHolder> {
+class SingleItemAdapter extends AbstractAdapter<NormalBean, NormalViewHolder> {
 
     @Override
     protected NormalViewHolder onNewCreateViewHolder(ViewGroup parent, int viewType) {

@@ -2,6 +2,13 @@
     <string name="app_name">Demo</string>
     <string name="title_activity_main">MainActivity</string>
 
+    <string-array name="mennu">
+        <item>列表</item>
+        <item>Grid</item>
+        <item>瀑布流</item>
+        <item>other</item>
+    </string-array>
+
     <string-array name="image">
         <item>http://pic4.zhimg.com/d672dba4d597876c6ad33427780f6a37_m.jpg</item>
         <item>http://pic4.zhimg.com/e803f3e7a832b035f9bd2dff87033133_m.jpg</item>

@@ -8,7 +8,7 @@ import android.view.View;
  * Time: 15:11
  * FIXME
  */
-public abstract class ConfigureViewAdapter implements ConfigureView {
+public abstract class ConfigureAdapter implements Configure {
 
     @Override
     public void configureEmptyView(View emptyView) {

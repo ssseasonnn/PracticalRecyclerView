@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_refresh"
+        android:id="@+id/practical_swipe_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -16,33 +16,33 @@
 
 
             <FrameLayout
-                android:id="@+id/empty"
+                android:id="@+id/practical_empty"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="gone"/>
 
 
             <FrameLayout
-                android:id="@+id/error"
+                android:id="@+id/practical_error"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="gone"/>
 
 
             <FrameLayout
-                android:id="@+id/loading"
+                android:id="@+id/practical_loading"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="gone"/>
 
             <LinearLayout
-                android:id="@+id/content"
+                android:id="@+id/practical_content"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
                 <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recycler"
+                    android:id="@+id/practical_recycler"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
 

@@ -48,11 +48,12 @@ public class PracticalRecyclerView extends FrameLayout {
     private OnRefreshListener mRefreshListener;
     private OnLoadMoreListener mLoadMoreListener;
 
-    private ConfigureView mConfigureView;
-
     private boolean onLoading = false;
     private boolean noMore = false;
     private boolean loadMoreFailed = false;
+    private View mEmptyView;
+    private View mLoadingView;
+    private View mErrorView;
 
 
     public PracticalRecyclerView(Context context) {
@@ -67,6 +68,7 @@ public class PracticalRecyclerView extends FrameLayout {
     public PracticalRecyclerView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
+        config();
         obtainStyledAttributes(context, attrs);
     }
 
@@ -77,30 +79,45 @@ public class PracticalRecyclerView extends FrameLayout {
         obtainStyledAttributes(context, attrs);
     }
 
-    public void setConfigureView(ConfigureView configureView) {
-        mConfigureView = configureView;
+    public void configureView(Configure configure) {
+        if (configure == null) {
+            return;
+        }
+        configure.configureEmptyView(mEmptyView);
+        configure.configureErrorView(mErrorView);
+        configure.configureLoadingView(mLoadingView);
+        configure.configureLoadMoreView(mLoadMoreView);
+        configure.configureNoMoreView(mNoMoreView);
+        configure.configureLoadMoreErrorView(mLoadMoreFailedView);
     }
 
     public void setRefreshListener(OnRefreshListener refreshListener) {
+        if (refreshListener == null) return;
+        mSwipeRefreshLayout.setEnabled(true);
         mRefreshListener = refreshListener;
     }
 
     public void setLoadMoreListener(OnLoadMoreListener loadMoreListener) {
+        if (loadMoreListener == null) return;
         mLoadMoreListener = loadMoreListener;
     }
 
     private void init(Context context) {
+        mMain = (FrameLayout) LayoutInflater.from(context).inflate(R.layout.recycler_layout, this, true);
+        mLoading = (FrameLayout) mMain.findViewById(R.id.practical_loading);
+        mError = (FrameLayout) mMain.findViewById(R.id.practical_error);
+        mEmpty = (FrameLayout) mMain.findViewById(R.id.practical_empty);
+        mContent = (LinearLayout) mMain.findViewById(R.id.practical_content);
+
+        mSwipeRefreshLayout = (SwipeRefreshLayout) mMain.findViewById(R.id.practical_swipe_refresh);
+        mRecyclerView = (RecyclerView) mMain.findViewById(R.id.practical_recycler);
+    }
+
+    private void config() {
         mObserver = new DataSetObserver();
 
-        mMain = (FrameLayout) LayoutInflater.from(context).inflate(R.layout.recycler_layout, this, true);
-        mLoading = (FrameLayout) mMain.findViewById(R.id.loading);
-        mError = (FrameLayout) mMain.findViewById(R.id.error);
-        mEmpty = (FrameLayout) mMain.findViewById(R.id.empty);
-        mContent = (LinearLayout) mMain.findViewById(R.id.content);
-
-        mSwipeRefreshLayout = (SwipeRefreshLayout) mMain.findViewById(R.id.swipe_refresh);
-        mRecyclerView = (RecyclerView) mMain.findViewById(R.id.recycler);
-
+        //默认为关闭,设置OnRefreshListener时打开
+        mSwipeRefreshLayout.setEnabled(false);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -113,20 +130,6 @@ public class PracticalRecyclerView extends FrameLayout {
         });
 
         mRecyclerView.addOnScrollListener(new OnScrollListener());
-    }
-
-    private void closeRefreshing() {
-        if (mSwipeRefreshLayout.isRefreshing()) {
-            mSwipeRefreshLayout.setRefreshing(false);
-        }
-    }
-
-    private boolean canNotLoadMore() {
-        return mSwipeRefreshLayout.isRefreshing() || mLoadMoreListener == null || onLoading || loadMoreFailed || noMore;
-    }
-
-    private boolean canNotRefresh() {
-        return mRefreshListener == null || onLoading;
     }
 
     private void obtainStyledAttributes(Context context, AttributeSet attrs) {
@@ -145,24 +148,29 @@ public class PracticalRecyclerView extends FrameLayout {
         int loadMoreErrorResId = attributes.getResourceId(R.styleable.PracticalRecyclerView_load_more_error_layout, R
                 .layout.default_load_more_error_layout);
 
-        View loadingView = LayoutInflater.from(context).inflate(loadingResId, mLoading, true);
-        View emptyView = LayoutInflater.from(context).inflate(emptyResId, mEmpty, true);
-        View errorView = LayoutInflater.from(context).inflate(errorResId, mError, true);
+        mLoadingView = LayoutInflater.from(context).inflate(loadingResId, mLoading, true);
+        mEmptyView = LayoutInflater.from(context).inflate(emptyResId, mEmpty, true);
+        mErrorView = LayoutInflater.from(context).inflate(errorResId, mError, true);
 
         mLoadMoreView = LayoutInflater.from(context).inflate(loadMoreResId, mMain, false);
         mNoMoreView = LayoutInflater.from(context).inflate(noMoreResId, mMain, false);
         mLoadMoreFailedView = LayoutInflater.from(context).inflate(loadMoreErrorResId, mMain, false);
 
-        if (mConfigureView != null) {
-            mConfigureView.configureEmptyView(emptyView);
-            mConfigureView.configureErrorView(errorView);
-            mConfigureView.configureLoadingView(loadingView);
-            mConfigureView.configureLoadMoreView(mLoadMoreView);
-            mConfigureView.configureNoMoreView(mNoMoreView);
-            mConfigureView.configureLoadMoreErrorView(mLoadMoreFailedView);
-        }
-
         attributes.recycle();
+    }
+
+    private void closeRefreshing() {
+        if (mSwipeRefreshLayout.isRefreshing()) {
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
+    }
+
+    private boolean canNotLoadMore() {
+        return mSwipeRefreshLayout.isRefreshing() || mLoadMoreListener == null || onLoading || loadMoreFailed || noMore;
+    }
+
+    private boolean canNotRefresh() {
+        return mRefreshListener == null || onLoading;
     }
 
     public void setLayoutManager(RecyclerView.LayoutManager layoutManager) {
@@ -268,6 +276,7 @@ public class PracticalRecyclerView extends FrameLayout {
     public interface OnLoadMoreListener {
         void onLoadMore();
     }
+
 
     class OnScrollListener extends RecyclerView.OnScrollListener {
 

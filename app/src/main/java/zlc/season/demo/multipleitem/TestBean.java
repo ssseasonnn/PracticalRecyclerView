@@ -1,4 +1,4 @@
-package zlc.season.demo.data;
+package zlc.season.demo.multipleitem;
 
 import zlc.season.demo.RecyclerItemType;
 import zlc.season.practicalrecyclerview.ItemType;
@@ -9,7 +9,7 @@ import zlc.season.practicalrecyclerview.ItemType;
  * Time: 15:11
  * FIXME
  */
-public class TestBean implements ItemType {
+class TestBean implements ItemType {
 
     private String mText;
     private String mButton;

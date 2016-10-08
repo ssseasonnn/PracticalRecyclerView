@@ -15,7 +15,7 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
-import zlc.season.demo.data.NormalBean;
+import zlc.season.demo.R;
 
 /**
  * Author: Season(ssseasonnn@gmail.com)
@@ -23,23 +23,26 @@ import zlc.season.demo.data.NormalBean;
  * Time: 15:16
  * FIXME
  */
-public class SingleItemPresenter {
+class SingleItemPresenter {
     private static int count = -1;
     private CompositeSubscription mSubscriptions;
     private SingleItemView mSingleItemView;
     private Context mContext;
 
-    public SingleItemPresenter(Context context, SingleItemView singleItemView) {
+    SingleItemPresenter(Context context) {
         mContext = context;
-        mSingleItemView = singleItemView;
         mSubscriptions = new CompositeSubscription();
     }
 
-    public void unsubscribeAll() {
+    void setDataLoadCallBack(SingleItemView singleItemView) {
+        mSingleItemView = singleItemView;
+    }
+
+    void unsubscribeAll() {
         mSubscriptions.clear();
     }
 
-    public void loadData(final boolean isRefresh) {
+    void loadData(final boolean isRefresh) {
         Subscription subscription = createObservable()
                 .subscribeOn(Schedulers.io())
                 .delay(2, TimeUnit.SECONDS)
@@ -58,7 +61,6 @@ public class SingleItemPresenter {
 
                     @Override
                     public void onNext(List<NormalBean> normalBeen) {
-                        Log.d("SingleItemPresenter", "on next");
                         mSingleItemView.onDataLoadSuccess(normalBeen, isRefresh);
                     }
                 });
@@ -67,18 +69,20 @@ public class SingleItemPresenter {
 
     private Observable<List<NormalBean>> createObservable() {
         count++;
-        count %= 4;
-        Log.d("SingleItemPresenter", (count + ""));
+        count %= 6;
         Resources res = mContext.getResources();
-        final String[] images = res.getStringArray(zlc.season.demo.R.array.image);
-        final String[] titles = res.getStringArray(zlc.season.demo.R.array.title);
-        final String[] contents = res.getStringArray(zlc.season.demo.R.array.content);
+        final String[] images = res.getStringArray(R.array.image);
+        final String[] titles = res.getStringArray(R.array.title);
+        final String[] contents = res.getStringArray(R.array.content);
         return Observable.create(new Observable.OnSubscribe<List<NormalBean>>() {
             @Override
             public void call(Subscriber<? super List<NormalBean>> subscriber) {
                 if (count == 3) {
+                    subscriber.onError(new Throwable("on error"));
+                    return;
+                }
+                if (count == 5) {
                     subscriber.onNext(new ArrayList<NormalBean>());
-                    //                    subscriber.onError(new Throwable("on error"));
                     return;
                 }
                 List<NormalBean> mData = new ArrayList<>();

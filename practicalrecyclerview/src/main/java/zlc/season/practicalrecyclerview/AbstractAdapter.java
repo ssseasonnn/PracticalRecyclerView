@@ -31,11 +31,9 @@ public abstract class AbstractAdapter<T extends ItemType, VH extends AbstractVie
         dataSet = new DataSetObservable<>();
     }
 
-
     public T get(int position) {
         return dataSet.data.get(position);
     }
-
 
     public void addHeader(SectionItem header) {
         dataSet.header.add(header);
@@ -50,7 +48,9 @@ public abstract class AbstractAdapter<T extends ItemType, VH extends AbstractVie
     }
 
     /**
-     * 添加0个数据时自动停止加载更多
+     * 添加数据, 并触发刷新.
+     * 添加之后数据总数为0, 显示EmptyView;
+     * 添加之后数据总数大于0, 当添加0个数据时,自动停止LoadMore;
      *
      * @param data list of data
      */
@@ -69,16 +69,25 @@ public abstract class AbstractAdapter<T extends ItemType, VH extends AbstractVie
         }
     }
 
+    /**
+     * 清除当前所有数据,并显示ErrorView
+     */
     public void showError() {
         dataSet.clear();
         notifyDataSetChanged();
         dataSet.notifyError();
     }
 
+    /**
+     * 显示底部LoadMoreErrorView
+     */
     public void loadMoreFailed() {
         dataSet.notifyLoadMoreFailed();
     }
 
+    /**
+     * 恢复LoadMore
+     */
     public void resumeLoadMore() {
         dataSet.notifyResumeLoadMore();
     }
@@ -105,8 +114,8 @@ public abstract class AbstractAdapter<T extends ItemType, VH extends AbstractVie
     public void onBindViewHolder(VH holder, int position) {
         if (dataSet.header.is(position)) {
             dataSet.header.get(position).onBind();
-        } else if (dataSet.data.isData(position)) {
-            onNewBindViewHolder(holder, position - dataSet.header.size());
+        } else if (dataSet.data.is(position)) {
+            onNewBindViewHolder(holder, position);
         } else if (dataSet.footer.is(position)) {
             dataSet.footer.get(position).onBind();
         } else {
@@ -114,15 +123,14 @@ public abstract class AbstractAdapter<T extends ItemType, VH extends AbstractVie
         }
     }
 
-
     @Override
     public final int getItemViewType(int position) {
         //用header和footer的HashCode表示它们的ItemType,
         //普通类型的数据由该数据类型的ItemType决定
         if (dataSet.header.is(position)) {
             return dataSet.header.get(position).hashCode();
-        } else if (dataSet.data.isData(position)) {
-            return dataSet.data.getDataByAdapterPosition(position).itemType();
+        } else if (dataSet.data.is(position)) {
+            return dataSet.data.get(position).itemType();
         } else if (dataSet.footer.is(position)) {
             return dataSet.footer.get(position).hashCode();
         } else {
@@ -194,7 +202,6 @@ public abstract class AbstractAdapter<T extends ItemType, VH extends AbstractVie
         }
     }
 
-
     void registerObserver(Observer observer) {
         dataSet.addObserver(observer);
     }
@@ -202,7 +209,6 @@ public abstract class AbstractAdapter<T extends ItemType, VH extends AbstractVie
     protected abstract VH onNewCreateViewHolder(ViewGroup parent, int viewType);
 
     protected abstract void onNewBindViewHolder(VH holder, int dataPosition);
-
 
     private class SectionItemViewHolder extends AbstractViewHolder {
 

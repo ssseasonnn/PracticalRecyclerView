@@ -3,10 +3,6 @@ package zlc.season.demo.multipleitem;
 import android.view.ViewGroup;
 
 import zlc.season.demo.RecyclerItemType;
-import zlc.season.demo.data.NormalBean;
-import zlc.season.demo.data.TestBean;
-import zlc.season.demo.viewholder.NormalViewHolder;
-import zlc.season.demo.viewholder.TestViewHolder;
 import zlc.season.practicalrecyclerview.AbstractAdapter;
 import zlc.season.practicalrecyclerview.ItemType;
 import zlc.season.practicalrecyclerview.viewholder.AbstractViewHolder;
@@ -22,9 +18,7 @@ public class MultiItemAdapter extends AbstractAdapter<ItemType, AbstractViewHold
 
     @Override
     protected AbstractViewHolder onNewCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType == RecyclerItemType.NORMAL.getValue()) {
-            return new NormalViewHolder(parent);
-        } else if (viewType == RecyclerItemType.TEST1.getValue()) {
+        if (viewType == RecyclerItemType.TEST1.getValue()) {
             return new TestViewHolder(parent);
         }
         return null;
@@ -32,9 +26,7 @@ public class MultiItemAdapter extends AbstractAdapter<ItemType, AbstractViewHold
 
     @Override
     protected void onNewBindViewHolder(AbstractViewHolder holder, int position) {
-        if (holder instanceof NormalViewHolder) {
-            ((NormalViewHolder) holder).setData((NormalBean) get(position));
-        } else if (holder instanceof TestViewHolder) {
+        if (holder instanceof TestViewHolder) {
             ((TestViewHolder) holder).setData((TestBean) get(position));
         }
     }
