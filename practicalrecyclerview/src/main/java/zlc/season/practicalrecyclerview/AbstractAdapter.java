@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observer;
 
+import zlc.season.practicalrecyclerview.diff.ItemDiffRule;
+import zlc.season.practicalrecyclerview.viewholder.AbstractViewHolder;
+
 import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
 
 /**
@@ -21,8 +24,7 @@ import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
  */
 public abstract class AbstractAdapter<T extends ItemType, VH extends AbstractViewHolder> extends
         RecyclerView.Adapter<VH> {
-    public DataSetObservable<T> dataSet;
-
+    private DataSetObservable<T> dataSet;
     private RecyclerView mRecyclerView;
 
     public AbstractAdapter() {
@@ -34,13 +36,13 @@ public abstract class AbstractAdapter<T extends ItemType, VH extends AbstractVie
         return dataSet.data.get(position);
     }
 
-    public void registerObserver(Observer observer) {
-        dataSet.addObserver(observer);
-    }
-
 
     public void addHeader(SectionItem header) {
         dataSet.header.add(header);
+    }
+
+    public void addFooter(SectionItem footer) {
+        dataSet.footer.add(footer);
     }
 
     public void clear() {
@@ -90,14 +92,6 @@ public abstract class AbstractAdapter<T extends ItemType, VH extends AbstractVie
     public void diffExtra(List<SectionItem> oldData, List<SectionItem> newData) {
         DiffUtil.DiffResult result = DiffUtil.calculateDiff(new ItemDiffRule<>(oldData, newData));
         result.dispatchUpdatesTo(this);
-    }
-
-    public int getExtraAdapterPosition() {
-        return dataSet.extra.position();
-    }
-
-    public void insteadExtra(int adapterPosition, SectionItem newItem) {
-        dataSet.extra.set(adapterPosition, newItem);
     }
 
     @Override
@@ -200,6 +194,10 @@ public abstract class AbstractAdapter<T extends ItemType, VH extends AbstractVie
         }
     }
 
+
+    void registerObserver(Observer observer) {
+        dataSet.addObserver(observer);
+    }
 
     protected abstract VH onNewCreateViewHolder(ViewGroup parent, int viewType);
 

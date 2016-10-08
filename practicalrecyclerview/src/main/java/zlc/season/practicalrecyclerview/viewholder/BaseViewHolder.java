@@ -1,8 +1,10 @@
-package zlc.season.practicalrecyclerview;
+package zlc.season.practicalrecyclerview.viewholder;
 
 import android.support.annotation.LayoutRes;
 import android.view.View;
 import android.view.ViewGroup;
+
+import zlc.season.practicalrecyclerview.ItemType;
 
 /**
  * Author: Season(ssseasonnn@gmail.com)

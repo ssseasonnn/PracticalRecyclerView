@@ -1,8 +1,8 @@
 package zlc.season.demo.singleitem;
 
-import zlc.season.demo.data.NormalBean;
-
 import java.util.List;
+
+import zlc.season.demo.data.NormalBean;
 
 /**
  * Author: Season(ssseasonnn@gmail.com)

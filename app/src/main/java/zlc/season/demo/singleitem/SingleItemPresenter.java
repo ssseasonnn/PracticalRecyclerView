@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.util.Log;
 
-import zlc.season.demo.data.NormalBean;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -17,6 +15,7 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
+import zlc.season.demo.data.NormalBean;
 
 /**
  * Author: Season(ssseasonnn@gmail.com)

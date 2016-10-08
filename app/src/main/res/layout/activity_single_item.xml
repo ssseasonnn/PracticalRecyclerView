@@ -9,12 +9,12 @@
     tools:context="zlc.season.demo.singleitem.SingleItemActivity">
 
 
-    <zlc.season.practicalrecyclerview.SuperRecyclerView
+    <zlc.season.practicalrecyclerview.PracticalRecyclerView
         android:id="@+id/super_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:empty_layout="@layout/default_empty_layout"
         app:error_layout="@layout/default_error_layout">
 
-    </zlc.season.practicalrecyclerview.SuperRecyclerView>
+    </zlc.season.practicalrecyclerview.PracticalRecyclerView>
 </RelativeLayout>

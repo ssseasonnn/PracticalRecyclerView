@@ -1,4 +1,4 @@
-package zlc.season.practicalrecyclerview;
+package zlc.season.practicalrecyclerview.diff;
 
 import android.support.v7.util.DiffUtil;
 
@@ -7,15 +7,15 @@ import java.util.List;
 /**
  * Author: Season(ssseasonnn@gmail.com)
  * Date: 2016/9/29
- * Time: 10:26
+ * Time: 10:15
  * FIXME
  */
-public class DiffExtra extends DiffUtil.Callback {
+public class ItemDiffRule<E> extends DiffUtil.Callback {
 
-    private List<SectionItem> mOldData;
-    private List<SectionItem> mNewData;
+    private List<? extends E> mOldData;
+    private List<? extends E> mNewData;
 
-    public DiffExtra(List<SectionItem> newData, List<SectionItem> oldData) {
+    public ItemDiffRule(List<? extends E> newData, List<? extends E> oldData) {
         mNewData = newData;
         mOldData = oldData;
     }

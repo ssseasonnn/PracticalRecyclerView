@@ -8,8 +8,8 @@ import zlc.season.demo.data.TestBean;
 import zlc.season.demo.viewholder.NormalViewHolder;
 import zlc.season.demo.viewholder.TestViewHolder;
 import zlc.season.practicalrecyclerview.AbstractAdapter;
-import zlc.season.practicalrecyclerview.AbstractViewHolder;
 import zlc.season.practicalrecyclerview.ItemType;
+import zlc.season.practicalrecyclerview.viewholder.AbstractViewHolder;
 
 /**
  * Author: Season(ssseasonnn@gmail.com)

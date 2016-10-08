@@ -6,13 +6,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import zlc.season.demo.R;
-import zlc.season.demo.data.NormalBean;
-import zlc.season.practicalrecyclerview.BaseViewHolder;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import zlc.season.demo.R;
+import zlc.season.demo.data.NormalBean;
+import zlc.season.practicalrecyclerview.viewholder.BaseViewHolder;
 
 /**
  * Author: Season(ssseasonnn@gmail.com)

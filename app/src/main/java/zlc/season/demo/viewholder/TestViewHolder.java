@@ -4,12 +4,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import zlc.season.demo.R;
-import zlc.season.demo.data.TestBean;
-import zlc.season.practicalrecyclerview.BaseViewHolder;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import zlc.season.demo.R;
+import zlc.season.demo.data.TestBean;
+import zlc.season.practicalrecyclerview.viewholder.BaseViewHolder;
 
 /**
  * Author: Season(ssseasonnn@gmail.com)

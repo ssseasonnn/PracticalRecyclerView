@@ -1,4 +1,4 @@
-package zlc.season.practicalrecyclerview;
+package zlc.season.practicalrecyclerview.viewholder;
 
 import android.support.annotation.LayoutRes;
 import android.support.v7.widget.RecyclerView;

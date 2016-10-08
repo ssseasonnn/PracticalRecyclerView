@@ -11,11 +11,11 @@ import java.util.Observable;
  * Time: 14:24
  * FIXME
  */
-public class DataSetObservable<E> extends Observable {
-    public HeaderSegment header = new HeaderSegment();
-    public DataSegment data = new DataSegment();
-    public FooterSegment footer = new FooterSegment();
-    public ExtraSegment extra = new ExtraSegment();
+class DataSetObservable<E> extends Observable {
+    HeaderSegment header = new HeaderSegment();
+    DataSegment data = new DataSegment();
+    FooterSegment footer = new FooterSegment();
+    ExtraSegment extra = new ExtraSegment();
 
     private List<SectionItem> mHeader = new ArrayList<>();
     private List<E> mData = new ArrayList<>();
@@ -54,40 +54,40 @@ public class DataSetObservable<E> extends Observable {
 
     void notifyContent() {
         super.setChanged();
-        super.notifyObservers(new EventType.Content());
+        super.notifyObservers(new Bridge.Content());
     }
 
     void notifyError() {
         super.setChanged();
-        super.notifyObservers(new EventType.Error());
+        super.notifyObservers(new Bridge.Error());
     }
 
     void notifyEmpty() {
         super.setChanged();
-        super.notifyObservers(new EventType.Empty());
+        super.notifyObservers(new Bridge.Empty());
     }
 
     void notifyLoadMoreFailed() {
         super.setChanged();
-        super.notifyObservers(new EventType.LoadMoreFailed());
+        super.notifyObservers(new Bridge.LoadMoreFailed());
     }
 
     void notifyResumeLoadMore() {
         super.setChanged();
-        super.notifyObservers(new EventType.ResumeLoadMore());
+        super.notifyObservers(new Bridge.ResumeLoadMore());
     }
 
     void notifyNoMore() {
         super.setChanged();
-        super.notifyObservers(new EventType.NoMore());
+        super.notifyObservers(new Bridge.NoMore());
     }
 
     void notifyAutoLoadMore() {
         super.setChanged();
-        super.notifyObservers(new EventType.AutoLoadMore());
+        super.notifyObservers(new Bridge.AutoLoadMore());
     }
 
-    abstract class Segment {
+    private abstract class Segment {
 
         abstract int size();
 
@@ -132,15 +132,15 @@ public class DataSetObservable<E> extends Observable {
             }
         }
 
-        protected abstract int positionImpl();
+        abstract int positionImpl();
 
-        protected abstract SectionItem getImpl(int position);
+        abstract SectionItem getImpl(int position);
 
-        protected abstract void setImpl(int position, SectionItem newItem);
+        abstract void setImpl(int position, SectionItem newItem);
 
-        protected abstract void removeImpl(int position);
+        abstract void removeImpl(int position);
 
-        protected abstract void removeImpl(SectionItem needRemove);
+        abstract void removeImpl(SectionItem needRemove);
 
     }
 

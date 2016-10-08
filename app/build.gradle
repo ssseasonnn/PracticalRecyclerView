@@ -2,10 +2,10 @@ apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
 android {
     compileSdkVersion 24
-    buildToolsVersion "24.0.2"
+    buildToolsVersion "24.0.3"
 
     defaultConfig {
-        applicationId "com.example.season.supperrecycler"
+        applicationId "zlc.season.demo"
         minSdkVersion 15
         targetSdkVersion 24
         versionCode 1

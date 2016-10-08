@@ -8,11 +8,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 
-import zlc.season.demo.singleitem.SingleItemActivity;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import zlc.season.demo.singleitem.SingleItemActivity;
 
 public class MainActivity extends AppCompatActivity {
 

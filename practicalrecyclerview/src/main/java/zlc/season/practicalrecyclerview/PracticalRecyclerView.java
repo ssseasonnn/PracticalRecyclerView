@@ -15,6 +15,8 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
+import com.example.practicalrecyclerview.R;
+
 import java.util.Observable;
 import java.util.Observer;
 
@@ -25,7 +27,7 @@ import java.util.Observer;
  * Time: 13:56
  * FIXME
  */
-public class SuperRecyclerView extends FrameLayout {
+public class PracticalRecyclerView extends FrameLayout {
 
     private DataSetObserver mObserver;
 
@@ -53,23 +55,23 @@ public class SuperRecyclerView extends FrameLayout {
     private boolean loadMoreFailed = false;
 
 
-    public SuperRecyclerView(Context context) {
+    public PracticalRecyclerView(Context context) {
         this(context, null);
     }
 
 
-    public SuperRecyclerView(Context context, AttributeSet attrs) {
+    public PracticalRecyclerView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public SuperRecyclerView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public PracticalRecyclerView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
         obtainStyledAttributes(context, attrs);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public SuperRecyclerView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public PracticalRecyclerView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(context);
         obtainStyledAttributes(context, attrs);
@@ -128,19 +130,19 @@ public class SuperRecyclerView extends FrameLayout {
     }
 
     private void obtainStyledAttributes(Context context, AttributeSet attrs) {
-        TypedArray attributes = context.obtainStyledAttributes(attrs, R.styleable.SuperRecyclerView);
-        int loadingResId = attributes.getResourceId(R.styleable.SuperRecyclerView_loading_layout, R.layout
+        TypedArray attributes = context.obtainStyledAttributes(attrs, R.styleable.PracticalRecyclerView);
+        int loadingResId = attributes.getResourceId(R.styleable.PracticalRecyclerView_loading_layout, R.layout
                 .default_loading_layout);
-        int emptyResId = attributes.getResourceId(R.styleable.SuperRecyclerView_empty_layout, R.layout
+        int emptyResId = attributes.getResourceId(R.styleable.PracticalRecyclerView_empty_layout, R.layout
                 .default_empty_layout);
-        int errorResId = attributes.getResourceId(R.styleable.SuperRecyclerView_error_layout, R.layout
+        int errorResId = attributes.getResourceId(R.styleable.PracticalRecyclerView_error_layout, R.layout
                 .default_error_layout);
 
-        int loadMoreResId = attributes.getResourceId(R.styleable.SuperRecyclerView_load_more_layout, R.layout
+        int loadMoreResId = attributes.getResourceId(R.styleable.PracticalRecyclerView_load_more_layout, R.layout
                 .default_load_more);
-        int noMoreResId = attributes.getResourceId(R.styleable.SuperRecyclerView_no_more_layout, R.layout
+        int noMoreResId = attributes.getResourceId(R.styleable.PracticalRecyclerView_no_more_layout, R.layout
                 .default_no_more_layout);
-        int loadMoreErrorResId = attributes.getResourceId(R.styleable.SuperRecyclerView_load_more_error_layout, R
+        int loadMoreErrorResId = attributes.getResourceId(R.styleable.PracticalRecyclerView_load_more_error_layout, R
                 .layout.default_load_more_error_layout);
 
         View loadingView = LayoutInflater.from(context).inflate(loadingResId, mLoading, true);
@@ -315,8 +317,8 @@ public class SuperRecyclerView extends FrameLayout {
         public void update(Observable o, Object arg) {
             closeRefreshing();
             closeLoadingMore();
-            EventType type = (EventType) arg;
-            type.doSomething(SuperRecyclerView.this);
+            Bridge type = (Bridge) arg;
+            type.doSomething(PracticalRecyclerView.this);
         }
 
         private void closeLoadingMore() {
