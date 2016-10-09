@@ -52,6 +52,11 @@ class DataSetObservable<E> extends Observable {
         mExtra.clear();
     }
 
+    void notifyLoading() {
+        super.setChanged();
+        super.notifyObservers(new Bridge.Loading());
+    }
+
     void notifyContent() {
         super.setChanged();
         super.notifyObservers(new Bridge.Content());

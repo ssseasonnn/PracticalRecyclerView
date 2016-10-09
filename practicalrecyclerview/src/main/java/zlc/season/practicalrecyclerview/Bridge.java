@@ -9,11 +9,19 @@ package zlc.season.practicalrecyclerview;
 interface Bridge {
     void doSomething(PracticalRecyclerView host);
 
+    class Loading implements Bridge {
+
+        @Override
+        public void doSomething(PracticalRecyclerView host) {
+            host.setLoadingVisibleAndResetStatus();
+        }
+    }
+
     class Empty implements Bridge {
 
         @Override
         public void doSomething(PracticalRecyclerView host) {
-            host.setEmptyVisible();
+            host.setEmptyVisibleAndResetStatus();
         }
     }
 
@@ -21,7 +29,7 @@ interface Bridge {
 
         @Override
         public void doSomething(PracticalRecyclerView host) {
-            host.setContentVisibleAndResumeStatus();
+            host.setContentVisibleAndResetStatus();
         }
     }
 
@@ -29,7 +37,7 @@ interface Bridge {
 
         @Override
         public void doSomething(PracticalRecyclerView host) {
-            host.setErrorVisible();
+            host.setErrorVisibleAndResetStatus();
         }
     }
 

@@ -70,6 +70,13 @@ public abstract class AbstractAdapter<T extends ItemType, VH extends AbstractVie
     }
 
     /**
+     * 显示Loading View
+     */
+    public void showLoading() {
+        dataSet.notifyLoading();
+    }
+
+    /**
      * 清除当前所有数据,并显示ErrorView
      */
     public void showError() {

@@ -112,7 +112,7 @@ public class PracticalRecyclerView extends FrameLayout {
             AbstractAdapter abstractAdapter = (AbstractAdapter) adapter;
             subscribeWithAdapter(abstractAdapter);
         }
-        setLoadingVisible();
+        setLoadingVisibleAndResetStatus();
         mRecyclerView.setAdapter(adapter);
     }
 
@@ -130,33 +130,36 @@ public class PracticalRecyclerView extends FrameLayout {
         mError.addView(errorView);
     }
 
-    void setLoadingVisible() {
+    void setLoadingVisibleAndResetStatus() {
         mError.setVisibility(GONE);
         mContent.setVisibility(GONE);
         mEmpty.setVisibility(GONE);
         mLoading.setVisibility(VISIBLE);
+        resetStatus();
     }
 
-    void setContentVisibleAndResumeStatus() {
+    void setContentVisibleAndResetStatus() {
         mLoading.setVisibility(GONE);
         mError.setVisibility(GONE);
         mEmpty.setVisibility(GONE);
         mContent.setVisibility(VISIBLE);
-        resumeStatus();
+        resetStatus();
     }
 
-    void setEmptyVisible() {
+    void setEmptyVisibleAndResetStatus() {
         mLoading.setVisibility(GONE);
         mContent.setVisibility(GONE);
         mError.setVisibility(GONE);
         mEmpty.setVisibility(VISIBLE);
+        resetStatus();
     }
 
-    void setErrorVisible() {
+    void setErrorVisibleAndResetStatus() {
         mLoading.setVisibility(GONE);
         mContent.setVisibility(GONE);
         mEmpty.setVisibility(GONE);
         mError.setVisibility(VISIBLE);
+        resetStatus();
     }
 
     void showNoMoreView() {
@@ -193,7 +196,7 @@ public class PracticalRecyclerView extends FrameLayout {
         mLoadMoreListener.onLoadMore();
     }
 
-    private void resumeStatus() {
+    private void resetStatus() {
         isRefreshing = false;
         nowLoading = false;
         loadMoreFailed = false;
@@ -227,6 +230,7 @@ public class PracticalRecyclerView extends FrameLayout {
         mErrorView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                setLoadingVisibleAndResetStatus();
                 refresh();
             }
         });
