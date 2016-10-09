@@ -3,6 +3,6 @@
     <string name="empty">没有数据</string>
     <string name="error">网络连接失败,请点击重试</string>
     <string name="no_more">-----我是有底线的-----</string>
-    <string name="load_more_error">加载失败, 点击重试</string>
+    <string name="load_more_failed">加载失败, 点击重试</string>
     <string name="loading">加载中…</string>
 </resources>

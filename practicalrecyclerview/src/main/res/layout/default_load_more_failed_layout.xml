@@ -4,5 +4,5 @@
     android:layout_width="match_parent"
     android:layout_height="48dp"
     android:gravity="center"
-    android:text="@string/load_more_error"
+    android:text="@string/load_more_failed"
     android:textSize="16sp"/>

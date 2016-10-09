@@ -20,7 +20,6 @@ class NormalBean implements ItemType {
         mTitle = title;
     }
 
-
     @Override
     public int itemType() {
         return RecyclerItemType.NORMAL.getValue();

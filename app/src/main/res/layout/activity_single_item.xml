@@ -13,8 +13,11 @@
         android:id="@+id/recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:loading_layout="@layout/default_loading_layout"
         app:empty_layout="@layout/default_empty_layout"
-        app:error_layout="@layout/default_error_layout">
+        app:error_layout="@layout/default_error_layout"
+        app:load_more_layout="@layout/default_load_more_layout"
+        app:no_more_layout="@layout/default_no_more_layout"
+        app:load_more_failed_layout="@layout/default_load_more_failed_layout"/>
 
-    </zlc.season.practicalrecyclerview.PracticalRecyclerView>
 </RelativeLayout>

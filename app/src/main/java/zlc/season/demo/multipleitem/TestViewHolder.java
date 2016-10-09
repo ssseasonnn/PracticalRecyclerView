@@ -7,7 +7,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import zlc.season.demo.R;
-import zlc.season.practicalrecyclerview.viewholder.BaseViewHolder;
+import zlc.season.practicalrecyclerview.AbstractViewHolder;
 
 /**
  * Author: Season(ssseasonnn@gmail.com)
@@ -15,7 +15,7 @@ import zlc.season.practicalrecyclerview.viewholder.BaseViewHolder;
  * Time: 09:59
  * FIXME
  */
-class TestViewHolder extends BaseViewHolder<TestBean> {
+class TestViewHolder extends AbstractViewHolder<TestBean> {
 
     @BindView(R.id.button)
     Button mButton;

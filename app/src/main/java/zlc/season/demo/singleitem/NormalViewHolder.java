@@ -11,7 +11,7 @@ import com.squareup.picasso.Picasso;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import zlc.season.demo.R;
-import zlc.season.practicalrecyclerview.viewholder.BaseViewHolder;
+import zlc.season.practicalrecyclerview.AbstractViewHolder;
 
 /**
  * Author: Season(ssseasonnn@gmail.com)
@@ -20,7 +20,7 @@ import zlc.season.practicalrecyclerview.viewholder.BaseViewHolder;
  * FIXME
  */
 
-class NormalViewHolder extends BaseViewHolder<NormalBean> {
+class NormalViewHolder extends AbstractViewHolder<NormalBean> {
     @BindView(R.id.head)
     ImageView mHead;
     @BindView(R.id.title)

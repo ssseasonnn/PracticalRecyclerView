@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Observer;
 
 import zlc.season.practicalrecyclerview.diff.ItemDiffRule;
-import zlc.season.practicalrecyclerview.viewholder.AbstractViewHolder;
 
 import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
 
@@ -223,6 +222,10 @@ public abstract class AbstractAdapter<T extends ItemType, VH extends AbstractVie
             super(itemView);
         }
 
+        @Override
+        public void setData(ItemType data) {
+
+        }
     }
 
 }

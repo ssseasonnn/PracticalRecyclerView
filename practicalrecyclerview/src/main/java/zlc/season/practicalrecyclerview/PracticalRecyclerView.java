@@ -283,11 +283,11 @@ public class PracticalRecyclerView extends FrameLayout {
                 .default_error_layout);
 
         int loadMoreResId = attributes.getResourceId(R.styleable.PracticalRecyclerView_load_more_layout, R.layout
-                .default_load_more);
+                .default_load_more_layout);
         int noMoreResId = attributes.getResourceId(R.styleable.PracticalRecyclerView_no_more_layout, R.layout
                 .default_no_more_layout);
-        int loadMoreErrorResId = attributes.getResourceId(R.styleable.PracticalRecyclerView_load_more_error_layout, R
-                .layout.default_load_more_error_layout);
+        int loadMoreErrorResId = attributes.getResourceId(R.styleable.PracticalRecyclerView_load_more_failed_layout, R
+                .layout.default_load_more_failed_layout);
 
         mLoadingView = LayoutInflater.from(context).inflate(loadingResId, mLoading, true);
         mEmptyView = LayoutInflater.from(context).inflate(emptyResId, mEmpty, true);

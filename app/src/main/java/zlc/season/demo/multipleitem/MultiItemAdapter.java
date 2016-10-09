@@ -5,7 +5,7 @@ import android.view.ViewGroup;
 import zlc.season.demo.RecyclerItemType;
 import zlc.season.practicalrecyclerview.AbstractAdapter;
 import zlc.season.practicalrecyclerview.ItemType;
-import zlc.season.practicalrecyclerview.viewholder.AbstractViewHolder;
+import zlc.season.practicalrecyclerview.AbstractViewHolder;
 
 /**
  * Author: Season(ssseasonnn@gmail.com)

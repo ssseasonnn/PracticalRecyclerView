@@ -1,4 +1,4 @@
-package zlc.season.practicalrecyclerview.viewholder;
+package zlc.season.practicalrecyclerview;
 
 import android.support.annotation.LayoutRes;
 import android.support.v7.widget.RecyclerView;
@@ -12,7 +12,7 @@ import android.view.ViewGroup;
  * Time: 14:35
  * FIXME
  */
-public abstract class AbstractViewHolder extends RecyclerView.ViewHolder  {
+public abstract class AbstractViewHolder<T extends ItemType> extends RecyclerView.ViewHolder  {
 
 
     public AbstractViewHolder(View itemView) {
@@ -23,4 +23,5 @@ public abstract class AbstractViewHolder extends RecyclerView.ViewHolder  {
         super(LayoutInflater.from(parent.getContext()).inflate(res, parent, false));
     }
 
+    public abstract void setData(T data);
 }

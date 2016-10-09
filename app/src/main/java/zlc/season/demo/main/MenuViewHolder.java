@@ -12,7 +12,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import zlc.season.demo.R;
 import zlc.season.demo.singleitem.SingleItemActivity;
-import zlc.season.practicalrecyclerview.viewholder.BaseViewHolder;
+import zlc.season.practicalrecyclerview.AbstractViewHolder;
 
 /**
  * Author: Season(ssseasonnn@gmail.com)
@@ -20,7 +20,7 @@ import zlc.season.practicalrecyclerview.viewholder.BaseViewHolder;
  * Time: 14:22
  * FIXME
  */
-class MenuViewHolder extends BaseViewHolder<MenuBean> {
+class MenuViewHolder extends AbstractViewHolder<MenuBean> {
     @BindView(R.id.menu)
     TextView mMenu;
     @BindView(R.id.container)
