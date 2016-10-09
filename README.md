@@ -10,6 +10,10 @@
 
 ![效果图](https://github.com/ssseasonnn/PracticalRecyclerView/blob/master/gif/GIF.gif?raw=true)
 
+[APK下载地址](https://raw.githubusercontent.com/ssseasonnn/PracticalRecyclerView/master/app/demo.apk)
+
+![扫描二维码下载](http://tool.oschina.net/action/qrcode/generate?data=https%3A%2F%2Fraw.githubusercontent.com%2Fssseasonnn%2FPracticalRecyclerView%2Fmaster%2Fapp%2Fdemo.apk&output=image%2Fgif&error=L&type=0&margin=0&size=4&1476000940942)
+
 ### 主要功能:
 
 - 下拉刷新,使用默认的下拉刷新控件
@@ -29,7 +33,7 @@
 
 ```groovy
 	dependencies{
-   		 compile 'compile 'zlc.season:practicalrecyclerview:1.0.0'
+   		 compile 'compile 'zlc.season:practicalrecyclerview:1.0.1'
 	}
 ```
 2. 在布局文件中添加PracticalRecyclerView
@@ -237,13 +241,17 @@
            });
    ```
 
+6. 更多功能将会继续开发和完善
+
+ 若您对此项目有一些自己的想法 , 欢迎来提Pull Request.
+
 ### 关于我
 
 若您对该项目有疑问,请联系我:
 
 QQ:270362455
 
-gmail: ssseasonnn@gmail.com
+Gmail: ssseasonnn@gmail.com
 
 
 
