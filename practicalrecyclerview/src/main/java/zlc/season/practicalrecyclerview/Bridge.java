@@ -13,7 +13,7 @@ interface Bridge {
 
         @Override
         public void doSomething(PracticalRecyclerView host) {
-            host.showEmptyView();
+            host.setEmptyVisible();
         }
     }
 
@@ -21,7 +21,7 @@ interface Bridge {
 
         @Override
         public void doSomething(PracticalRecyclerView host) {
-            host.showContentView();
+            host.setContentVisibleAndResumeStatus();
         }
     }
 
@@ -29,7 +29,7 @@ interface Bridge {
 
         @Override
         public void doSomething(PracticalRecyclerView host) {
-            host.showErrorView();
+            host.setErrorVisible();
         }
     }
 
@@ -45,7 +45,7 @@ interface Bridge {
 
         @Override
         public void doSomething(PracticalRecyclerView host) {
-            host.showLoadMoreErrorView();
+            host.showLoadMoreFailedView();
         }
     }
 

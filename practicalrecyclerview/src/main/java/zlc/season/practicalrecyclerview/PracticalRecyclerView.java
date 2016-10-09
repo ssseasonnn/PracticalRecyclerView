@@ -29,7 +29,7 @@ import java.util.Observer;
  */
 public class PracticalRecyclerView extends FrameLayout {
 
-    private DataSetObserver mObserver;
+    private DataSetObserver mObserver = new DataSetObserver();
 
     private FrameLayout mMain;
     private FrameLayout mLoading;
@@ -47,7 +47,8 @@ public class PracticalRecyclerView extends FrameLayout {
     private OnRefreshListener mRefreshListener;
     private OnLoadMoreListener mLoadMoreListener;
 
-    private boolean onLoading = false;
+    private boolean isRefreshing = false;
+    private boolean nowLoading = false;
     private boolean noMore = false;
     private boolean loadMoreFailed = false;
     private View mEmptyView;
@@ -64,22 +65,25 @@ public class PracticalRecyclerView extends FrameLayout {
 
     public PracticalRecyclerView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context);
-        config();
+        initMainView(context);
         obtainStyledAttributes(context, attrs);
+        configDefaultBehavior();
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public PracticalRecyclerView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        init(context);
+        initMainView(context);
         obtainStyledAttributes(context, attrs);
+        configDefaultBehavior();
     }
 
     public void configureView(Configure configure) {
         if (configure == null) {
             return;
         }
+        mErrorView.setOnClickListener(null);
+        mLoadMoreFailedView.setOnClickListener(null);
         configure.configureEmptyView(mEmptyView);
         configure.configureErrorView(mErrorView);
         configure.configureLoadingView(mLoadingView);
@@ -108,7 +112,7 @@ public class PracticalRecyclerView extends FrameLayout {
             AbstractAdapter abstractAdapter = (AbstractAdapter) adapter;
             subscribeWithAdapter(abstractAdapter);
         }
-        showLoadingView();
+        setLoadingVisible();
         mRecyclerView.setAdapter(adapter);
     }
 
@@ -126,31 +130,29 @@ public class PracticalRecyclerView extends FrameLayout {
         mError.addView(errorView);
     }
 
-    void showLoadingView() {
+    void setLoadingVisible() {
         mError.setVisibility(GONE);
         mContent.setVisibility(GONE);
         mEmpty.setVisibility(GONE);
         mLoading.setVisibility(VISIBLE);
     }
 
-    void showContentView() {
-        onLoading = false;
-        loadMoreFailed = false;
-        noMore = false;
+    void setContentVisibleAndResumeStatus() {
         mLoading.setVisibility(GONE);
         mError.setVisibility(GONE);
         mEmpty.setVisibility(GONE);
         mContent.setVisibility(VISIBLE);
+        resumeStatus();
     }
 
-    void showEmptyView() {
+    void setEmptyVisible() {
         mLoading.setVisibility(GONE);
         mContent.setVisibility(GONE);
         mError.setVisibility(GONE);
         mEmpty.setVisibility(VISIBLE);
     }
 
-    void showErrorView() {
+    void setErrorVisible() {
         mLoading.setVisibility(GONE);
         mContent.setVisibility(GONE);
         mEmpty.setVisibility(GONE);
@@ -164,7 +166,7 @@ public class PracticalRecyclerView extends FrameLayout {
         adapter.show(mNoMoreView);
     }
 
-    void showLoadMoreErrorView() {
+    void showLoadMoreFailedView() {
         if (!(mRecyclerView.getAdapter() instanceof AbstractAdapter)) return;
         loadMoreFailed = true;
         AbstractAdapter adapter = (AbstractAdapter) mRecyclerView.getAdapter();
@@ -173,13 +175,14 @@ public class PracticalRecyclerView extends FrameLayout {
 
     void resumeLoadMore() {
         loadMoreFailed = false;
+        if (canNotLoadMore()) return;
         showLoadMoreView();
         mLoadMoreListener.onLoadMore();
     }
 
     void showLoadMoreView() {
         if (!(mRecyclerView.getAdapter() instanceof AbstractAdapter)) return;
-        onLoading = true;
+        nowLoading = true;
         AbstractAdapter adapter = (AbstractAdapter) mRecyclerView.getAdapter();
         adapter.show(mLoadMoreView);
     }
@@ -190,7 +193,14 @@ public class PracticalRecyclerView extends FrameLayout {
         mLoadMoreListener.onLoadMore();
     }
 
-    private void init(Context context) {
+    private void resumeStatus() {
+        isRefreshing = false;
+        nowLoading = false;
+        loadMoreFailed = false;
+        noMore = false;
+    }
+
+    private void initMainView(Context context) {
         mMain = (FrameLayout) LayoutInflater.from(context).inflate(R.layout.recycler_layout, this, true);
         mLoading = (FrameLayout) mMain.findViewById(R.id.practical_loading);
         mError = (FrameLayout) mMain.findViewById(R.id.practical_error);
@@ -201,43 +211,62 @@ public class PracticalRecyclerView extends FrameLayout {
         mRecyclerView = (RecyclerView) mMain.findViewById(R.id.practical_recycler);
     }
 
-    private void config() {
-        mObserver = new DataSetObserver();
-
+    private void configDefaultBehavior() {
         //默认为关闭,设置OnRefreshListener时打开
         mSwipeRefreshLayout.setEnabled(false);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (canNotRefresh()) {
-                    closeRefreshing();
-                    return;
-                }
-                mRefreshListener.onRefresh();
+                refresh();
             }
         });
 
         mRecyclerView.addOnScrollListener(new OnScrollListener());
+
+        //设置error view 默认行为,点击刷新
+        mErrorView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refresh();
+            }
+        });
+        //设置load more failed view 默认行为, 点击恢复加载
+        mLoadMoreFailedView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resumeLoadMore();
+            }
+        });
+    }
+
+    private void refresh() {
+        if (canNotRefresh()) {
+            closeRefreshing();
+            return;
+        }
+        mRefreshListener.onRefresh();
+        isRefreshing = true;
     }
 
     private void closeRefreshing() {
         if (mSwipeRefreshLayout.isRefreshing()) {
             mSwipeRefreshLayout.setRefreshing(false);
+            isRefreshing = false;
         }
     }
 
     private void closeLoadingMore() {
-        if (onLoading) {
-            onLoading = false;
+        if (nowLoading) {
+            nowLoading = false;
         }
     }
 
     private boolean canNotRefresh() {
-        return mRefreshListener == null || onLoading;
+        return mRefreshListener == null || isRefreshing || nowLoading;
     }
 
     private boolean canNotLoadMore() {
-        return mSwipeRefreshLayout.isRefreshing() || mLoadMoreListener == null || onLoading || loadMoreFailed || noMore;
+        return mLoadMoreListener == null || isRefreshing || nowLoading || loadMoreFailed || noMore;
     }
 
     private void obtainStyledAttributes(Context context, AttributeSet attrs) {

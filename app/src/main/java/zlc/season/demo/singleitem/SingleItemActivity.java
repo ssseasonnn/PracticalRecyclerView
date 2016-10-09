@@ -16,7 +16,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.bingoogolapple.bgabanner.BGABanner;
 import zlc.season.demo.R;
-import zlc.season.practicalrecyclerview.ConfigureAdapter;
 import zlc.season.practicalrecyclerview.PracticalRecyclerView;
 import zlc.season.practicalrecyclerview.SectionItem;
 
@@ -81,37 +80,12 @@ public class SingleItemActivity extends AppCompatActivity {
     private void configureRecyclerView() {
         mRecycler.setLayoutManager(new LinearLayoutManager(this));
         mRecycler.setAdapterWithLoading(mAdapter);
-        mRecycler.configureView(new ConfigureAdapter() {
-            @Override
-            public void configureErrorView(View errorView) {
-                super.configureErrorView(errorView);
-                errorView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mPresenter.loadData(true);
-                    }
-                });
-            }
-
-            @Override
-            public void configureLoadMoreErrorView(View loadMoreErrorView) {
-                super.configureLoadMoreErrorView(loadMoreErrorView);
-                loadMoreErrorView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mAdapter.resumeLoadMore();
-                    }
-                });
-            }
-        });
-
         mRecycler.setRefreshListener(new PracticalRecyclerView.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 mPresenter.loadData(true);
             }
         });
-
         mRecycler.setLoadMoreListener(new PracticalRecyclerView.OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
