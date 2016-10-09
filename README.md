@@ -6,7 +6,7 @@
 
 ## 对RecyclerView的一个封装,添加一些实用的功能
 
-### 效果图与实例APK
+### 效果图与示例APK
 
 ![效果图](https://github.com/ssseasonnn/PracticalRecyclerView/blob/master/gif/GIF.gif?raw=true)
 
