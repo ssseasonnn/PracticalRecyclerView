@@ -33,7 +33,7 @@
 
 ```groovy
 	dependencies{
-   		 compile 'compile 'zlc.season:practicalrecyclerview:1.0.1'
+   		 compile 'compile 'zlc.season:practicalrecyclerview:1.0.0'
 	}
 ```
 2. 在布局文件中添加PracticalRecyclerView
@@ -55,9 +55,9 @@
 
 3. 添加代码
 
-   首先定义一个POJO类, 并实现ItemType接口:
+首先定义一个POJO类, 并实现ItemType接口:
 
-   ```java
+```java
    class NormalBean implements ItemType {
        String mImg;
        String mTitle;
@@ -75,13 +75,13 @@
        }
    }
 
-   ```
+```
 
    > 这里返回的item type 表示是item的类型, 如果列表只有一种类型的item, 那么返回0就可以了, 如果有多种item, 则对应类型的item返回对应类型的item type. 这里简单的返回0 .
 
    接着定义ViewHolder, 继承自AbstractViewHolder<T>, 并提供泛型参数:
 
-   ```java
+```java
    class NormalViewHolder extends AbstractViewHolder<NormalBean> {
        @BindView(R.id.head)
        ImageView mHead;
@@ -105,13 +105,13 @@
            mContent.setText(data.mContent);
        }
    }
-   ```
+```
 
    > 在Viewholder中进行View的创建和绑定, 如果需要绑定按钮的单击事件或者其他的一些事件, 在此处进行再好不过了.
 
    接下来创建Adatper, 继承自AbstractAdapter<T , VH>, 并提供泛型参数:
 
-   ```java
+```java
    class SingleItemAdapter extends AbstractAdapter<NormalBean, NormalViewHolder> {
 
        @Override
@@ -124,13 +124,13 @@
            holder.setData(get(position));
        }
    }
-   ```
+```
 
    > adapter 类中非常简洁, 只需要在onNewCreateViewHolder()中创建ViewHolder, 在onNewBindViewHolder()中调用viewholder的setData()即可, 这样adapter和viewholder的逻辑就分离开来,互不干扰.
 
    最后,在Activity或者Fragment中进行最后的配置:
 
-   ```java
+```java
    PracticalRecyclerView mRecycler;
    private SingleItemAdapter mAdapter = new SingleItemAdapter();
    ...
@@ -150,13 +150,13 @@
            });
    ...
    //更多详细代码请下载demo查看
-   ```
+```
 
-4. 添加Header 和 Footer
+4.添加Header 和 Footer
 
-   要添加Header和Footer, 可以选择实现SectionItem接口, 或者继承SectionItemImpl, 如下所示:
+要添加Header和Footer, 可以选择实现SectionItem接口, 或者继承SectionItemImpl, 如下所示:
 
-   ```java
+```java
    class Header implements SectionItem {
            @BindView(R.id.banner_guide_content)
            BGABanner mBanner;
@@ -180,29 +180,29 @@
                        R.mipmap.g, R.mipmap.h), null);
            }
        }
-   ```
+```
 
    > 这里使用了一个开源轮播库BGABanner当作Header, 该库的链接在此: [BGAbanner](https://github.com/bingoogolapple/BGABanner-Android)
 
    接着调用Adapter的addHeader() 或者addFooter()方法将该Header或Footer添加到adapter中:
 
-   ```java
+```java
     mAdapter.addHeader(new Header());
-   ```
+```
 
-5. Configure 接口和ConfigureAdapter类
+5.Configure 接口和ConfigureAdapter类
 
-   当默认的属性不能满足需求时, 可以自定义layout 并设置为PracticalRecyclerView的属性:
+当默认的属性不能满足需求时, 可以自定义layout 并设置为PracticalRecyclerView的属性:
 
-   ```xml
+```xml
    ...
    app:load_more_failed_layout="@layout/custom_load_more_failed_layout"  //当加载更多失败时显示的View
    ...
-   ```
+```
 
    若需要对该View进行设置, 就需要用到Configure接口, Configure接口定义了以下方法,分别对属性中设置的View进行设置:
 
-   ```java
+```java
    public interface Configure {
        void configureEmptyView(View emptyView); //对Empty View 进行设置
 
@@ -216,11 +216,11 @@
 
        void configureLoadMoreErrorView(View loadMoreErrorView); // 对LoadMoreError View进行设置
    }
-   ```
+```
 
    ConfigureAdapter是对Configure接口的一个包装类,  可以选择实现其中的某一些方法,从而设置对应的View:
 
-   ```java
+```java
     mRecycler.configureView(new ConfigureAdapter() {
                @Override
                public void configureLoadMoreFailedView(View loadMoreFailedView) {
@@ -239,11 +239,11 @@
                    errorView.dosomething();
                }
            });
-   ```
+```
 
-6. 更多功能将会继续开发和完善
+6.更多功能将会继续开发和完善
 
- 若您对此项目有一些自己的想法 , 欢迎来提Pull Request.
+若您对此项目有一些自己的想法 , 欢迎来提Pull Request.
 
 ### 关于我
 
