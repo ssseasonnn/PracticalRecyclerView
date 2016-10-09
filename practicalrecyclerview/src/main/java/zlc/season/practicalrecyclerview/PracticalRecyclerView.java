@@ -37,7 +37,6 @@ public class PracticalRecyclerView extends FrameLayout {
     private FrameLayout mEmpty;
     private LinearLayout mContent;
 
-
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
 
@@ -55,11 +54,9 @@ public class PracticalRecyclerView extends FrameLayout {
     private View mLoadingView;
     private View mErrorView;
 
-
     public PracticalRecyclerView(Context context) {
         this(context, null);
     }
-
 
     public PracticalRecyclerView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
@@ -102,77 +99,6 @@ public class PracticalRecyclerView extends FrameLayout {
         mLoadMoreListener = loadMoreListener;
     }
 
-    private void init(Context context) {
-        mMain = (FrameLayout) LayoutInflater.from(context).inflate(R.layout.recycler_layout, this, true);
-        mLoading = (FrameLayout) mMain.findViewById(R.id.practical_loading);
-        mError = (FrameLayout) mMain.findViewById(R.id.practical_error);
-        mEmpty = (FrameLayout) mMain.findViewById(R.id.practical_empty);
-        mContent = (LinearLayout) mMain.findViewById(R.id.practical_content);
-
-        mSwipeRefreshLayout = (SwipeRefreshLayout) mMain.findViewById(R.id.practical_swipe_refresh);
-        mRecyclerView = (RecyclerView) mMain.findViewById(R.id.practical_recycler);
-    }
-
-    private void config() {
-        mObserver = new DataSetObserver();
-
-        //默认为关闭,设置OnRefreshListener时打开
-        mSwipeRefreshLayout.setEnabled(false);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                if (canNotRefresh()) {
-                    closeRefreshing();
-                    return;
-                }
-                mRefreshListener.onRefresh();
-            }
-        });
-
-        mRecyclerView.addOnScrollListener(new OnScrollListener());
-    }
-
-    private void obtainStyledAttributes(Context context, AttributeSet attrs) {
-        TypedArray attributes = context.obtainStyledAttributes(attrs, R.styleable.PracticalRecyclerView);
-        int loadingResId = attributes.getResourceId(R.styleable.PracticalRecyclerView_loading_layout, R.layout
-                .default_loading_layout);
-        int emptyResId = attributes.getResourceId(R.styleable.PracticalRecyclerView_empty_layout, R.layout
-                .default_empty_layout);
-        int errorResId = attributes.getResourceId(R.styleable.PracticalRecyclerView_error_layout, R.layout
-                .default_error_layout);
-
-        int loadMoreResId = attributes.getResourceId(R.styleable.PracticalRecyclerView_load_more_layout, R.layout
-                .default_load_more);
-        int noMoreResId = attributes.getResourceId(R.styleable.PracticalRecyclerView_no_more_layout, R.layout
-                .default_no_more_layout);
-        int loadMoreErrorResId = attributes.getResourceId(R.styleable.PracticalRecyclerView_load_more_error_layout, R
-                .layout.default_load_more_error_layout);
-
-        mLoadingView = LayoutInflater.from(context).inflate(loadingResId, mLoading, true);
-        mEmptyView = LayoutInflater.from(context).inflate(emptyResId, mEmpty, true);
-        mErrorView = LayoutInflater.from(context).inflate(errorResId, mError, true);
-
-        mLoadMoreView = LayoutInflater.from(context).inflate(loadMoreResId, mMain, false);
-        mNoMoreView = LayoutInflater.from(context).inflate(noMoreResId, mMain, false);
-        mLoadMoreFailedView = LayoutInflater.from(context).inflate(loadMoreErrorResId, mMain, false);
-
-        attributes.recycle();
-    }
-
-    private void closeRefreshing() {
-        if (mSwipeRefreshLayout.isRefreshing()) {
-            mSwipeRefreshLayout.setRefreshing(false);
-        }
-    }
-
-    private boolean canNotLoadMore() {
-        return mSwipeRefreshLayout.isRefreshing() || mLoadMoreListener == null || onLoading || loadMoreFailed || noMore;
-    }
-
-    private boolean canNotRefresh() {
-        return mRefreshListener == null || onLoading;
-    }
-
     public void setLayoutManager(RecyclerView.LayoutManager layoutManager) {
         mRecyclerView.setLayoutManager(layoutManager);
     }
@@ -188,10 +114,6 @@ public class PracticalRecyclerView extends FrameLayout {
 
     public void setAdapter(RecyclerView.Adapter adapter) {
         mRecyclerView.setAdapter(adapter);
-    }
-
-    private void subscribeWithAdapter(AbstractAdapter adapter) {
-        adapter.registerObserver(mObserver);
     }
 
     public void setEmptyView(View emptyView) {
@@ -235,14 +157,6 @@ public class PracticalRecyclerView extends FrameLayout {
         mError.setVisibility(VISIBLE);
     }
 
-
-    void showLoadMoreView() {
-        if (!(mRecyclerView.getAdapter() instanceof AbstractAdapter)) return;
-        onLoading = true;
-        AbstractAdapter adapter = (AbstractAdapter) mRecyclerView.getAdapter();
-        adapter.show(mLoadMoreView);
-    }
-
     void showNoMoreView() {
         if (!(mRecyclerView.getAdapter() instanceof AbstractAdapter)) return;
         noMore = true;
@@ -260,6 +174,14 @@ public class PracticalRecyclerView extends FrameLayout {
     void resumeLoadMore() {
         loadMoreFailed = false;
         showLoadMoreView();
+        mLoadMoreListener.onLoadMore();
+    }
+
+    void showLoadMoreView() {
+        if (!(mRecyclerView.getAdapter() instanceof AbstractAdapter)) return;
+        onLoading = true;
+        AbstractAdapter adapter = (AbstractAdapter) mRecyclerView.getAdapter();
+        adapter.show(mLoadMoreView);
     }
 
     void autoLoadMore() {
@@ -268,17 +190,96 @@ public class PracticalRecyclerView extends FrameLayout {
         mLoadMoreListener.onLoadMore();
     }
 
+    private void init(Context context) {
+        mMain = (FrameLayout) LayoutInflater.from(context).inflate(R.layout.recycler_layout, this, true);
+        mLoading = (FrameLayout) mMain.findViewById(R.id.practical_loading);
+        mError = (FrameLayout) mMain.findViewById(R.id.practical_error);
+        mEmpty = (FrameLayout) mMain.findViewById(R.id.practical_empty);
+        mContent = (LinearLayout) mMain.findViewById(R.id.practical_content);
+
+        mSwipeRefreshLayout = (SwipeRefreshLayout) mMain.findViewById(R.id.practical_swipe_refresh);
+        mRecyclerView = (RecyclerView) mMain.findViewById(R.id.practical_recycler);
+    }
+
+    private void config() {
+        mObserver = new DataSetObserver();
+
+        //默认为关闭,设置OnRefreshListener时打开
+        mSwipeRefreshLayout.setEnabled(false);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if (canNotRefresh()) {
+                    closeRefreshing();
+                    return;
+                }
+                mRefreshListener.onRefresh();
+            }
+        });
+
+        mRecyclerView.addOnScrollListener(new OnScrollListener());
+    }
+
+    private void closeRefreshing() {
+        if (mSwipeRefreshLayout.isRefreshing()) {
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
+    }
+
+    private void closeLoadingMore() {
+        if (onLoading) {
+            onLoading = false;
+        }
+    }
+
+    private boolean canNotRefresh() {
+        return mRefreshListener == null || onLoading;
+    }
+
+    private boolean canNotLoadMore() {
+        return mSwipeRefreshLayout.isRefreshing() || mLoadMoreListener == null || onLoading || loadMoreFailed || noMore;
+    }
+
+    private void obtainStyledAttributes(Context context, AttributeSet attrs) {
+        TypedArray attributes = context.obtainStyledAttributes(attrs, R.styleable.PracticalRecyclerView);
+        int loadingResId = attributes.getResourceId(R.styleable.PracticalRecyclerView_loading_layout, R.layout
+                .default_loading_layout);
+        int emptyResId = attributes.getResourceId(R.styleable.PracticalRecyclerView_empty_layout, R.layout
+                .default_empty_layout);
+        int errorResId = attributes.getResourceId(R.styleable.PracticalRecyclerView_error_layout, R.layout
+                .default_error_layout);
+
+        int loadMoreResId = attributes.getResourceId(R.styleable.PracticalRecyclerView_load_more_layout, R.layout
+                .default_load_more);
+        int noMoreResId = attributes.getResourceId(R.styleable.PracticalRecyclerView_no_more_layout, R.layout
+                .default_no_more_layout);
+        int loadMoreErrorResId = attributes.getResourceId(R.styleable.PracticalRecyclerView_load_more_error_layout, R
+                .layout.default_load_more_error_layout);
+
+        mLoadingView = LayoutInflater.from(context).inflate(loadingResId, mLoading, true);
+        mEmptyView = LayoutInflater.from(context).inflate(emptyResId, mEmpty, true);
+        mErrorView = LayoutInflater.from(context).inflate(errorResId, mError, true);
+
+        mLoadMoreView = LayoutInflater.from(context).inflate(loadMoreResId, mMain, false);
+        mNoMoreView = LayoutInflater.from(context).inflate(noMoreResId, mMain, false);
+        mLoadMoreFailedView = LayoutInflater.from(context).inflate(loadMoreErrorResId, mMain, false);
+
+        attributes.recycle();
+    }
+
+    private void subscribeWithAdapter(AbstractAdapter adapter) {
+        adapter.registerObserver(mObserver);
+    }
+
     public interface OnRefreshListener {
         void onRefresh();
     }
-
 
     public interface OnLoadMoreListener {
         void onLoadMore();
     }
 
-
-    class OnScrollListener extends RecyclerView.OnScrollListener {
+    private class OnScrollListener extends RecyclerView.OnScrollListener {
 
         @Override
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -320,7 +321,7 @@ public class PracticalRecyclerView extends FrameLayout {
         }
     }
 
-    public class DataSetObserver implements Observer {
+    private class DataSetObserver implements Observer {
 
         @Override
         public void update(Observable o, Object arg) {
@@ -328,12 +329,6 @@ public class PracticalRecyclerView extends FrameLayout {
             closeLoadingMore();
             Bridge type = (Bridge) arg;
             type.doSomething(PracticalRecyclerView.this);
-        }
-
-        private void closeLoadingMore() {
-            if (onLoading) {
-                onLoading = false;
-            }
         }
     }
 }

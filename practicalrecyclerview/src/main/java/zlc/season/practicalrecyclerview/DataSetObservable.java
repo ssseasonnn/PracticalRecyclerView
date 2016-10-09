@@ -12,10 +12,10 @@ import java.util.Observable;
  * FIXME
  */
 class DataSetObservable<E> extends Observable {
-    HeaderSegment header = new HeaderSegment();
-    DataSegment data = new DataSegment();
-    FooterSegment footer = new FooterSegment();
-    ExtraSegment extra = new ExtraSegment();
+    Segment<SectionItem> header = new HeaderSegment();
+    Segment<E> data = new DataSegment();
+    Segment<SectionItem> footer = new FooterSegment();
+    Segment<SectionItem> extra = new ExtraSegment();
 
     private List<SectionItem> mHeader = new ArrayList<>();
     private List<E> mData = new ArrayList<>();
@@ -87,7 +87,7 @@ class DataSetObservable<E> extends Observable {
         super.notifyObservers(new Bridge.AutoLoadMore());
     }
 
-    private abstract class Segment<T> {
+    abstract class Segment<T> {
 
         abstract int size();
 
@@ -146,7 +146,7 @@ class DataSetObservable<E> extends Observable {
 
     }
 
-    class HeaderSegment extends Segment<SectionItem> {
+    private class HeaderSegment extends Segment<SectionItem> {
 
         @Override
         int size() {
@@ -199,7 +199,7 @@ class DataSetObservable<E> extends Observable {
         }
     }
 
-    class DataSegment extends Segment<E> {
+    private class DataSegment extends Segment<E> {
 
         @Override
         int size() {
@@ -252,7 +252,7 @@ class DataSetObservable<E> extends Observable {
         }
     }
 
-    class FooterSegment extends Segment<SectionItem> {
+    private class FooterSegment extends Segment<SectionItem> {
 
         @Override
         int size() {
@@ -305,7 +305,7 @@ class DataSetObservable<E> extends Observable {
         }
     }
 
-    class ExtraSegment extends Segment<SectionItem> {
+    private class ExtraSegment extends Segment<SectionItem> {
 
         @Override
         int size() {

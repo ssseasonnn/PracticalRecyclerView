@@ -6,19 +6,19 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
+import cn.bingoogolapple.bgabanner.BGABanner;
 import zlc.season.demo.R;
 import zlc.season.practicalrecyclerview.ConfigureAdapter;
 import zlc.season.practicalrecyclerview.PracticalRecyclerView;
-import zlc.season.practicalrecyclerview.SectionItemImpl;
+import zlc.season.practicalrecyclerview.SectionItem;
 
 public class SingleItemActivity extends AppCompatActivity {
 
@@ -44,6 +44,12 @@ public class SingleItemActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         mPresenter.unsubscribeAll();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mPresenter.loadData(true);
     }
 
     private void configurePresenter() {
@@ -94,7 +100,6 @@ public class SingleItemActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         mAdapter.resumeLoadMore();
-                        mPresenter.loadData(false);
                     }
                 });
             }
@@ -115,17 +120,9 @@ public class SingleItemActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mPresenter.loadData(true);
-    }
-
-    class Header extends SectionItemImpl {
-        @BindView(R.id.like)
-        Button mLike;
-        @BindView(R.id.boring)
-        Button mBoring;
+    class Header implements SectionItem {
+        @BindView(R.id.banner_guide_content)
+        BGABanner mBanner;
 
         @Override
         public View createView(ViewGroup parent) {
@@ -134,15 +131,16 @@ public class SingleItemActivity extends AppCompatActivity {
             return view;
         }
 
-        @OnClick({R.id.like, R.id.boring})
-        public void onClick(View view) {
-            switch (view.getId()) {
-                case R.id.like:
-                    Toast.makeText(SingleItemActivity.this, "like", Toast.LENGTH_SHORT).show();
-                    break;
-                case R.id.boring:
-                    break;
-            }
+        @Override
+        public void onBind() {
+            mBanner.setAdapter(new BGABanner.Adapter() {
+                @Override
+                public void fillBannerItem(BGABanner banner, View view, Object model, int position) {
+                    ((ImageView) view).setImageResource((int) model);
+                }
+            });
+            mBanner.setData(Arrays.asList(R.mipmap.a, R.mipmap.b, R.mipmap.c, R.mipmap.d, R.mipmap.e, R.mipmap.f,
+                    R.mipmap.g, R.mipmap.h), null);
         }
     }
 }
