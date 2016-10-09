@@ -29,14 +29,14 @@
 
 ### 使用方式:
 
-1.  添加Gradle依赖
+1.添加Gradle依赖
 
 ```groovy
 	dependencies{
    		 compile 'compile 'zlc.season:practicalrecyclerview:1.0.0'
 	}
 ```
-2. 在布局文件中添加PracticalRecyclerView
+2.在布局文件中添加PracticalRecyclerView
 
 
 ```xml
@@ -53,7 +53,7 @@
         app:load_more_failed_layout="@layout/default_load_more_failed_layout"/>
 ```
 
-3. 添加代码
+3.添加代码
 
 首先定义一个POJO类, 并实现ItemType接口:
 
@@ -74,7 +74,6 @@
            return 0;
        }
    }
-
 ```
 
    > 这里返回的item type 表示是item的类型, 如果列表只有一种类型的item, 那么返回0就可以了, 如果有多种item, 则对应类型的item返回对应类型的item type. 这里简单的返回0 .
