@@ -36,7 +36,7 @@ public abstract class ConfigureAdapter implements Configure {
     }
 
     @Override
-    public void configureLoadMoreErrorView(View loadMoreErrorView) {
+    public void configureLoadMoreFailedView(View loadMoreFailedView) {
 
     }
 }

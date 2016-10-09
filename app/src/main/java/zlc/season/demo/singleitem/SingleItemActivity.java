@@ -80,6 +80,7 @@ public class SingleItemActivity extends AppCompatActivity {
     private void configureRecyclerView() {
         mRecycler.setLayoutManager(new LinearLayoutManager(this));
         mRecycler.setAdapterWithLoading(mAdapter);
+
         mRecycler.setRefreshListener(new PracticalRecyclerView.OnRefreshListener() {
             @Override
             public void onRefresh() {

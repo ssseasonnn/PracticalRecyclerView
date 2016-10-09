@@ -89,7 +89,7 @@ public class PracticalRecyclerView extends FrameLayout {
         configure.configureLoadingView(mLoadingView);
         configure.configureLoadMoreView(mLoadMoreView);
         configure.configureNoMoreView(mNoMoreView);
-        configure.configureLoadMoreErrorView(mLoadMoreFailedView);
+        configure.configureLoadMoreFailedView(mLoadMoreFailedView);
     }
 
     public void setRefreshListener(OnRefreshListener refreshListener) {

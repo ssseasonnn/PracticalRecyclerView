@@ -189,7 +189,7 @@ public abstract class AbstractAdapter<T extends ItemType, VH extends AbstractVie
 
     protected abstract VH onNewCreateViewHolder(ViewGroup parent, int viewType);
 
-    protected abstract void onNewBindViewHolder(VH holder, int dataPosition);
+    protected abstract void onNewBindViewHolder(VH holder, int position);
 
     private void loadMore() {
         new Handler(Looper.getMainLooper()).post(new Runnable() {

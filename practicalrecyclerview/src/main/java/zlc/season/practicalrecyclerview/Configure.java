@@ -19,5 +19,5 @@ public interface Configure {
 
     void configureNoMoreView(View noMoreView);
 
-    void configureLoadMoreErrorView(View loadMoreErrorView);
+    void configureLoadMoreFailedView(View loadMoreFailedView);
 }

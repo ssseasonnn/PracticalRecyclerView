@@ -18,7 +18,7 @@ class SingleItemAdapter extends AbstractAdapter<NormalBean, NormalViewHolder> {
     }
 
     @Override
-    protected void onNewBindViewHolder(NormalViewHolder holder, int dataPosition) {
-        holder.setData(get(dataPosition));
+    protected void onNewBindViewHolder(NormalViewHolder holder, int position) {
+        holder.setData(get(position));
     }
 }

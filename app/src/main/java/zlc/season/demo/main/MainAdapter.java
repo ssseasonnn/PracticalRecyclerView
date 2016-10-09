@@ -17,7 +17,7 @@ class MainAdapter extends AbstractAdapter<MenuBean, MenuViewHolder> {
     }
 
     @Override
-    protected void onNewBindViewHolder(MenuViewHolder holder, int dataPosition) {
-        holder.setData(get(dataPosition));
+    protected void onNewBindViewHolder(MenuViewHolder holder, int position) {
+        holder.setData(get(position));
     }
 }
