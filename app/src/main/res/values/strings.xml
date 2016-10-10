@@ -3,7 +3,8 @@
     <string name="title_activity_main">MainActivity</string>
 
     <string-array name="mennu">
-        <item>列表</item>
+        <item>SingleItem列表</item>
+        <item>MultiItem列表</item>
         <item>Grid</item>
         <item>瀑布流</item>
         <item>other</item>
@@ -94,4 +95,7 @@
         <item>先声明我是一贯反对川普的，特别是知乎川小将，但这件事上必须支持他了。 众所周知互联网发明于美国国防部，因此初期由美国政府管理天经地义。之后美国政府将位于美国根服务器和域名管理权移交给ICANN之后实际上没有在干涉过ICANN的实际运营，人类的信息产…</item>
         <item>成功的案例当然有啦 2016年初，参与央视《交换空间》节目，与原象设计师匹配的红队选手是一对夫妇。 而本次的设计风格，是炫原象设计机构炫彩波普风。 简单点来说，波普风非常年轻，而且强调色彩运用和图形，十分绚丽。 装修前的房子，比较普通。设计师十…</item>
     </string-array>
+    <string name="title_activity_grid">GridActivity</string>
+    <string name="click_to_watch">点击查看</string>
+    <string name="title_activity_multi_item">MultiItemActivity</string>
 </resources>

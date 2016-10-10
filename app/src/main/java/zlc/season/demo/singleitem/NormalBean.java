@@ -1,6 +1,5 @@
 package zlc.season.demo.singleitem;
 
-import zlc.season.demo.RecyclerItemType;
 import zlc.season.practicalrecyclerview.ItemType;
 
 /**
@@ -22,6 +21,6 @@ class NormalBean implements ItemType {
 
     @Override
     public int itemType() {
-        return RecyclerItemType.NORMAL.getValue();
+        return 0;
     }
 }

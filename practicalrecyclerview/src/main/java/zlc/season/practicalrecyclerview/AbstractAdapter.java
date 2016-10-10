@@ -3,6 +3,7 @@ package zlc.season.practicalrecyclerview;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.util.DiffUtil;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -169,6 +170,21 @@ public abstract class AbstractAdapter<T extends ItemType, VH extends AbstractVie
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
         mRecyclerView = recyclerView;
+        RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
+        if (manager instanceof GridLayoutManager) {
+            final GridLayoutManager gridManager = ((GridLayoutManager) manager);
+            gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                @Override
+                public int getSpanSize(int position) {
+                    boolean isData = dataSet.data.is(position);
+                    if (isData) {
+                        return 1;
+                    } else {
+                        return gridManager.getSpanCount();
+                    }
+                }
+            });
+        }
     }
 
     void show(View view) {

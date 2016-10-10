@@ -118,7 +118,8 @@ class DataSetObservable<E> extends Observable {
         }
 
         final boolean is(int adapterPosition) {
-            return adapterPosition >= 0 && size() >= 0 && adapterPosition - positionImpl() < size();
+            return adapterPosition >= 0 && size() > 0 && adapterPosition - positionImpl() < size()
+                    && adapterPosition - positionImpl() >= 0;
         }
 
         final void set(int adapterPosition, T newItem) {

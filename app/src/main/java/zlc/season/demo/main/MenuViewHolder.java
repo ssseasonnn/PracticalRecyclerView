@@ -11,6 +11,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import zlc.season.demo.R;
+import zlc.season.demo.grid.GridActivity;
+import zlc.season.demo.multipleitem.MultiItemActivity;
 import zlc.season.demo.singleitem.SingleItemActivity;
 import zlc.season.practicalrecyclerview.AbstractViewHolder;
 
@@ -43,8 +45,10 @@ class MenuViewHolder extends AbstractViewHolder<MenuBean> {
                 mContext.startActivity(new Intent(mContext, SingleItemActivity.class));
                 break;
             case 1:
+                mContext.startActivity(new Intent(mContext, MultiItemActivity.class));
                 break;
             case 2:
+                mContext.startActivity(new Intent(mContext, GridActivity.class));
                 break;
             case 3:
                 break;

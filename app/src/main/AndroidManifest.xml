@@ -3,6 +3,7 @@
           package="zlc.season.demo">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="zlc.season.demo.main.MainActivity"
+            android:name=".main.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -19,8 +20,17 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
         <activity android:name=".singleitem.SingleItemActivity">
+        </activity>
+        <activity
+            android:name=".grid.GridActivity"
+            android:label="@string/title_activity_grid"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".multipleitem.MultiItemActivity"
+            android:label="@string/title_activity_multi_item"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>
 

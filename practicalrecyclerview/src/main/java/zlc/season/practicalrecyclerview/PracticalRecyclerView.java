@@ -322,7 +322,7 @@ public class PracticalRecyclerView extends FrameLayout {
             int visibleItemCount = layoutManager.getChildCount();
             int totalItemCount = layoutManager.getItemCount();
             int lastVisibleItemPosition = getLastVisibleItemPosition(layoutManager);
-            if (visibleItemCount > 0 && lastVisibleItemPosition >= totalItemCount - 2 && totalItemCount >=
+            if (visibleItemCount > 0 && lastVisibleItemPosition >= totalItemCount - 1 && totalItemCount >=
                     visibleItemCount) {
                 showLoadMoreView();
                 mLoadMoreListener.onLoadMore();
