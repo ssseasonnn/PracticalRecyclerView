@@ -31,6 +31,8 @@
 - 没有更多数据加载时,显示NoMoreView
 - 支持Header View和Footer View
 - 除下拉刷新以外,其余View均可自定义
+- 支持多种Item类型
+- 支持GridLayout和瀑布流
 
 
 ### 使用方式:
