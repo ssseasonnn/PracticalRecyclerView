@@ -1,6 +1,6 @@
 # PracticalRecyclerView
 
-标签（空格分隔）： 造轮子 Android RecyclerView
+标签（空格分隔）： Android RecyclerView
 
 ---
 
@@ -8,7 +8,13 @@
 
 ### 效果图与示例APK
 
-![效果图](https://github.com/ssseasonnn/PracticalRecyclerView/blob/master/gif/GIF.gif?raw=true)
+![single item](https://github.com/ssseasonnn/PracticalRecyclerView/blob/master/gif/GIF.gif?raw=true)
+
+![multi item](https://github.com/ssseasonnn/PracticalRecyclerView/blob/master/gif/multiitem.gif?raw=true)
+
+![grid](https://github.com/ssseasonnn/PracticalRecyclerView/blob/master/gif/grid.gif?raw=true)
+
+![stagger](https://github.com/ssseasonnn/PracticalRecyclerView/blob/master/gif/stagger.gif?raw=true)
 
 [APK下载地址](https://raw.githubusercontent.com/ssseasonnn/PracticalRecyclerView/master/app/demo.apk)
 
@@ -33,7 +39,7 @@
 
 ```groovy
 	dependencies{
-   		 compile 'compile 'zlc.season:practicalrecyclerview:1.0.1'
+   		 compile 'compile 'zlc.season:practicalrecyclerview:1.0.2'
 	}
 ```
 2.在布局文件中添加PracticalRecyclerView
