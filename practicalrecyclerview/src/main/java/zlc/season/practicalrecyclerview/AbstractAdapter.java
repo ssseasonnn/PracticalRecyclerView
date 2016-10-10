@@ -5,6 +5,7 @@ import android.os.Looper;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -61,10 +62,9 @@ public abstract class AbstractAdapter<T extends ItemType, VH extends AbstractVie
         if (dataSet.totalSize() == 0) {
             dataSet.notifyEmpty();
         } else {
+            dataSet.notifyContent();
             if (data.size() == 0) {
                 dataSet.notifyNoMore();
-            } else {
-                dataSet.notifyContent();
             }
         }
     }
@@ -153,8 +153,19 @@ public abstract class AbstractAdapter<T extends ItemType, VH extends AbstractVie
     @Override
     public void onViewAttachedToWindow(VH holder) {
         super.onViewAttachedToWindow(holder);
-        if (mRecyclerView.getScrollState() != SCROLL_STATE_IDLE) return;
         int position = holder.getAdapterPosition();
+
+        //瀑布流的 Header Footer 宽度处理
+        ViewGroup.LayoutParams lp = holder.itemView.getLayoutParams();
+        if (lp != null && lp instanceof StaggeredGridLayoutManager.LayoutParams) {
+            StaggeredGridLayoutManager.LayoutParams p = (StaggeredGridLayoutManager.LayoutParams) lp;
+            if (!dataSet.data.is(position)) {
+                p.setFullSpan(true);
+            }
+        }
+
+        //判断是否需要自动加载
+        if (mRecyclerView.getScrollState() != SCROLL_STATE_IDLE) return;
         if (dataSet.extra.size() == 0) {
             if (position == dataSet.totalSize() - 1) {
                 loadMore();
@@ -170,6 +181,8 @@ public abstract class AbstractAdapter<T extends ItemType, VH extends AbstractVie
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
         mRecyclerView = recyclerView;
+
+        //Grid的 Header Footer 宽度处理
         RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
         if (manager instanceof GridLayoutManager) {
             final GridLayoutManager gridManager = ((GridLayoutManager) manager);

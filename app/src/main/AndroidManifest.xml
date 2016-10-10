@@ -32,6 +32,11 @@
             android:label="@string/title_activity_multi_item"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        <activity
+            android:name=".staggered.StaggeredActivity"
+            android:label="@string/title_activity_staggered"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>

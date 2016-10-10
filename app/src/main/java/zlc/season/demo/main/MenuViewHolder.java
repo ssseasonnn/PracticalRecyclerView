@@ -14,6 +14,7 @@ import zlc.season.demo.R;
 import zlc.season.demo.grid.GridActivity;
 import zlc.season.demo.multipleitem.MultiItemActivity;
 import zlc.season.demo.singleitem.SingleItemActivity;
+import zlc.season.demo.staggered.StaggeredActivity;
 import zlc.season.practicalrecyclerview.AbstractViewHolder;
 
 /**
@@ -51,6 +52,7 @@ class MenuViewHolder extends AbstractViewHolder<MenuBean> {
                 mContext.startActivity(new Intent(mContext, GridActivity.class));
                 break;
             case 3:
+                mContext.startActivity(new Intent(mContext, StaggeredActivity.class));
                 break;
         }
 

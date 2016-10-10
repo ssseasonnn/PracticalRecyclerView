@@ -54,7 +54,7 @@ public class SingleItemActivity extends AppCompatActivity {
                 if (isRefresh) {
                     mAdapter.clear();
                     mAdapter.addHeader(new Header());
-                    //                    mAdapter.addFooter(new Header());
+                    // mAdapter.addFooter(new Header());
                     mAdapter.addAll(list);
                 } else {
                     mAdapter.addAll(list);
