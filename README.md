@@ -8,6 +8,11 @@
 
 ### 效果图与示例APK
 
+<figure class="half">
+    <img src="https://github.com/ssseasonnn/PracticalRecyclerView/blob/master/gif/GIF.gif">
+    <img src="https://github.com/ssseasonnn/PracticalRecyclerView/blob/master/gif/multiitem.gif">
+</figure>
+
 ![single item](https://github.com/ssseasonnn/PracticalRecyclerView/blob/master/gif/GIF.gif?raw=true)
 
 ![multi item](https://github.com/ssseasonnn/PracticalRecyclerView/blob/master/gif/multiitem.gif?raw=true)
