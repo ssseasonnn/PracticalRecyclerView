@@ -92,6 +92,11 @@ class DataSetObservable<E> extends Observable {
         super.notifyObservers(new Bridge.AutoLoadMore());
     }
 
+    void notifyManualLoadMore() {
+        super.setChanged();
+        super.notifyObservers(new Bridge.ManualLoadMore());
+    }
+
     abstract class Segment<T> {
 
         abstract int size();

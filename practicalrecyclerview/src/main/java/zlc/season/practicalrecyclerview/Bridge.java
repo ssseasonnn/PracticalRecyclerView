@@ -13,7 +13,7 @@ interface Bridge {
 
         @Override
         public void doSomething(PracticalRecyclerView host) {
-            host.setLoadingVisibleAndResetStatus();
+            host.displayLoadingAndResetStatus();
         }
     }
 
@@ -21,7 +21,7 @@ interface Bridge {
 
         @Override
         public void doSomething(PracticalRecyclerView host) {
-            host.setEmptyVisibleAndResetStatus();
+            host.displayEmptyAndResetStatus();
         }
     }
 
@@ -29,7 +29,7 @@ interface Bridge {
 
         @Override
         public void doSomething(PracticalRecyclerView host) {
-            host.setContentVisibleAndResetStatus();
+            host.displayContentAndResetStatus();
         }
     }
 
@@ -37,7 +37,7 @@ interface Bridge {
 
         @Override
         public void doSomething(PracticalRecyclerView host) {
-            host.setErrorVisibleAndResetStatus();
+            host.displayErrorAndResetStatus();
         }
     }
 
@@ -45,7 +45,7 @@ interface Bridge {
 
         @Override
         public void doSomething(PracticalRecyclerView host) {
-            host.showNoMoreView();
+            host.showNoMoreIfEnabled();
         }
     }
 
@@ -53,7 +53,7 @@ interface Bridge {
 
         @Override
         public void doSomething(PracticalRecyclerView host) {
-            host.showLoadMoreFailedView();
+            host.showLoadMoreFailedIfEnabled();
         }
     }
 
@@ -61,7 +61,7 @@ interface Bridge {
 
         @Override
         public void doSomething(PracticalRecyclerView host) {
-            host.resumeLoadMore();
+            host.resumeLoadMoreIfEnabled();
         }
     }
 
@@ -69,7 +69,15 @@ interface Bridge {
 
         @Override
         public void doSomething(PracticalRecyclerView host) {
-            host.autoLoadMore();
+            host.autoLoadMoreIfEnabled();
+        }
+    }
+
+    class ManualLoadMore implements Bridge {
+
+        @Override
+        public void doSomething(PracticalRecyclerView host) {
+            host.manualLoadMoreIfEnabled();
         }
     }
 }

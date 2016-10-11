@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_no_more_enabled"
+        android:checkable="true"
+        android:orderInCategory="100"
+        android:title="@string/action_no_more_enable"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_load_more_enabled"
+        android:checkable="true"
+        android:orderInCategory="100"
+        android:title="@string/action_load_more_enable"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_load_more_failed_enabled"
+        android:checkable="true"
+        android:orderInCategory="100"
+        android:title="@string/action_load_more_failed_enable"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_auto_load_enabled"
+        android:checkable="true"
+        android:orderInCategory="100"
+        android:title="@string/action_auto_load_enable"
+        app:showAsAction="never"/>
+</menu>

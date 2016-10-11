@@ -70,6 +70,13 @@ public abstract class AbstractAdapter<T extends ItemType, VH extends AbstractVie
     }
 
     /**
+     * 手动触发加载更多
+     */
+    public void manualLoadMore() {
+        dataSet.notifyManualLoadMore();
+    }
+
+    /**
      * 显示Loading View
      */
     public void showLoading() {
@@ -200,14 +207,24 @@ public abstract class AbstractAdapter<T extends ItemType, VH extends AbstractVie
         }
     }
 
-    void show(View view) {
+    void show(View view, boolean enabled) {
         if (dataSet.extra.size() == 0) {
-            dataSet.extra.add(new SectionItemImpl(view));
-            notifyItemInserted(dataSet.extra.position());
+            if (enabled) {
+                dataSet.extra.add(new SectionItemImpl(view));
+                notifyItemInserted(dataSet.extra.position());
+            }
         } else {
             if (!dataSet.extra.get(dataSet.extra.position()).createView(null).equals(view)) {
-                dataSet.extra.set(dataSet.extra.position(), new SectionItemImpl(view));
-                notifyItemChanged(dataSet.extra.position());
+                if (enabled) {
+                    dataSet.extra.set(dataSet.extra.position(), new SectionItemImpl(view));
+                    notifyItemChanged(dataSet.extra.position());
+                }
+            } else {
+                if (!enabled) {
+                    int position = dataSet.extra.position();
+                    dataSet.extra.remove(position);
+                    notifyItemRemoved(position);
+                }
             }
         }
     }

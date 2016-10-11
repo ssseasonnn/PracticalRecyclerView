@@ -7,7 +7,7 @@
         <item>MultiItem列表</item>
         <item>Grid</item>
         <item>瀑布流</item>
-        <item>other</item>
+        <item>手动触发加载更多</item>
     </string-array>
 
     <string-array name="image">
@@ -99,4 +99,12 @@
     <string name="click_to_watch">点击查看</string>
     <string name="title_activity_multi_item">MultiItemActivity</string>
     <string name="title_activity_staggered">StaggeredActivity</string>
+    <string name="ManualLoadMoreActivity">ManualLoadMoreActivity</string>
+
+    <string name="action_no_more_enable">关闭NoMoreView</string>
+    <string name="action_load_more_enable">关闭LoadMoreView</string>
+    <string name="action_load_more_failed_enable">关闭LoadMoreFailedView</string>
+    <string name="action_auto_load_enable">开启自动加载</string>
+    <string name="click_to_load">点击加载下一页</string>
+
 </resources>

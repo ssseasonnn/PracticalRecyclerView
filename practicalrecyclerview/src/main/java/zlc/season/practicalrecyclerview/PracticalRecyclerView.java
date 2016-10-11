@@ -29,31 +29,38 @@ import java.util.Observer;
  */
 public class PracticalRecyclerView extends FrameLayout {
 
-    private DataSetObserver mObserver = new DataSetObserver();
+    private boolean mAutoLoadMoreEnabled = true;
+    private boolean mNoMoreViewEnabled = true;
+    private boolean mLoadMoreViewEnabled = true;
+    private boolean mLoadMoreFailedViewEnabled = true;
 
-    private FrameLayout mMain;
-    private FrameLayout mLoading;
-    private FrameLayout mError;
-    private FrameLayout mEmpty;
-    private LinearLayout mContent;
+    private OnRefreshListener mRefreshListener;
+    private OnLoadMoreListener mLoadMoreListener;
+
+    private FrameLayout mMainContainer;
+    private FrameLayout mLoadingContainer;
+    private FrameLayout mErrorContainer;
+    private FrameLayout mEmptyContainer;
+    private LinearLayout mContentContainer;
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
+
+    private View mEmptyView;
+    private View mLoadingView;
+    private View mErrorView;
 
     private View mLoadMoreView;
     private View mNoMoreView;
     private View mLoadMoreFailedView;
 
-    private OnRefreshListener mRefreshListener;
-    private OnLoadMoreListener mLoadMoreListener;
-
     private boolean isRefreshing = false;
     private boolean nowLoading = false;
     private boolean noMore = false;
     private boolean loadMoreFailed = false;
-    private View mEmptyView;
-    private View mLoadingView;
-    private View mErrorView;
+
+    private OnScrollListener mScrollListener = new OnScrollListener();
+    private DataSetObserver mObserver = new DataSetObserver();
 
     public PracticalRecyclerView(Context context) {
         this(context, null);
@@ -82,8 +89,6 @@ public class PracticalRecyclerView extends FrameLayout {
         if (configure == null) {
             return;
         }
-        mErrorView.setOnClickListener(null);
-        mLoadMoreFailedView.setOnClickListener(null);
         configure.configureEmptyView(mEmptyView);
         configure.configureErrorView(mErrorView);
         configure.configureLoadingView(mLoadingView);
@@ -112,88 +117,163 @@ public class PracticalRecyclerView extends FrameLayout {
             AbstractAdapter abstractAdapter = (AbstractAdapter) adapter;
             subscribeWithAdapter(abstractAdapter);
         }
-        setLoadingVisibleAndResetStatus();
+        displayLoadingAndResetStatus();
         mRecyclerView.setAdapter(adapter);
     }
 
-    public void setAdapter(RecyclerView.Adapter adapter) {
-        mRecyclerView.setAdapter(adapter);
+    /**
+     * 开启或关闭自动加载功能
+     * 注意, 仍然会显示LoadMoreView, 如需关闭LoadMoreView, 请往下看
+     *
+     * @param autoLoadMoreEnable true 为到自动加载, false为手动触发加载
+     */
+    public void setAutoLoadEnable(boolean autoLoadMoreEnable) {
+        mAutoLoadMoreEnabled = autoLoadMoreEnable;
     }
 
-    public void setEmptyView(View emptyView) {
-        mEmpty.removeAllViews();
-        mEmpty.addView(emptyView);
+    /**
+     * 显示或关闭LoadMoreView , 不建议使用
+     * 注意, 仅仅只是不显示, 但仍会继续加载, 如需关闭自动加载功能, 请往上看
+     *
+     * @param enabled true 为显示, false为不显示
+     */
+    public void setLoadMoreViewEnabled(boolean enabled) {
+        mLoadMoreViewEnabled = enabled;
+        if (!enabled) {
+            displayLoadMoreViewOrDisappear();
+        } else {
+            if (mScrollListener.isLastItem(mRecyclerView)) {
+                autoLoadMoreIfEnabled();
+                smoothScrollToPosition(mRecyclerView.getLayoutManager().getItemCount() - 1);
+            }
+        }
     }
 
-    public void setErrorView(View errorView) {
-        mError.removeAllViews();
-        mError.addView(errorView);
+    /**
+     * 显示或关闭LoadMoreFailedView, 不建议使用
+     *
+     * @param enabled true 为显示, false为关闭
+     */
+    public void setLoadMoreFailedViewEnabled(boolean enabled) {
+        mLoadMoreFailedViewEnabled = enabled;
+        if (!enabled) {
+            displayLoadMoreFailedViewOrDisappear();
+        } else {
+            if (loadMoreFailed) {
+                displayLoadMoreFailedViewOrDisappear();
+                smoothScrollToPosition(mRecyclerView.getLayoutManager().getItemCount() - 1);
+            }
+        }
     }
 
-    void setLoadingVisibleAndResetStatus() {
-        mError.setVisibility(GONE);
-        mContent.setVisibility(GONE);
-        mEmpty.setVisibility(GONE);
-        mLoading.setVisibility(VISIBLE);
+    /**
+     * 显示或关闭NoMoreView, 按需使用
+     *
+     * @param enabled true为显示, false为关闭
+     */
+    public void setNoMoreViewEnabled(boolean enabled) {
+        mNoMoreViewEnabled = enabled;
+        if (!enabled) {
+            displayNoMoreViewOrDisappear();
+        } else {
+            if (noMore) {
+                displayNoMoreViewOrDisappear();
+                smoothScrollToPosition(mRecyclerView.getLayoutManager().getItemCount() - 1);
+            }
+        }
+    }
+
+    public void setHasFixedSize(boolean hasFixedSize) {
+        mRecyclerView.setHasFixedSize(hasFixedSize);
+    }
+
+    public void smoothScrollToPosition(int position) {
+        mRecyclerView.smoothScrollToPosition(position);
+    }
+
+    public void setItemAnimator(RecyclerView.ItemAnimator animator) {
+        mRecyclerView.setItemAnimator(animator);
+    }
+
+    void displayLoadingAndResetStatus() {
+        mErrorContainer.setVisibility(GONE);
+        mContentContainer.setVisibility(GONE);
+        mEmptyContainer.setVisibility(GONE);
+        mLoadingContainer.setVisibility(VISIBLE);
         resetStatus();
     }
 
-    void setContentVisibleAndResetStatus() {
-        mLoading.setVisibility(GONE);
-        mError.setVisibility(GONE);
-        mEmpty.setVisibility(GONE);
-        mContent.setVisibility(VISIBLE);
+    void displayContentAndResetStatus() {
+        mLoadingContainer.setVisibility(GONE);
+        mErrorContainer.setVisibility(GONE);
+        mEmptyContainer.setVisibility(GONE);
+        mContentContainer.setVisibility(VISIBLE);
         resetStatus();
     }
 
-    void setEmptyVisibleAndResetStatus() {
-        mLoading.setVisibility(GONE);
-        mContent.setVisibility(GONE);
-        mError.setVisibility(GONE);
-        mEmpty.setVisibility(VISIBLE);
+    void displayEmptyAndResetStatus() {
+        mLoadingContainer.setVisibility(GONE);
+        mContentContainer.setVisibility(GONE);
+        mErrorContainer.setVisibility(GONE);
+        mEmptyContainer.setVisibility(VISIBLE);
         resetStatus();
     }
 
-    void setErrorVisibleAndResetStatus() {
-        mLoading.setVisibility(GONE);
-        mContent.setVisibility(GONE);
-        mEmpty.setVisibility(GONE);
-        mError.setVisibility(VISIBLE);
+    void displayErrorAndResetStatus() {
+        mLoadingContainer.setVisibility(GONE);
+        mContentContainer.setVisibility(GONE);
+        mEmptyContainer.setVisibility(GONE);
+        mErrorContainer.setVisibility(VISIBLE);
         resetStatus();
     }
 
-    void showNoMoreView() {
-        if (!(mRecyclerView.getAdapter() instanceof AbstractAdapter)) return;
+    void showNoMoreIfEnabled() {
+        displayNoMoreViewOrDisappear();
         noMore = true;
-        AbstractAdapter adapter = (AbstractAdapter) mRecyclerView.getAdapter();
-        adapter.show(mNoMoreView);
     }
 
-    void showLoadMoreFailedView() {
-        if (!(mRecyclerView.getAdapter() instanceof AbstractAdapter)) return;
+    void showLoadMoreFailedIfEnabled() {
+        displayLoadMoreFailedViewOrDisappear();
         loadMoreFailed = true;
-        AbstractAdapter adapter = (AbstractAdapter) mRecyclerView.getAdapter();
-        adapter.show(mLoadMoreFailedView);
     }
 
-    void resumeLoadMore() {
+    void resumeLoadMoreIfEnabled() {
         loadMoreFailed = false;
-        if (canNotLoadMore()) return;
-        showLoadMoreView();
-        mLoadMoreListener.onLoadMore();
+        autoLoadMoreIfEnabled();
     }
 
-    void showLoadMoreView() {
-        if (!(mRecyclerView.getAdapter() instanceof AbstractAdapter)) return;
+    void autoLoadMoreIfEnabled() {
+        if (canNotLoadMore()) return;
+        displayLoadMoreViewOrDisappear();
+        if (mAutoLoadMoreEnabled) {
+            nowLoading = true;
+            mLoadMoreListener.onLoadMore();
+        }
+    }
+
+    void manualLoadMoreIfEnabled() {
+        if (canNotLoadMore()) return;
+        displayLoadMoreViewOrDisappear();
         nowLoading = true;
-        AbstractAdapter adapter = (AbstractAdapter) mRecyclerView.getAdapter();
-        adapter.show(mLoadMoreView);
+        mLoadMoreListener.onLoadMore();
     }
 
-    void autoLoadMore() {
-        if (canNotLoadMore()) return;
-        showLoadMoreView();
-        mLoadMoreListener.onLoadMore();
+    private void displayNoMoreViewOrDisappear() {
+        displayOrDisappear(mNoMoreView, mNoMoreViewEnabled);
+    }
+
+    private void displayLoadMoreFailedViewOrDisappear() {
+        displayOrDisappear(mLoadMoreFailedView, mLoadMoreFailedViewEnabled);
+    }
+
+    private void displayLoadMoreViewOrDisappear() {
+        displayOrDisappear(mLoadMoreView, mLoadMoreViewEnabled);
+    }
+
+    private void displayOrDisappear(View view, boolean enabled) {
+        if (!(mRecyclerView.getAdapter() instanceof AbstractAdapter)) return;
+        AbstractAdapter adapter = (AbstractAdapter) mRecyclerView.getAdapter();
+        adapter.show(view, enabled);
     }
 
     private void resetStatus() {
@@ -204,14 +284,14 @@ public class PracticalRecyclerView extends FrameLayout {
     }
 
     private void initMainView(Context context) {
-        mMain = (FrameLayout) LayoutInflater.from(context).inflate(R.layout.recycler_layout, this, true);
-        mLoading = (FrameLayout) mMain.findViewById(R.id.practical_loading);
-        mError = (FrameLayout) mMain.findViewById(R.id.practical_error);
-        mEmpty = (FrameLayout) mMain.findViewById(R.id.practical_empty);
-        mContent = (LinearLayout) mMain.findViewById(R.id.practical_content);
+        mMainContainer = (FrameLayout) LayoutInflater.from(context).inflate(R.layout.recycler_layout, this, true);
+        mLoadingContainer = (FrameLayout) mMainContainer.findViewById(R.id.practical_loading);
+        mErrorContainer = (FrameLayout) mMainContainer.findViewById(R.id.practical_error);
+        mEmptyContainer = (FrameLayout) mMainContainer.findViewById(R.id.practical_empty);
+        mContentContainer = (LinearLayout) mMainContainer.findViewById(R.id.practical_content);
 
-        mSwipeRefreshLayout = (SwipeRefreshLayout) mMain.findViewById(R.id.practical_swipe_refresh);
-        mRecyclerView = (RecyclerView) mMain.findViewById(R.id.practical_recycler);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) mMainContainer.findViewById(R.id.practical_swipe_refresh);
+        mRecyclerView = (RecyclerView) mMainContainer.findViewById(R.id.practical_recycler);
     }
 
     private void configDefaultBehavior() {
@@ -224,13 +304,13 @@ public class PracticalRecyclerView extends FrameLayout {
             }
         });
 
-        mRecyclerView.addOnScrollListener(new OnScrollListener());
+        mRecyclerView.addOnScrollListener(mScrollListener);
 
         //设置error view 默认行为,点击刷新
         mErrorView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                setLoadingVisibleAndResetStatus();
+                displayLoadingAndResetStatus();
                 refresh();
             }
         });
@@ -238,7 +318,8 @@ public class PracticalRecyclerView extends FrameLayout {
         mLoadMoreFailedView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                resumeLoadMore();
+                resumeLoadMoreIfEnabled();
+                displayOrDisappear(mLoadMoreFailedView, false);
             }
         });
     }
@@ -289,13 +370,13 @@ public class PracticalRecyclerView extends FrameLayout {
         int loadMoreErrorResId = attributes.getResourceId(R.styleable.PracticalRecyclerView_load_more_failed_layout, R
                 .layout.default_load_more_failed_layout);
 
-        mLoadingView = LayoutInflater.from(context).inflate(loadingResId, mLoading, true);
-        mEmptyView = LayoutInflater.from(context).inflate(emptyResId, mEmpty, true);
-        mErrorView = LayoutInflater.from(context).inflate(errorResId, mError, true);
+        mLoadingView = LayoutInflater.from(context).inflate(loadingResId, mLoadingContainer, true);
+        mEmptyView = LayoutInflater.from(context).inflate(emptyResId, mEmptyContainer, true);
+        mErrorView = LayoutInflater.from(context).inflate(errorResId, mErrorContainer, true);
 
-        mLoadMoreView = LayoutInflater.from(context).inflate(loadMoreResId, mMain, false);
-        mNoMoreView = LayoutInflater.from(context).inflate(noMoreResId, mMain, false);
-        mLoadMoreFailedView = LayoutInflater.from(context).inflate(loadMoreErrorResId, mMain, false);
+        mLoadMoreView = LayoutInflater.from(context).inflate(loadMoreResId, mMainContainer, false);
+        mNoMoreView = LayoutInflater.from(context).inflate(noMoreResId, mMainContainer, false);
+        mLoadMoreFailedView = LayoutInflater.from(context).inflate(loadMoreErrorResId, mMainContainer, false);
 
         attributes.recycle();
     }
@@ -317,16 +398,20 @@ public class PracticalRecyclerView extends FrameLayout {
         @Override
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
             super.onScrollStateChanged(recyclerView, newState);
-            if (canNotLoadMore()) return;
+            //当滚动到最后一个item时,自动加载更多
+            if (isLastItem(recyclerView)) {
+                autoLoadMoreIfEnabled();
+            }
+        }
+
+        private boolean isLastItem(RecyclerView recyclerView) {
             RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
             int visibleItemCount = layoutManager.getChildCount();
             int totalItemCount = layoutManager.getItemCount();
             int lastVisibleItemPosition = getLastVisibleItemPosition(layoutManager);
-            if (visibleItemCount > 0 && lastVisibleItemPosition >= totalItemCount - 1 && totalItemCount >=
-                    visibleItemCount) {
-                showLoadMoreView();
-                mLoadMoreListener.onLoadMore();
-            }
+
+            return visibleItemCount > 0 && lastVisibleItemPosition >= totalItemCount - 1 &&
+                    totalItemCount >= visibleItemCount;
         }
 
         private int getLastVisibleItemPosition(RecyclerView.LayoutManager layoutManager) {

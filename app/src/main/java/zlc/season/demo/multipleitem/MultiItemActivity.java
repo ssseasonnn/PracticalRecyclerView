@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -31,8 +32,15 @@ public class MultiItemActivity extends AppCompatActivity {
     private MultiItemAdapter mAdapter;
     private MultiItemPresenter mPresenter;
 
+    private boolean flag = true;
+
     @OnClick(R.id.fab)
     public void onClick() {
+        flag = !flag;
+        Toast.makeText(this, "flag:" + flag, Toast.LENGTH_SHORT).show();
+//        mRecycler.setNoMoreViewEnabled(flag);
+        mRecycler.setLoadMoreViewEnabled(flag);
+//        mRecycler.setLoadMoreFailedViewEnabled(flag);
     }
 
     @Override
