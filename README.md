@@ -35,13 +35,22 @@
 - 支持GridLayout和瀑布流
 
 
+
+### 2016-10-11 更新:
+
+- 新增动态显示或关闭NoMoreView,LoadMoreView,LoadMoreFailedView功能
+- 新增打开或关闭自动加载功能
+- 新增手动触发加载demo,效果图:
+![manual](https://github.com/ssseasonnn/PracticalRecyclerView/blob/master/gif/manual.gif?raw=true)
+
+
 ### 使用方式:
 
 1.添加Gradle依赖
 
 ```groovy
 	dependencies{
-   		 compile 'compile 'zlc.season:practicalrecyclerview:1.0.2'
+   		 compile 'compile 'zlc.season:practicalrecyclerview:1.0.3'
 	}
 ```
 2.在布局文件中添加PracticalRecyclerView
