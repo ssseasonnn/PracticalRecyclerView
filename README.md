@@ -41,6 +41,8 @@
 - 新增动态显示或关闭NoMoreView,LoadMoreView,LoadMoreFailedView功能
 - 新增打开或关闭自动加载功能
 - 新增手动触发加载demo,效果图:
+
+
 ![manual](https://github.com/ssseasonnn/PracticalRecyclerView/blob/master/gif/manual.gif?raw=true)
 
 
