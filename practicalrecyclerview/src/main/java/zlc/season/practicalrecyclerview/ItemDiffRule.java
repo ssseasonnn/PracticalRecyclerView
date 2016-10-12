@@ -1,25 +1,24 @@
-package zlc.season.practicalrecyclerview.diff;
+package zlc.season.practicalrecyclerview;
 
+import android.support.annotation.Nullable;
 import android.support.v7.util.DiffUtil;
 
 import java.util.List;
 
-import zlc.season.practicalrecyclerview.SectionItem;
-
 /**
  * Author: Season(ssseasonnn@gmail.com)
  * Date: 2016/9/29
- * Time: 10:26
+ * Time: 10:15
  * FIXME
  */
-public class DiffExtra extends DiffUtil.Callback {
+public class ItemDiffRule<E> extends DiffUtil.Callback {
 
-    private List<SectionItem> mOldData;
-    private List<SectionItem> mNewData;
+    protected List<? extends E> mOldData;
+    protected List<? extends E> mNewData;
 
-    public DiffExtra(List<SectionItem> newData, List<SectionItem> oldData) {
-        mNewData = newData;
+    public ItemDiffRule(List<? extends E> oldData, List<? extends E> newData) {
         mOldData = oldData;
+        mNewData = newData;
     }
 
     @Override
@@ -40,5 +39,11 @@ public class DiffExtra extends DiffUtil.Callback {
     @Override
     public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
         return true;
+    }
+
+    @Nullable
+    @Override
+    public Object getChangePayload(int oldItemPosition, int newItemPosition) {
+        return null;
     }
 }

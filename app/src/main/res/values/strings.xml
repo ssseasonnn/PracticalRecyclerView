@@ -8,6 +8,7 @@
         <item>Grid</item>
         <item>瀑布流</item>
         <item>手动触发加载更多</item>
+        <item>列表拖拽</item>
     </string-array>
 
     <string-array name="image">
@@ -106,5 +107,8 @@
     <string name="action_load_more_failed_enable">关闭LoadMoreFailedView</string>
     <string name="action_auto_load_enable">开启自动加载</string>
     <string name="click_to_load">点击加载下一页</string>
+    <string name="title_activity_item_drag">ItemDragActivity</string>
+    <string name="aa">aa</string>
+    <string name="action_edit">编辑</string>
 
 </resources>

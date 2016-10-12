@@ -1,6 +1,7 @@
 package zlc.season.practicalrecyclerview;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -109,6 +110,8 @@ class DataSetObservable<E> extends Observable {
 
         abstract List<T> getAll();
 
+        abstract List<T> getAllCopy() throws IOException, ClassNotFoundException;
+
         final T get(int adapterPosition) {
             if (is(adapterPosition)) {
                 return getImpl(adapterPosition - positionImpl());
@@ -145,6 +148,14 @@ class DataSetObservable<E> extends Observable {
             }
         }
 
+        @SuppressWarnings({"rawtypes", "unchecked"})
+        void swap(int fromAdapterPosition, int toAdapterPosition) {
+            final List l = getAll();
+            fromAdapterPosition = fromAdapterPosition - positionImpl();
+            toAdapterPosition = toAdapterPosition - positionImpl();
+            l.set(fromAdapterPosition, l.set(toAdapterPosition, l.get(fromAdapterPosition)));
+        }
+
         abstract int positionImpl();
 
         abstract T getImpl(int position);
@@ -172,6 +183,11 @@ class DataSetObservable<E> extends Observable {
         @Override
         List<SectionItem> getAll() {
             return mHeader;
+        }
+
+        @Override
+        List<SectionItem> getAllCopy() {
+            return new ArrayList<>(mHeader);
         }
 
         @Override
@@ -237,6 +253,18 @@ class DataSetObservable<E> extends Observable {
             return mData;
         }
 
+        /**
+         * 深层拷贝
+         * 通过序列反序列化深层复制的效率很低，有可能的话优化一下
+         *
+         * @return
+         * @throws Exception
+         */
+        @Override
+        List<E> getAllCopy()  {
+           return new ArrayList<>(mData);
+        }
+
         @Override
         int positionImpl() {
             return header.size();
@@ -278,6 +306,11 @@ class DataSetObservable<E> extends Observable {
         @Override
         List<SectionItem> getAll() {
             return mFooter;
+        }
+
+        @Override
+        List<SectionItem> getAllCopy() {
+            return new ArrayList<>(mFooter);
         }
 
         @Override
@@ -331,6 +364,11 @@ class DataSetObservable<E> extends Observable {
         @Override
         List<SectionItem> getAll() {
             return mExtra;
+        }
+
+        @Override
+        List<SectionItem> getAllCopy() {
+            return new ArrayList<>(mExtra);
         }
 
         @Override

@@ -9,6 +9,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +37,8 @@ public class PracticalRecyclerView extends FrameLayout {
 
     private OnRefreshListener mRefreshListener;
     private OnLoadMoreListener mLoadMoreListener;
+
+    private ItemTouchHelper mTouchHelper;
 
     private FrameLayout mMainContainer;
     private FrameLayout mLoadingContainer;
@@ -110,6 +113,15 @@ public class PracticalRecyclerView extends FrameLayout {
 
     public void setLayoutManager(RecyclerView.LayoutManager layoutManager) {
         mRecyclerView.setLayoutManager(layoutManager);
+    }
+
+    public void enableDragItem(boolean enabled) {
+        if (enabled) {
+            mTouchHelper = new ItemTouchHelper(new ItemDragHelper(new ItemDragHelperCallback()));
+            mTouchHelper.attachToRecyclerView(mRecyclerView);
+        } else {
+            mTouchHelper.attachToRecyclerView(null);
+        }
     }
 
     public void setAdapterWithLoading(RecyclerView.Adapter adapter) {
@@ -393,6 +405,17 @@ public class PracticalRecyclerView extends FrameLayout {
         void onLoadMore();
     }
 
+    private class DataSetObserver implements Observer {
+
+        @Override
+        public void update(Observable o, Object arg) {
+            closeRefreshing();
+            closeLoadingMore();
+            Bridge type = (Bridge) arg;
+            type.doSomething(PracticalRecyclerView.this);
+        }
+    }
+
     private class OnScrollListener extends RecyclerView.OnScrollListener {
 
         @Override
@@ -439,14 +462,32 @@ public class PracticalRecyclerView extends FrameLayout {
         }
     }
 
-    private class DataSetObserver implements Observer {
+    private class ItemDragHelperCallback implements ItemDragHelper.Callback {
 
         @Override
-        public void update(Observable o, Object arg) {
-            closeRefreshing();
-            closeLoadingMore();
-            Bridge type = (Bridge) arg;
-            type.doSomething(PracticalRecyclerView.this);
+        public boolean canDrag(int position) {
+            if (!(mRecyclerView.getAdapter() instanceof AbstractAdapter)) return false;
+            AbstractAdapter adapter = (AbstractAdapter) mRecyclerView.getAdapter();
+            return adapter.canDrag(position);
+        }
+
+        @Override
+        public void onItemMove(int fromPosition, int toPosition) {
+            if (!(mRecyclerView.getAdapter() instanceof AbstractAdapter)) return;
+            AbstractAdapter adapter = (AbstractAdapter) mRecyclerView.getAdapter();
+            adapter.moveItem(fromPosition, toPosition);
+        }
+
+        @Override
+        public void onItemDismiss(int position) {
+            if (!(mRecyclerView.getAdapter() instanceof AbstractAdapter)) return;
+            AbstractAdapter adapter = (AbstractAdapter) mRecyclerView.getAdapter();
+            adapter.removeItem(position);
+        }
+
+        @Override
+        public void resolveSwipeConflicts(boolean enabled) {
+            mSwipeRefreshLayout.setEnabled(enabled);
         }
     }
 }
