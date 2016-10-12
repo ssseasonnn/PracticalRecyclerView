@@ -9,8 +9,8 @@ import zlc.season.practicalrecyclerview.ItemType;
  * FIXME
  */
 public class LinearDragBean implements ItemType, Cloneable {
-    final boolean status = false;
     String text;
+    boolean status = false;
 
     public LinearDragBean(String text) {
         this.text = text;
