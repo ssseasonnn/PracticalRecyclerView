@@ -109,6 +109,22 @@ class DataSetObservable<E> extends Observable {
 
         abstract List<T> getAll();
 
+        void insert(int adapterPosition, T item) {
+            if (is(adapterPosition)) {
+                insertImpl(adapterPosition - positionImpl(), item);
+            } else {
+                throw new IndexOutOfBoundsException("check your index");
+            }
+        }
+
+        void insertAll(int adapterPosition, List<? extends T> items) {
+            if (is(adapterPosition)) {
+                insertAllImpl(adapterPosition - positionImpl(), items);
+            } else {
+                throw new IndexOutOfBoundsException("check your index");
+            }
+        }
+
         final T get(int adapterPosition) {
             if (is(adapterPosition)) {
                 return getImpl(adapterPosition - positionImpl());
@@ -155,6 +171,10 @@ class DataSetObservable<E> extends Observable {
 
         abstract int positionImpl();
 
+        abstract void insertImpl(int position, T item);
+
+        abstract void insertAllImpl(int position, List<? extends T> items);
+
         abstract T getImpl(int position);
 
         abstract void setImpl(int position, T newItem);
@@ -198,6 +218,16 @@ class DataSetObservable<E> extends Observable {
         }
 
         @Override
+        void insertImpl(int position, SectionItem item) {
+            mHeader.add(position, item);
+        }
+
+        @Override
+        void insertAllImpl(int position, List<? extends SectionItem> items) {
+            mHeader.addAll(position, items);
+        }
+
+        @Override
         SectionItem getImpl(int position) {
             return mHeader.get(position);
         }
@@ -219,6 +249,10 @@ class DataSetObservable<E> extends Observable {
     }
 
     private class DataSegment extends Segment<E> {
+
+        void insertAll(List<? extends E> items) {
+            mData.addAll(1, items);
+        }
 
         @Override
         int size() {
@@ -245,9 +279,20 @@ class DataSetObservable<E> extends Observable {
             return mData;
         }
 
+
         @Override
         int positionImpl() {
             return header.size();
+        }
+
+        @Override
+        void insertImpl(int position, E item) {
+            mData.add(position, item);
+        }
+
+        @Override
+        void insertAllImpl(int position, List<? extends E> items) {
+            mData.addAll(position, items);
         }
 
         @Override
@@ -304,6 +349,16 @@ class DataSetObservable<E> extends Observable {
         }
 
         @Override
+        void insertImpl(int position, SectionItem item) {
+            mFooter.add(position, item);
+        }
+
+        @Override
+        void insertAllImpl(int position, List<? extends SectionItem> items) {
+            mFooter.addAll(position, items);
+        }
+
+        @Override
         SectionItem getImpl(int position) {
             return mFooter.get(position);
         }
@@ -354,6 +409,16 @@ class DataSetObservable<E> extends Observable {
         @Override
         int positionImpl() {
             return header.size() + data.size() + footer.size();
+        }
+
+        @Override
+        void insertImpl(int position, SectionItem item) {
+            mExtra.add(position, item);
+        }
+
+        @Override
+        void insertAllImpl(int position, List<? extends SectionItem> items) {
+            mExtra.addAll(position, items);
         }
 
         @Override

@@ -12,14 +12,17 @@ import android.view.ViewGroup;
  * Time: 14:35
  * FIXME
  */
-public abstract class AbstractViewHolder<T extends ItemType> extends RecyclerView.ViewHolder  {
-
+public abstract class AbstractViewHolder<T extends ItemType> extends RecyclerView.ViewHolder {
 
     public AbstractViewHolder(View itemView) {
         super(itemView);
     }
 
     public AbstractViewHolder(ViewGroup parent, @LayoutRes int res) {
+        super(LayoutInflater.from(parent.getContext()).inflate(res, parent, false));
+    }
+
+    public AbstractViewHolder(AbstractAdapter adapter, ViewGroup parent, @LayoutRes int res) {
         super(LayoutInflater.from(parent.getContext()).inflate(res, parent, false));
     }
 

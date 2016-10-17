@@ -12,6 +12,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import zlc.season.demo.R;
 import zlc.season.demo.drag.DragActivity;
+import zlc.season.demo.expand.ExpandActivity;
 import zlc.season.demo.grid.GridActivity;
 import zlc.season.demo.multipleitem.MultiItemActivity;
 import zlc.season.demo.singleitem.ManualLoadMoreActivity;
@@ -61,6 +62,9 @@ class MenuViewHolder extends AbstractViewHolder<MenuBean> {
                 break;
             case 5:
                 mContext.startActivity(new Intent(mContext, DragActivity.class));
+                break;
+            case 6:
+                mContext.startActivity(new Intent(mContext, ExpandActivity.class));
                 break;
         }
 

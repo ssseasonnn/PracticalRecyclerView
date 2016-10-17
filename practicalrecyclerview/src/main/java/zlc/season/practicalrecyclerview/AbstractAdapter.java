@@ -66,6 +66,14 @@ public abstract class AbstractAdapter<T extends ItemType, VH extends AbstractVie
         }
     }
 
+    public void insertData(int adapterPosition, T item) {
+        dataSet.data.insert(adapterPosition, item);
+    }
+
+    public void insertAllData(int adapterPosition, List<? extends T> items) {
+        dataSet.data.insertAll(adapterPosition, items);
+    }
+
     /**
      * 手动触发加载更多
      */
