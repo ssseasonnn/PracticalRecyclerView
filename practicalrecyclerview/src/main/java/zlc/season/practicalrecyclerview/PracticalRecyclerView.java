@@ -97,6 +97,10 @@ public class PracticalRecyclerView extends FrameLayout {
         configure.configureLoadMoreFailedView(mLoadMoreFailedView);
     }
 
+    public RecyclerView get() {
+        return mRecyclerView;
+    }
+
     public void setRefreshListener(OnRefreshListener refreshListener) {
         if (refreshListener == null) return;
         mSwipeRefreshLayout.setEnabled(true);
