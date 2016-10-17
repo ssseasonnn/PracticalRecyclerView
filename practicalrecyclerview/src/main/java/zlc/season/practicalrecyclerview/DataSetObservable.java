@@ -109,10 +109,6 @@ class DataSetObservable<E> extends Observable {
 
         abstract List<T> getAll();
 
-        List<E> getShallowCopy() {
-            return new ArrayList<>(0);
-        }
-
         final T get(int adapterPosition) {
             if (is(adapterPosition)) {
                 return getImpl(adapterPosition - positionImpl());
@@ -223,16 +219,6 @@ class DataSetObservable<E> extends Observable {
     }
 
     private class DataSegment extends Segment<E> {
-
-        /**
-         * 注意这是一个浅拷贝
-         *
-         * @return shallow copy data
-         */
-        @Override
-        List<E> getShallowCopy() {
-            return new ArrayList<>(mData);
-        }
 
         @Override
         int size() {
