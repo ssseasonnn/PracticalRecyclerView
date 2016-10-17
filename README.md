@@ -46,13 +46,25 @@
 ![manual](https://github.com/ssseasonnn/PracticalRecyclerView/blob/master/gif/manual.gif?raw=true)
 
 
+### 2016-10-17 更新:
+
+- 增加获取RecyclerView接口
+
+```java
+    public RecyclerView get() {
+            return mRecyclerView;
+    }
+```
+
+
+
 ### 使用方式:
 
 1.添加Gradle依赖
 
 ```groovy
 	dependencies{
-   		 compile 'compile 'zlc.season:practicalrecyclerview:1.0.3'
+   		 compile 'zlc.season:practicalrecyclerview:1.0.4'
 	}
 ```
 2.在布局文件中添加PracticalRecyclerView
