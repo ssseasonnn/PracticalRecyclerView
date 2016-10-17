@@ -55,17 +55,21 @@
             return mRecyclerView;
     }
 ```
+- 增加拖拽功能与demo,效果图:
 
+
+![拖拽](https://github.com/ssseasonnn/PracticalRecyclerView/blob/master/gif/drag.gif?raw=true)
 
 
 ### 使用方式:
 
 1.添加Gradle依赖
+
 [![Download](https://api.bintray.com/packages/ssseasonnn/android/PracticalRecyclerView/images/download.svg)](https://bintray.com/ssseasonnn/android/PracticalRecyclerView/_latestVersion)
 
 ```groovy
 	dependencies{
-   		 compile 'zlc.season:practicalrecyclerview:1.0.4'
+   		 compile 'zlc.season:practicalrecyclerview:1.0.5'
 	}
 ```
 2.在布局文件中添加PracticalRecyclerView
