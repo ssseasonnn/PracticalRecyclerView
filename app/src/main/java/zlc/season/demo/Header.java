@@ -6,7 +6,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import java.util.Arrays;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,10 +39,5 @@ public class Header implements SectionItem {
         });
         mBanner.setData(Arrays.asList(R.mipmap.a, R.mipmap.b, R.mipmap.c, R.mipmap.d, R.mipmap.e, R.mipmap.f,
                 R.mipmap.g, R.mipmap.h), null);
-    }
-
-    @Override
-    public void onBind(List<Object> payloads) {
-
     }
 }

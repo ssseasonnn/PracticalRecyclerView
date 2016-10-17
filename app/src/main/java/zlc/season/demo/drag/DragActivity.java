@@ -66,7 +66,7 @@ public class DragActivity extends AppCompatActivity {
                 }
 
                 //点击编辑显示拖动图标
-                List<? extends DragBean> copy = mAdapter.getData();
+                List<DragBean> copy = mAdapter.getData();
                 for (DragBean each : copy) {
                     each.status = !each.status;
                 }

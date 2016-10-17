@@ -2,7 +2,6 @@ package zlc.season.practicalrecyclerview;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -104,17 +103,8 @@ public abstract class AbstractAdapter<T extends ItemType, VH extends AbstractVie
         dataSet.notifyResumeLoadMore();
     }
 
-    public void diffData(final ItemDiffRule<? extends T> diffRule) {
-        final DiffUtil.DiffResult result = DiffUtil.calculateDiff(diffRule);
-        result.dispatchUpdatesTo(AbstractAdapter.this);
-    }
-
-    public List<? extends T> getData() {
+    public List<T> getData() {
         return dataSet.data.getAll();
-    }
-
-    public List<? extends T> getDataShallowCopy() {
-        return dataSet.data.getShallowCopy();
     }
 
     @Override
@@ -134,15 +124,6 @@ public abstract class AbstractAdapter<T extends ItemType, VH extends AbstractVie
             dataSet.footer.get(position).onBind();
         } else {
             dataSet.extra.get(position).onBind();
-        }
-    }
-
-    @Override
-    public void onBindViewHolder(VH holder, int position, List<Object> payloads) {
-        if (payloads.isEmpty()) {
-            onBindViewHolder(holder, position);
-        } else {
-            diffUpdate(holder, position, payloads);
         }
     }
 
@@ -191,11 +172,6 @@ public abstract class AbstractAdapter<T extends ItemType, VH extends AbstractVie
                 loadMore();
             }
         }
-    }
-
-    @Override
-    public void registerAdapterDataObserver(RecyclerView.AdapterDataObserver observer) {
-        super.registerAdapterDataObserver(observer);
     }
 
     @Override
@@ -268,22 +244,6 @@ public abstract class AbstractAdapter<T extends ItemType, VH extends AbstractVie
     protected abstract VH onNewCreateViewHolder(ViewGroup parent, int viewType);
 
     protected abstract void onNewBindViewHolder(VH holder, int position);
-
-    protected void onNewBindViewHolder(VH holder, int position, List<Object> payloads) {
-
-    }
-
-    private void diffUpdate(VH holder, int position, List<Object> payloads) {
-        if (dataSet.header.is(position)) {
-            dataSet.header.get(position).onBind(payloads);
-        } else if (dataSet.data.is(position)) {
-            onNewBindViewHolder(holder, position, payloads);
-        } else if (dataSet.footer.is(position)) {
-            dataSet.footer.get(position).onBind(payloads);
-        } else {
-            dataSet.extra.get(position).onBind(payloads);
-        }
-    }
 
     private void loadMore() {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
