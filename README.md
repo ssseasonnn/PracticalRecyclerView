@@ -61,6 +61,7 @@
 ### 使用方式:
 
 1.添加Gradle依赖
+[![Download](https://api.bintray.com/packages/ssseasonnn/android/PracticalRecyclerView/images/download.svg)](https://bintray.com/ssseasonnn/android/PracticalRecyclerView/_latestVersion)
 
 ```groovy
 	dependencies{
