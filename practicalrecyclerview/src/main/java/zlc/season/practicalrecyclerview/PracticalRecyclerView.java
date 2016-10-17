@@ -208,6 +208,18 @@ public class PracticalRecyclerView extends FrameLayout {
         mRecyclerView.setItemAnimator(animator);
     }
 
+    public void addItemDecoration(RecyclerView.ItemDecoration itemDecoration) {
+        mRecyclerView.addItemDecoration(itemDecoration);
+    }
+
+    public void addItemDecoration(RecyclerView.ItemDecoration itemDecoration, int index) {
+        mRecyclerView.addItemDecoration(itemDecoration, index);
+    }
+
+    public void removeItemDecoration(RecyclerView.ItemDecoration decor) {
+        mRecyclerView.removeItemDecoration(decor);
+    }
+
     boolean canDrag(int position) {
         if (!(mRecyclerView.getAdapter() instanceof AbstractAdapter)) return false;
         AbstractAdapter adapter = (AbstractAdapter) mRecyclerView.getAdapter();
