@@ -38,8 +38,6 @@ public class PracticalRecyclerView extends FrameLayout {
     private OnRefreshListener mRefreshListener;
     private OnLoadMoreListener mLoadMoreListener;
 
-    private ItemTouchHelper mTouchHelper;
-
     private FrameLayout mMainContainer;
     private FrameLayout mLoadingContainer;
     private FrameLayout mErrorContainer;
@@ -115,22 +113,12 @@ public class PracticalRecyclerView extends FrameLayout {
         mRecyclerView.setLayoutManager(layoutManager);
     }
 
-    /**
-     * 开启或关闭拖拽和swipe
-     * 如果想自定义拖拽或自定义swipe,请看 {@link ItemTouchHelper#startDrag(RecyclerView.ViewHolder)}
-     *
-     * @param enabled          总开关, true为开启,false为关闭
-     * @param longPressEnabled long press or not
-     * @param swipeEnabled     swipe or not
-     */
-    public void enableDragOrSwipe(ItemTouchHelper itemTouchHelper,boolean enabled, boolean longPressEnabled, boolean
-            swipeEnabled) {
-        if (enabled) {
-            itemTouchHelper = new ItemTouchHelper(new DragCallback(new DragListenerImpl(longPressEnabled, swipeEnabled)));
-            itemTouchHelper.attachToRecyclerView(mRecyclerView);
-        } else {
-            itemTouchHelper.attachToRecyclerView(null);
-        }
+    public void attachItemTouchHelper(ItemTouchHelper itemTouchHelper) {
+        itemTouchHelper.attachToRecyclerView(mRecyclerView);
+    }
+
+    public void setAdapter(RecyclerView.Adapter adapter) {
+        mRecyclerView.setAdapter(adapter);
     }
 
     public void setAdapterWithLoading(RecyclerView.Adapter adapter) {
@@ -214,6 +202,31 @@ public class PracticalRecyclerView extends FrameLayout {
 
     public void setItemAnimator(RecyclerView.ItemAnimator animator) {
         mRecyclerView.setItemAnimator(animator);
+    }
+
+    boolean canDrag(int position) {
+        if (!(mRecyclerView.getAdapter() instanceof AbstractAdapter)) return false;
+        AbstractAdapter adapter = (AbstractAdapter) mRecyclerView.getAdapter();
+        return adapter.canDrag(position);
+    }
+
+    void onItemMove(int fromPosition, int toPosition) {
+        if (!(mRecyclerView.getAdapter() instanceof AbstractAdapter)) return;
+        AbstractAdapter adapter = (AbstractAdapter) mRecyclerView.getAdapter();
+        adapter.moveItem(fromPosition, toPosition);
+    }
+
+    void onItemDismiss(int position) {
+        if (!(mRecyclerView.getAdapter() instanceof AbstractAdapter)) return;
+        AbstractAdapter adapter = (AbstractAdapter) mRecyclerView.getAdapter();
+        adapter.removeItem(position);
+    }
+
+    void resolveSwipeConflicts(boolean enabled) {
+        if (mRefreshListener == null) {
+            return;
+        }
+        mSwipeRefreshLayout.setEnabled(enabled);
     }
 
     void displayLoadingAndResetStatus() {
@@ -468,56 +481,6 @@ public class PracticalRecyclerView extends FrameLayout {
                 }
             }
             return max;
-        }
-    }
-
-    private class DragListenerImpl implements DragCallback.DragListener {
-
-        private boolean longPress = true;
-        private boolean swipe = true;
-
-        public DragListenerImpl(boolean longPress, boolean swipe) {
-            this.longPress = longPress;
-            this.swipe = swipe;
-        }
-
-        @Override
-        public boolean canDrag(int position) {
-            if (!(mRecyclerView.getAdapter() instanceof AbstractAdapter)) return false;
-            AbstractAdapter adapter = (AbstractAdapter) mRecyclerView.getAdapter();
-            return adapter.canDrag(position);
-        }
-
-        @Override
-        public void onItemMove(int fromPosition, int toPosition) {
-            if (!(mRecyclerView.getAdapter() instanceof AbstractAdapter)) return;
-            AbstractAdapter adapter = (AbstractAdapter) mRecyclerView.getAdapter();
-            adapter.moveItem(fromPosition, toPosition);
-        }
-
-        @Override
-        public void onItemDismiss(int position) {
-            if (!(mRecyclerView.getAdapter() instanceof AbstractAdapter)) return;
-            AbstractAdapter adapter = (AbstractAdapter) mRecyclerView.getAdapter();
-            adapter.removeItem(position);
-        }
-
-        @Override
-        public void resolveSwipeConflicts(boolean enabled) {
-            if (mRefreshListener == null) {
-                return;
-            }
-            mSwipeRefreshLayout.setEnabled(enabled);
-        }
-
-        @Override
-        public boolean isLongPressDragEnabled() {
-            return longPress;
-        }
-
-        @Override
-        public boolean isItemViewSwipeEnabled() {
-            return swipe;
         }
     }
 }

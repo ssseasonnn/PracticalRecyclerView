@@ -1,4 +1,4 @@
-package zlc.season.demo.lineardrag;
+package zlc.season.demo.drag;
 
 import java.util.List;
 
@@ -8,8 +8,8 @@ import java.util.List;
  * Time: 11:45
  * FIXME
  */
-public interface LinearDragView {
-    void onDataLoadSuccess(List<LinearDragBean> list);
+public interface DragView {
+    void onDataLoadSuccess(List<DragBean> list);
 
     void onDataLoadFailed();
 }

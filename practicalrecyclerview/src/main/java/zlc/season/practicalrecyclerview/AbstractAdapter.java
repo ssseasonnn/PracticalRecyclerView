@@ -109,17 +109,12 @@ public abstract class AbstractAdapter<T extends ItemType, VH extends AbstractVie
         result.dispatchUpdatesTo(AbstractAdapter.this);
     }
 
-
     public List<? extends T> getData() {
         return dataSet.data.getAll();
     }
 
     public List<? extends T> getDataShallowCopy() {
         return dataSet.data.getShallowCopy();
-    }
-
-    public List<? extends T> getDataDeepCopy() {
-        return dataSet.data.getDeepCopy();
     }
 
     @Override
@@ -196,6 +191,11 @@ public abstract class AbstractAdapter<T extends ItemType, VH extends AbstractVie
                 loadMore();
             }
         }
+    }
+
+    @Override
+    public void registerAdapterDataObserver(RecyclerView.AdapterDataObserver observer) {
+        super.registerAdapterDataObserver(observer);
     }
 
     @Override

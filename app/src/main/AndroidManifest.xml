@@ -41,7 +41,7 @@
             android:name=".singleitem.ManualLoadMoreActivity"
             android:label="@string/ManualLoadMoreActivity"/>
         <activity
-            android:name=".lineardrag.LinearDragActivity"
+            android:name=".drag.DragActivity"
             android:label="@string/title_activity_item_drag"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>

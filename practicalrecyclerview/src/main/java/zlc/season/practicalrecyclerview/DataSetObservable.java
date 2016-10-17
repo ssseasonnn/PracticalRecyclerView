@@ -113,10 +113,6 @@ class DataSetObservable<E> extends Observable {
             return new ArrayList<>(0);
         }
 
-        List<E> getDeepCopy() {
-            return new ArrayList<>(0);
-        }
-
         final T get(int adapterPosition) {
             if (is(adapterPosition)) {
                 return getImpl(adapterPosition - positionImpl());
@@ -229,29 +225,7 @@ class DataSetObservable<E> extends Observable {
     private class DataSegment extends Segment<E> {
 
         /**
-         * 深拷贝, item 必须先实现DeepCopy
-         * 如果你不知道Deep Copy 与 Shallow Copy 的区别,请先Google
-         *
-         * @return deep copy data
-         */
-        @SuppressWarnings("unchecked")
-        @Override
-        List<E> getDeepCopy() {
-            List<E> copy = new ArrayList<>(mData.size());
-            for (E each : mData) {
-                if (each instanceof DeepCopy) {
-                    DeepCopy deepCopy = (DeepCopy) each;
-                    E eachCopy = (E) deepCopy.getCopy();
-                    copy.add(eachCopy);
-                } else {
-                    throw new IllegalStateException("If you want deep copy,please implements DeepCopy interface first");
-                }
-            }
-            return copy;
-        }
-
-        /**
-         * 浅拷贝
+         * 注意这是一个浅拷贝
          *
          * @return shallow copy data
          */

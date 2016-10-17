@@ -7,8 +7,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="zlc.season.demo.lineardrag.LinearDragActivity"
-    tools:showIn="@layout/activity_linear_drag">
+    tools:context="zlc.season.demo.drag.DragActivity"
+    tools:showIn="@layout/activity_drag">
 
     <zlc.season.practicalrecyclerview.PracticalRecyclerView
         android:id="@+id/recycler"

@@ -1,4 +1,4 @@
-package zlc.season.demo.lineardrag;
+package zlc.season.demo.drag;
 
 import android.content.Context;
 import android.util.Log;
@@ -21,18 +21,18 @@ import rx.subscriptions.CompositeSubscription;
  * Time: 11:46
  * FIXME
  */
-public class LinearDragPresenter {
+public class DragPresenter {
 
     private CompositeSubscription mSubscriptions;
-    private LinearDragView mView;
+    private DragView mView;
     private Context mContext;
 
-    LinearDragPresenter(Context context) {
+    DragPresenter(Context context) {
         mContext = context;
         mSubscriptions = new CompositeSubscription();
     }
 
-    void setDataLoadCallBack(LinearDragView view) {
+    void setDataLoadCallBack(DragView view) {
         mView = view;
     }
 
@@ -45,7 +45,7 @@ public class LinearDragPresenter {
                 .subscribeOn(Schedulers.io())
                 .delay(2, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<LinearDragBean>>() {
+                .subscribe(new Observer<List<DragBean>>() {
                     @Override
                     public void onCompleted() {
 
@@ -58,20 +58,20 @@ public class LinearDragPresenter {
                     }
 
                     @Override
-                    public void onNext(List<LinearDragBean> list) {
+                    public void onNext(List<DragBean> list) {
                         mView.onDataLoadSuccess(list);
                     }
                 });
         mSubscriptions.add(subscription);
     }
 
-    private Observable<List<LinearDragBean>> createObservable() {
-        return Observable.create(new Observable.OnSubscribe<List<LinearDragBean>>() {
+    private Observable<List<DragBean>> createObservable() {
+        return Observable.create(new Observable.OnSubscribe<List<DragBean>>() {
             @Override
-            public void call(Subscriber<? super List<LinearDragBean>> subscriber) {
-                List<LinearDragBean> mData = new ArrayList<>();
+            public void call(Subscriber<? super List<DragBean>> subscriber) {
+                List<DragBean> mData = new ArrayList<>();
                 for (int i = 0; i < 5; i++) {
-                    LinearDragBean bean = new LinearDragBean(i + "");
+                    DragBean bean = new DragBean(i + "");
                     mData.add(bean);
                 }
                 subscriber.onNext(mData);

@@ -2,21 +2,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/long_press"
+        android:id="@+id/action_edit"
         android:checkable="true"
         android:orderInCategory="100"
-        android:title="@string/action_long_press"
-        app:showAsAction="never"/>
+        android:title="@string/action_edit"
+        app:showAsAction="always"/>
+
     <item
-        android:id="@+id/touch"
+        android:id="@+id/action_grid"
         android:checkable="true"
         android:orderInCategory="100"
-        android:title="@string/action_touch"
-        app:showAsAction="never"/>
-    <item
-        android:id="@+id/swipe"
-        android:checkable="true"
-        android:orderInCategory="100"
-        android:title="@string/action_swipe"
+        android:title="@string/action_grid"
         app:showAsAction="never"/>
 </menu>
