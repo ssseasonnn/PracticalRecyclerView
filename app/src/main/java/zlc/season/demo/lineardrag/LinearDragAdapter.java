@@ -1,6 +1,7 @@
 package zlc.season.demo.lineardrag;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ViewGroup;
 
 import java.util.List;
@@ -26,6 +27,7 @@ public class LinearDragAdapter extends AbstractAdapter<LinearDragBean, LinearDra
 
     @Override
     protected void onNewBindViewHolder(LinearDragViewHolder holder, int position, List<Object> payloads) {
+        Log.d("LinearDragAdapter", "payloads.size():" + payloads.size());
         Bundle o = (Bundle) payloads.get(0);
         for (String key : o.keySet()) {
             if ("status".equals(key)) {

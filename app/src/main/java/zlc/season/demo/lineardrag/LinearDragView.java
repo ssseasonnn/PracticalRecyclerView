@@ -9,7 +9,7 @@ import java.util.List;
  * FIXME
  */
 public interface LinearDragView {
-    void onDataLoadSuccess(List<LinearDragBean> list, boolean isRefresh);
+    void onDataLoadSuccess(List<LinearDragBean> list);
 
-    void onDataLoadFailed(boolean isRefresh);
+    void onDataLoadFailed();
 }

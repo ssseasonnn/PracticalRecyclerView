@@ -1,5 +1,6 @@
 package zlc.season.demo.lineardrag;
 
+import zlc.season.practicalrecyclerview.DeepCopy;
 import zlc.season.practicalrecyclerview.ItemType;
 
 /**
@@ -8,7 +9,7 @@ import zlc.season.practicalrecyclerview.ItemType;
  * Time: 11:42
  * FIXME
  */
-public class LinearDragBean implements ItemType, Cloneable {
+public class LinearDragBean implements ItemType, DeepCopy<LinearDragBean> {
     String text;
     boolean status = false;
 
@@ -22,13 +23,9 @@ public class LinearDragBean implements ItemType, Cloneable {
     }
 
     @Override
-    protected LinearDragBean clone() throws CloneNotSupportedException {
-        LinearDragBean bean = null;
-        try {
-            bean = (LinearDragBean) super.clone();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
-        return bean;
+    public LinearDragBean getCopy() {
+        LinearDragBean copy = new LinearDragBean(text);
+        copy.status = status;
+        return copy;
     }
 }

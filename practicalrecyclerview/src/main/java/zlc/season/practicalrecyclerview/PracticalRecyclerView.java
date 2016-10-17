@@ -115,12 +115,21 @@ public class PracticalRecyclerView extends FrameLayout {
         mRecyclerView.setLayoutManager(layoutManager);
     }
 
-    public void enableDragItem(boolean enabled) {
+    /**
+     * 开启或关闭拖拽和swipe
+     * 如果想自定义拖拽或自定义swipe,请看 {@link ItemTouchHelper#startDrag(RecyclerView.ViewHolder)}
+     *
+     * @param enabled          总开关, true为开启,false为关闭
+     * @param longPressEnabled long press or not
+     * @param swipeEnabled     swipe or not
+     */
+    public void enableDragOrSwipe(ItemTouchHelper itemTouchHelper,boolean enabled, boolean longPressEnabled, boolean
+            swipeEnabled) {
         if (enabled) {
-            mTouchHelper = new ItemTouchHelper(new ItemDragHelper(new ItemDragHelperCallback()));
-            mTouchHelper.attachToRecyclerView(mRecyclerView);
+            itemTouchHelper = new ItemTouchHelper(new DragCallback(new DragListenerImpl(longPressEnabled, swipeEnabled)));
+            itemTouchHelper.attachToRecyclerView(mRecyclerView);
         } else {
-            mTouchHelper.attachToRecyclerView(null);
+            itemTouchHelper.attachToRecyclerView(null);
         }
     }
 
@@ -462,7 +471,15 @@ public class PracticalRecyclerView extends FrameLayout {
         }
     }
 
-    private class ItemDragHelperCallback implements ItemDragHelper.Callback {
+    private class DragListenerImpl implements DragCallback.DragListener {
+
+        private boolean longPress = true;
+        private boolean swipe = true;
+
+        public DragListenerImpl(boolean longPress, boolean swipe) {
+            this.longPress = longPress;
+            this.swipe = swipe;
+        }
 
         @Override
         public boolean canDrag(int position) {
@@ -487,7 +504,20 @@ public class PracticalRecyclerView extends FrameLayout {
 
         @Override
         public void resolveSwipeConflicts(boolean enabled) {
+            if (mRefreshListener == null) {
+                return;
+            }
             mSwipeRefreshLayout.setEnabled(enabled);
+        }
+
+        @Override
+        public boolean isLongPressDragEnabled() {
+            return longPress;
+        }
+
+        @Override
+        public boolean isItemViewSwipeEnabled() {
+            return swipe;
         }
     }
 }

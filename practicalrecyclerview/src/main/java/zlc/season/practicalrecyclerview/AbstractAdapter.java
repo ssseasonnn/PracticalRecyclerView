@@ -9,7 +9,6 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observer;
@@ -111,17 +110,16 @@ public abstract class AbstractAdapter<T extends ItemType, VH extends AbstractVie
     }
 
 
-    public List<? extends T> getAllData() {
+    public List<? extends T> getData() {
         return dataSet.data.getAll();
     }
 
-    public List<? extends T> getAllDataCopy() {
-        try {
-            return dataSet.data.getAllCopy();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-            return new ArrayList<>();
-        }
+    public List<? extends T> getDataShallowCopy() {
+        return dataSet.data.getShallowCopy();
+    }
+
+    public List<? extends T> getDataDeepCopy() {
+        return dataSet.data.getDeepCopy();
     }
 
     @Override

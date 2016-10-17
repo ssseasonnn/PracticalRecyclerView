@@ -1,7 +1,6 @@
 package zlc.season.demo.lineardrag;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,9 +13,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import zlc.season.demo.Header;
 import zlc.season.demo.R;
-import zlc.season.practicalrecyclerview.ItemDiffRule;
 import zlc.season.practicalrecyclerview.PracticalRecyclerView;
 
 public class LinearDragActivity extends AppCompatActivity {
@@ -30,22 +27,21 @@ public class LinearDragActivity extends AppCompatActivity {
     @BindView(R.id.fab)
     FloatingActionButton mFab;
 
-    private boolean dragEnabled = false;
+    private boolean defaultLongPressEnabled = false;
+    private boolean customTouchEnabled = false;
+    private boolean swipeEnabled = false;
 
     private LinearDragAdapter mAdapter;
     private LinearDragPresenter mPresenter;
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.drag_menu, menu);
-        return true;
-    }
-
-    @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        MenuItem menuItem = menu.findItem(R.id.action_edit_or_save);
-        menuItem.setTitle("编辑");
+        MenuItem longPress = menu.findItem(R.id.long_press);
+        MenuItem touch = menu.findItem(R.id.touch);
+        MenuItem swipe = menu.findItem(R.id.swipe);
+        longPress.setChecked(defaultLongPressEnabled);
+        touch.setChecked(customTouchEnabled);
+        swipe.setChecked(swipeEnabled);
         return true;
     }
 
@@ -57,24 +53,22 @@ public class LinearDragActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         switch (id) {
-            case R.id.action_edit_or_save:
-                dragEnabled = !dragEnabled;
-                if (dragEnabled) {
-                    item.setTitle("保存");
-                } else {
-                    item.setTitle("编辑");
-                }
-                //开启或关闭拖拽
-                mRecycler.enableDragItem(dragEnabled);
-
-                List<? extends LinearDragBean> oldData = mAdapter.getAllDataCopy();
-                List<? extends LinearDragBean> newData = mAdapter.getAllData();
-                for (LinearDragBean each : newData) {
-                    each.status = !each.status;
-                }
-                mAdapter.diffData(new LinearDragItemDiffRule(oldData, newData));
-                //                mAdapter.notifyDataSetChanged();
+            case R.id.long_press:
+                defaultLongPressEnabled = !item.isChecked();
+                item.setChecked(defaultLongPressEnabled);
+                mRecycler.enableDragOrSwipe(true, defaultLongPressEnabled, swipeEnabled);
                 return true;
+            case R.id.touch:
+                customTouchEnabled = !item.isChecked();
+                item.setChecked(customTouchEnabled);
+                mRecycler.enableDragOrSwipe(true, customTouchEnabled, swipeEnabled);
+                return true;
+            case R.id.swipe:
+                swipeEnabled = !item.isChecked();
+                item.setChecked(swipeEnabled);
+                mRecycler.setLoadMoreFailedViewEnabled(!swipeEnabled);
+                return true;
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -91,41 +85,16 @@ public class LinearDragActivity extends AppCompatActivity {
         mRecycler.setLayoutManager(new LinearLayoutManager(this));
         mRecycler.setAdapterWithLoading(mAdapter);
 
-        mRecycler.setRefreshListener(new PracticalRecyclerView.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                mPresenter.loadData(true);
-            }
-        });
-
-        mRecycler.setLoadMoreListener(new PracticalRecyclerView.OnLoadMoreListener() {
-            @Override
-            public void onLoadMore() {
-                mPresenter.loadData(false);
-            }
-        });
-
         mPresenter = new LinearDragPresenter(this);
         mPresenter.setDataLoadCallBack(new LinearDragView() {
             @Override
-            public void onDataLoadSuccess(List<LinearDragBean> list, boolean isRefresh) {
-                if (isRefresh) {
-                    mAdapter.clear();
-                    mAdapter.addHeader(new Header());
-                    //                    mAdapter.addFooter(new Header());
-                    mAdapter.addAll(list);
-                } else {
-                    mAdapter.addAll(list);
-                }
+            public void onDataLoadSuccess(List<LinearDragBean> list) {
+                mAdapter.addAll(list);
             }
 
             @Override
-            public void onDataLoadFailed(boolean isRefresh) {
-                if (isRefresh) {
-                    mAdapter.showError();
-                } else {
-                    mAdapter.loadMoreFailed();
-                }
+            public void onDataLoadFailed() {
+                mAdapter.showError();
             }
         });
     }
@@ -139,35 +108,6 @@ public class LinearDragActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        mPresenter.loadData(true);
-    }
-
-    class LinearDragItemDiffRule extends ItemDiffRule<LinearDragBean> {
-
-        LinearDragItemDiffRule(List<? extends LinearDragBean> newData, List<? extends LinearDragBean> oldData) {
-            super(newData, oldData);
-        }
-
-        @Override
-        public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-            return mOldData.get(oldItemPosition).status == mNewData.get(newItemPosition).status;
-        }
-
-        @Nullable
-        @Override
-        public Object getChangePayload(int oldItemPosition, int newItemPosition) {
-            LinearDragBean oldItem = mOldData.get(oldItemPosition);
-            LinearDragBean newItem = mNewData.get(newItemPosition);
-
-            Bundle diffBundle = new Bundle();
-            if (newItem.status != oldItem.status) {
-                diffBundle.putBoolean("status", newItem.status);
-            }
-            if (diffBundle.size() == 0) {
-                return null;
-            } else {
-                return diffBundle;
-            }
-        }
+        mPresenter.loadData();
     }
 }

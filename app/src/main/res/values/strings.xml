@@ -109,6 +109,8 @@
     <string name="click_to_load">点击加载下一页</string>
     <string name="title_activity_item_drag">ItemDragActivity</string>
     <string name="aa">aa</string>
-    <string name="action_edit">编辑</string>
+    <string name="action_long_press">默认的长按拖动</string>
+    <string name="action_touch">自定义触摸拖动</string>
+    <string name="action_swipe">滑动删除</string>
 
 </resources>

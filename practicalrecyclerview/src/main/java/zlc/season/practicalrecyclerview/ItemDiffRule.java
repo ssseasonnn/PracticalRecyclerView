@@ -3,8 +3,6 @@ package zlc.season.practicalrecyclerview;
 import android.support.annotation.Nullable;
 import android.support.v7.util.DiffUtil;
 
-import java.util.List;
-
 /**
  * Author: Season(ssseasonnn@gmail.com)
  * Date: 2016/9/29
@@ -13,27 +11,37 @@ import java.util.List;
  */
 public class ItemDiffRule<E> extends DiffUtil.Callback {
 
-    protected List<? extends E> mOldData;
-    protected List<? extends E> mNewData;
+    protected DataSetObservable<E> mOldDataSet;
+    protected DataSetObservable<E> mNewDataSet;
 
-    public ItemDiffRule(List<? extends E> oldData, List<? extends E> newData) {
-        mOldData = oldData;
-        mNewData = newData;
+
+    public ItemDiffRule(DataSetObservable<E> oldData, DataSetObservable<E> newData) {
+        mOldDataSet = oldData;
+        mNewDataSet = newData;
     }
 
     @Override
     public int getOldListSize() {
-        return mOldData.size();
+        return mOldDataSet.totalSize();
     }
 
     @Override
     public int getNewListSize() {
-        return mNewData.size();
+        return mNewDataSet.totalSize();
     }
 
     @Override
     public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-        return mOldData.get(oldItemPosition).equals(mNewData.get(newItemPosition));
+        if (mOldDataSet.header.is(oldItemPosition) && mNewDataSet.header.is(newItemPosition)) {
+            return mOldDataSet.header.get(oldItemPosition).equals(mNewDataSet.header.get(newItemPosition));
+        } else if (mOldDataSet.data.is(oldItemPosition) && mNewDataSet.data.is(newItemPosition)) {
+            return mOldDataSet.data.get(oldItemPosition).equals(mNewDataSet.data.get(newItemPosition));
+        } else if (mOldDataSet.footer.is(oldItemPosition) && mNewDataSet.footer.is(newItemPosition)) {
+            return mOldDataSet.footer.get(oldItemPosition).equals(mNewDataSet.footer.get(newItemPosition));
+        } else if (mOldDataSet.extra.is(oldItemPosition) && mNewDataSet.extra.is(newItemPosition)) {
+            return mOldDataSet.extra.get(oldItemPosition).equals(mNewDataSet.extra.get(newItemPosition));
+        }
+        return false;
     }
 
     @Override

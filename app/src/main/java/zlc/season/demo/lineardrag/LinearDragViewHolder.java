@@ -1,6 +1,7 @@
 package zlc.season.demo.lineardrag;
 
 import android.content.Context;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -30,6 +31,13 @@ public class LinearDragViewHolder extends AbstractViewHolder<LinearDragBean> {
         super(parent, R.layout.linear_drag_item);
         ButterKnife.bind(this, itemView);
         mContext = parent.getContext();
+
+        mReorder.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return false;
+            }
+        });
     }
 
     @Override

@@ -1,7 +1,6 @@
 package zlc.season.practicalrecyclerview;
 
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -110,7 +109,13 @@ class DataSetObservable<E> extends Observable {
 
         abstract List<T> getAll();
 
-        abstract List<T> getAllCopy() throws IOException, ClassNotFoundException;
+        List<E> getShallowCopy() {
+            return new ArrayList<>(0);
+        }
+
+        List<E> getDeepCopy() {
+            return new ArrayList<>(0);
+        }
 
         final T get(int adapterPosition) {
             if (is(adapterPosition)) {
@@ -186,11 +191,6 @@ class DataSetObservable<E> extends Observable {
         }
 
         @Override
-        List<SectionItem> getAllCopy() {
-            return new ArrayList<>(mHeader);
-        }
-
-        @Override
         void add(SectionItem item) {
             mHeader.add(item);
         }
@@ -228,6 +228,38 @@ class DataSetObservable<E> extends Observable {
 
     private class DataSegment extends Segment<E> {
 
+        /**
+         * 深拷贝, item 必须先实现DeepCopy
+         * 如果你不知道Deep Copy 与 Shallow Copy 的区别,请先Google
+         *
+         * @return deep copy data
+         */
+        @SuppressWarnings("unchecked")
+        @Override
+        List<E> getDeepCopy() {
+            List<E> copy = new ArrayList<>(mData.size());
+            for (E each : mData) {
+                if (each instanceof DeepCopy) {
+                    DeepCopy deepCopy = (DeepCopy) each;
+                    E eachCopy = (E) deepCopy.getCopy();
+                    copy.add(eachCopy);
+                } else {
+                    throw new IllegalStateException("If you want deep copy,please implements DeepCopy interface first");
+                }
+            }
+            return copy;
+        }
+
+        /**
+         * 浅拷贝
+         *
+         * @return shallow copy data
+         */
+        @Override
+        List<E> getShallowCopy() {
+            return new ArrayList<>(mData);
+        }
+
         @Override
         int size() {
             return mData.size();
@@ -251,18 +283,6 @@ class DataSetObservable<E> extends Observable {
         @Override
         List<E> getAll() {
             return mData;
-        }
-
-        /**
-         * 深层拷贝
-         * 通过序列反序列化深层复制的效率很低，有可能的话优化一下
-         *
-         * @return
-         * @throws Exception
-         */
-        @Override
-        List<E> getAllCopy()  {
-           return new ArrayList<>(mData);
         }
 
         @Override
@@ -306,11 +326,6 @@ class DataSetObservable<E> extends Observable {
         @Override
         List<SectionItem> getAll() {
             return mFooter;
-        }
-
-        @Override
-        List<SectionItem> getAllCopy() {
-            return new ArrayList<>(mFooter);
         }
 
         @Override
@@ -364,11 +379,6 @@ class DataSetObservable<E> extends Observable {
         @Override
         List<SectionItem> getAll() {
             return mExtra;
-        }
-
-        @Override
-        List<SectionItem> getAllCopy() {
-            return new ArrayList<>(mExtra);
         }
 
         @Override

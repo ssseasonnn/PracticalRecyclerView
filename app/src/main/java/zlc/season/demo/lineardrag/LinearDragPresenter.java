@@ -23,7 +23,6 @@ import rx.subscriptions.CompositeSubscription;
  */
 public class LinearDragPresenter {
 
-    private static int count = -1;
     private CompositeSubscription mSubscriptions;
     private LinearDragView mView;
     private Context mContext;
@@ -41,7 +40,7 @@ public class LinearDragPresenter {
         mSubscriptions.clear();
     }
 
-    void loadData(final boolean isRefresh) {
+    void loadData() {
         Subscription subscription = createObservable()
                 .subscribeOn(Schedulers.io())
                 .delay(2, TimeUnit.SECONDS)
@@ -55,39 +54,28 @@ public class LinearDragPresenter {
                     @Override
                     public void onError(Throwable e) {
                         Log.w("SingleItemPresenter", e);
-                        mView.onDataLoadFailed(isRefresh);
+                        mView.onDataLoadFailed();
                     }
 
                     @Override
                     public void onNext(List<LinearDragBean> list) {
-                        mView.onDataLoadSuccess(list, isRefresh);
+                        mView.onDataLoadSuccess(list);
                     }
                 });
         mSubscriptions.add(subscription);
     }
 
     private Observable<List<LinearDragBean>> createObservable() {
-        count++;
-        count %= 6;
         return Observable.create(new Observable.OnSubscribe<List<LinearDragBean>>() {
             @Override
             public void call(Subscriber<? super List<LinearDragBean>> subscriber) {
-                if (count == 3) {
-                    subscriber.onError(new Throwable("on error"));
-                    return;
-                }
-                if (count == 5) {
-                    subscriber.onNext(new ArrayList<LinearDragBean>());
-                    return;
-                }
                 List<LinearDragBean> mData = new ArrayList<>();
-                for (int i = count * 5; i < count * 5 + 2; i++) {
+                for (int i = 0; i < 5; i++) {
                     LinearDragBean bean = new LinearDragBean(i + "");
                     mData.add(bean);
                 }
                 subscriber.onNext(mData);
                 subscriber.onCompleted();
-
             }
         });
     }

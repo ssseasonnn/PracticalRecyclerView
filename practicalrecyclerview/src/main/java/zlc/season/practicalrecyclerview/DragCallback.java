@@ -9,18 +9,18 @@ import android.support.v7.widget.helper.ItemTouchHelper;
  * Time: 10:28
  * FIXME
  */
-class ItemDragHelper extends ItemTouchHelper.Callback {
+class DragCallback extends ItemTouchHelper.Callback {
 
-    private Callback mCallback;
+    private DragListener mDragListener;
 
-    ItemDragHelper(Callback callback) {
-        mCallback = callback;
+    DragCallback(DragListener dragListener) {
+        mDragListener = dragListener;
     }
 
     @Override
     public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
         int currentPosition = viewHolder.getAdapterPosition();
-        if (!mCallback.canDrag(currentPosition)) {
+        if (!mDragListener.canDrag(currentPosition)) {
             return 0;
         }
         int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
@@ -32,23 +32,23 @@ class ItemDragHelper extends ItemTouchHelper.Callback {
     @Override
     public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
                           RecyclerView.ViewHolder target) {
-        mCallback.onItemMove(viewHolder.getAdapterPosition(), target.getAdapterPosition());
+        mDragListener.onItemMove(viewHolder.getAdapterPosition(), target.getAdapterPosition());
         return true;
     }
 
     @Override
     public boolean isLongPressDragEnabled() {
-        return super.isLongPressDragEnabled();
+        return mDragListener.isLongPressDragEnabled();
     }
 
     @Override
     public boolean isItemViewSwipeEnabled() {
-        return super.isItemViewSwipeEnabled();
+        return mDragListener.isItemViewSwipeEnabled();
     }
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-        mCallback.onItemDismiss(viewHolder.getAdapterPosition());
+        mDragListener.onItemDismiss(viewHolder.getAdapterPosition());
     }
 
     @Override
@@ -56,10 +56,10 @@ class ItemDragHelper extends ItemTouchHelper.Callback {
         super.onSelectedChanged(viewHolder, actionState);
         final boolean enabled = !(actionState == ItemTouchHelper.ACTION_STATE_DRAG ||
                 actionState == ItemTouchHelper.ACTION_STATE_SWIPE);
-        mCallback.resolveSwipeConflicts(enabled);
+        mDragListener.resolveSwipeConflicts(enabled);
     }
 
-    interface Callback {
+    interface DragListener {
 
         boolean canDrag(int position);
 
@@ -68,5 +68,9 @@ class ItemDragHelper extends ItemTouchHelper.Callback {
         void onItemDismiss(int position);
 
         void resolveSwipeConflicts(boolean enabled);
+
+        boolean isLongPressDragEnabled();
+
+        boolean isItemViewSwipeEnabled();
     }
 }
