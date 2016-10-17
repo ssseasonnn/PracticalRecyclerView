@@ -13,8 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observer;
 
-import zlc.season.practicalrecyclerview.diff.ItemDiffRule;
-
 import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
 
 /**
@@ -106,15 +104,17 @@ public abstract class AbstractAdapter<T extends ItemType, VH extends AbstractVie
         dataSet.notifyResumeLoadMore();
     }
 
-    public void diffData(List<? extends T> oldData, List<? extends T> newData) {
-        DiffUtil.DiffResult result = DiffUtil.calculateDiff(new ItemDiffRule<>(oldData, newData));
-        result.dispatchUpdatesTo(this);
-        dataSet.notifyContent();
+    public void diffData(final ItemDiffRule<? extends T> diffRule) {
+        final DiffUtil.DiffResult result = DiffUtil.calculateDiff(diffRule);
+        result.dispatchUpdatesTo(AbstractAdapter.this);
     }
 
-    public void diffExtra(List<SectionItem> oldData, List<SectionItem> newData) {
-        DiffUtil.DiffResult result = DiffUtil.calculateDiff(new ItemDiffRule<>(oldData, newData));
-        result.dispatchUpdatesTo(this);
+    public List<? extends T> getData() {
+        return dataSet.data.getAll();
+    }
+
+    public List<? extends T> getDataShallowCopy() {
+        return dataSet.data.getShallowCopy();
     }
 
     @Override
@@ -134,6 +134,15 @@ public abstract class AbstractAdapter<T extends ItemType, VH extends AbstractVie
             dataSet.footer.get(position).onBind();
         } else {
             dataSet.extra.get(position).onBind();
+        }
+    }
+
+    @Override
+    public void onBindViewHolder(VH holder, int position, List<Object> payloads) {
+        if (payloads.isEmpty()) {
+            onBindViewHolder(holder, position);
+        } else {
+            diffUpdate(holder, position, payloads);
         }
     }
 
@@ -185,6 +194,11 @@ public abstract class AbstractAdapter<T extends ItemType, VH extends AbstractVie
     }
 
     @Override
+    public void registerAdapterDataObserver(RecyclerView.AdapterDataObserver observer) {
+        super.registerAdapterDataObserver(observer);
+    }
+
+    @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
         mRecyclerView = recyclerView;
@@ -205,6 +219,24 @@ public abstract class AbstractAdapter<T extends ItemType, VH extends AbstractVie
                 }
             });
         }
+    }
+
+    void moveItem(int fromAdapterPosition, int toAdapterPosition) {
+        if (!dataSet.data.is(fromAdapterPosition) || !dataSet.data.is(toAdapterPosition)) {
+            return;
+        }
+        dataSet.data.swap(fromAdapterPosition, toAdapterPosition);
+        notifyItemMoved(fromAdapterPosition, toAdapterPosition);
+    }
+
+    void removeItem(int adapterPosition) {
+        if (!dataSet.data.is(adapterPosition)) return;
+        dataSet.data.remove(adapterPosition);
+        notifyItemRemoved(adapterPosition);
+    }
+
+    boolean canDrag(int adapterPosition) {
+        return dataSet.data.is(adapterPosition);
     }
 
     void show(View view, boolean enabled) {
@@ -236,6 +268,22 @@ public abstract class AbstractAdapter<T extends ItemType, VH extends AbstractVie
     protected abstract VH onNewCreateViewHolder(ViewGroup parent, int viewType);
 
     protected abstract void onNewBindViewHolder(VH holder, int position);
+
+    protected void onNewBindViewHolder(VH holder, int position, List<Object> payloads) {
+
+    }
+
+    private void diffUpdate(VH holder, int position, List<Object> payloads) {
+        if (dataSet.header.is(position)) {
+            dataSet.header.get(position).onBind(payloads);
+        } else if (dataSet.data.is(position)) {
+            onNewBindViewHolder(holder, position, payloads);
+        } else if (dataSet.footer.is(position)) {
+            dataSet.footer.get(position).onBind(payloads);
+        } else {
+            dataSet.extra.get(position).onBind(payloads);
+        }
+    }
 
     private void loadMore() {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
@@ -273,5 +321,4 @@ public abstract class AbstractAdapter<T extends ItemType, VH extends AbstractVie
 
         }
     }
-
 }

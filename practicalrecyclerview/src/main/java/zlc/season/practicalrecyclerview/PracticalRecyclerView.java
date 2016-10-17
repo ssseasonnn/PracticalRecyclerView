@@ -9,6 +9,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -116,6 +117,14 @@ public class PracticalRecyclerView extends FrameLayout {
         mRecyclerView.setLayoutManager(layoutManager);
     }
 
+    public void attachItemTouchHelper(ItemTouchHelper itemTouchHelper) {
+        itemTouchHelper.attachToRecyclerView(mRecyclerView);
+    }
+
+    public void setAdapter(RecyclerView.Adapter adapter) {
+        mRecyclerView.setAdapter(adapter);
+    }
+
     public void setAdapterWithLoading(RecyclerView.Adapter adapter) {
         if (adapter instanceof AbstractAdapter) {
             AbstractAdapter abstractAdapter = (AbstractAdapter) adapter;
@@ -197,6 +206,31 @@ public class PracticalRecyclerView extends FrameLayout {
 
     public void setItemAnimator(RecyclerView.ItemAnimator animator) {
         mRecyclerView.setItemAnimator(animator);
+    }
+
+    boolean canDrag(int position) {
+        if (!(mRecyclerView.getAdapter() instanceof AbstractAdapter)) return false;
+        AbstractAdapter adapter = (AbstractAdapter) mRecyclerView.getAdapter();
+        return adapter.canDrag(position);
+    }
+
+    void onItemMove(int fromPosition, int toPosition) {
+        if (!(mRecyclerView.getAdapter() instanceof AbstractAdapter)) return;
+        AbstractAdapter adapter = (AbstractAdapter) mRecyclerView.getAdapter();
+        adapter.moveItem(fromPosition, toPosition);
+    }
+
+    void onItemDismiss(int position) {
+        if (!(mRecyclerView.getAdapter() instanceof AbstractAdapter)) return;
+        AbstractAdapter adapter = (AbstractAdapter) mRecyclerView.getAdapter();
+        adapter.removeItem(position);
+    }
+
+    void resolveSwipeConflicts(boolean enabled) {
+        if (mRefreshListener == null) {
+            return;
+        }
+        mSwipeRefreshLayout.setEnabled(enabled);
     }
 
     void displayLoadingAndResetStatus() {
@@ -397,6 +431,17 @@ public class PracticalRecyclerView extends FrameLayout {
         void onLoadMore();
     }
 
+    private class DataSetObserver implements Observer {
+
+        @Override
+        public void update(Observable o, Object arg) {
+            closeRefreshing();
+            closeLoadingMore();
+            Bridge type = (Bridge) arg;
+            type.doSomething(PracticalRecyclerView.this);
+        }
+    }
+
     private class OnScrollListener extends RecyclerView.OnScrollListener {
 
         @Override
@@ -440,17 +485,6 @@ public class PracticalRecyclerView extends FrameLayout {
                 }
             }
             return max;
-        }
-    }
-
-    private class DataSetObserver implements Observer {
-
-        @Override
-        public void update(Observable o, Object arg) {
-            closeRefreshing();
-            closeLoadingMore();
-            Bridge type = (Bridge) arg;
-            type.doSomething(PracticalRecyclerView.this);
         }
     }
 }
