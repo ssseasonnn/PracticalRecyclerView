@@ -20,4 +20,14 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@android:color/white"
         tools:text="test"/>
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="?listPreferredItemHeight"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical|end"
+        android:contentDescription="@string/aa"
+        android:scaleType="center"
+        android:src="@drawable/ic_keyboard_arrow_down"
+        android:visibility="visible"/>
 </FrameLayout>

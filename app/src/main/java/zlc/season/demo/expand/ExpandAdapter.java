@@ -13,7 +13,7 @@ import zlc.season.practicalrecyclerview.ItemType;
  * Time: 15:31
  * FIXME
  */
-public class ExpandAdapter extends AbstractAdapter<ItemType, AbstractViewHolder> {
+class ExpandAdapter extends AbstractAdapter<ItemType, AbstractViewHolder> {
     @Override
     protected AbstractViewHolder onNewCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == RecyclerItemType.PARENT.getValue()) {

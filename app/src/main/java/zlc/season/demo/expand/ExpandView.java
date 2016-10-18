@@ -8,7 +8,7 @@ import java.util.List;
  * Time: 11:42
  * FIXME
  */
-public interface ExpandView {
+interface ExpandView {
     void onDataLoadSuccess(List<ParentBean> list);
 
     void onDataLoadFailed();

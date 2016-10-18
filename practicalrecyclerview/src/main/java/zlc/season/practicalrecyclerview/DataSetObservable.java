@@ -145,7 +145,7 @@ class DataSetObservable<E> extends Observable {
             }
         }
 
-        final void insertAllBack(int adapterPosition, List<? extends T> items) {
+        final boolean insertAllBack(int adapterPosition, List<? extends T> items) {
             if (is(adapterPosition)) {
                 int insertPosition = adapterPosition - positionImpl() + 1;
                 if (insertPosition == size()) {
@@ -153,6 +153,7 @@ class DataSetObservable<E> extends Observable {
                 } else {
                     insertAllImpl(insertPosition, items);
                 }
+                return true;
             } else {
                 throw new IndexOutOfBoundsException("Insert error, check your insert position");
             }

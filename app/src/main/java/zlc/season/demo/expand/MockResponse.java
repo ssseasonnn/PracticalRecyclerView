@@ -10,7 +10,7 @@ import java.util.List;
  * Time: 16:02
  * FIXME
  */
-public class MockResponse {
+class MockResponse {
 
     /**
      * text : 0

@@ -1,7 +1,11 @@
 package zlc.season.demo.expand;
 
+import android.content.Context;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -18,39 +22,43 @@ import zlc.season.practicalrecyclerview.AbstractViewHolder;
  * Time: 15:30
  * FIXME
  */
-public class ParentViewHolder extends AbstractViewHolder<ParentBean> {
+class ParentViewHolder extends AbstractViewHolder<ParentBean> {
 
     @BindView(R.id.text)
     TextView mText;
+    @BindView(R.id.image)
+    ImageView mImageView;
 
-    private boolean isExpand = false;
+    private ParentBean parent;
     private List<ChildBean> child;
 
+    private Context mContext;
     private ExpandAdapter mAdapter;
 
-    public ParentViewHolder(AbstractAdapter adapter, ViewGroup parent) {
-        super(adapter, parent, R.layout.parent_item);
+    ParentViewHolder(AbstractAdapter adapter, ViewGroup parent) {
+        super(parent, R.layout.parent_item);
         ButterKnife.bind(this, itemView);
+        mContext = parent.getContext();
         mAdapter = (ExpandAdapter) adapter;
     }
 
     @Override
     public void setData(ParentBean data) {
         mText.setText(String.valueOf(data.text));
-        isExpand = false;
         child = data.mChild;
+        parent = data;
     }
 
     @OnClick(R.id.text)
     public void onClick() {
-        if (isExpand) {
-            mAdapter.removeDataBack(getAdapterPosition(), child.size());
-            mAdapter.notifyDataSetChanged();
-            isExpand = false;
+        if (parent.isExpand) {
+            mAdapter.removeBack(getAdapterPosition(), child.size());
+            parent.isExpand = false;
+            Picasso.with(mContext).load(R.drawable.ic_keyboard_arrow_down).into(mImageView);
         } else {
-            mAdapter.insertAllDataBack(getAdapterPosition(), child);
-            mAdapter.notifyDataSetChanged();
-            isExpand = true;
+            mAdapter.insertAllBack(getAdapterPosition(), child);
+            parent.isExpand = true;
+            Picasso.with(mContext).load(R.drawable.ic_keyboard_arrow_up).into(mImageView);
         }
     }
 }

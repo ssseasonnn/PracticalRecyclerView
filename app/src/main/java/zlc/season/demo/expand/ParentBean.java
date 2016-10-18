@@ -13,13 +13,18 @@ import zlc.season.practicalrecyclerview.ItemType;
  * Time: 15:28
  * FIXME
  */
-public class ParentBean implements ItemType {
+class ParentBean implements ItemType {
 
     @SerializedName("text")
     int text;
 
     @SerializedName("child")
     List<ChildBean> mChild;
+
+    /**
+     * 是否展开
+     */
+    boolean isExpand;
 
     @Override
     public int itemType() {

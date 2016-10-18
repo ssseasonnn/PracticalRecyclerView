@@ -20,7 +20,6 @@ public class ExpandActivity extends AppCompatActivity {
     PracticalRecyclerView mRecycler;
 
     private ExpandAdapter mAdapter;
-
     private ExpandPresenter mPresenter;
 
     @Override

@@ -22,9 +22,5 @@ public abstract class AbstractViewHolder<T extends ItemType> extends RecyclerVie
         super(LayoutInflater.from(parent.getContext()).inflate(res, parent, false));
     }
 
-    public AbstractViewHolder(AbstractAdapter adapter, ViewGroup parent, @LayoutRes int res) {
-        super(LayoutInflater.from(parent.getContext()).inflate(res, parent, false));
-    }
-
     public abstract void setData(T data);
 }

@@ -11,7 +11,7 @@ import zlc.season.practicalrecyclerview.ItemType;
  * Time: 15:29
  * FIXME
  */
-public class ChildBean implements ItemType {
+class ChildBean implements ItemType {
     @SerializedName("text")
     int text;
 
