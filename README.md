@@ -58,7 +58,16 @@
 - 增加拖拽功能与demo,效果图:
 
 
+
 ![拖拽](https://github.com/ssseasonnn/PracticalRecyclerView/blob/master/gif/drag.gif?raw=true)
+
+
+
+
+### 2016-10-18 更新:
+
+- 向下支持到API 11(android 3.0)
+
 
 
 ### 使用方式:
@@ -69,7 +78,7 @@
 
 ```groovy
 	dependencies{
-   		 compile 'zlc.season:practicalrecyclerview:1.0.6'
+   		 compile 'zlc.season:practicalrecyclerview:1.0.7'
 	}
 ```
 2.在布局文件中添加PracticalRecyclerView
