@@ -8,11 +8,11 @@ import zlc.season.practicalrecyclerview.ItemType;
  * Time: 11:42
  * FIXME
  */
-public class DragBean implements ItemType {
+class DragBean implements ItemType {
     String text;
     boolean status = false;
 
-    public DragBean(String text) {
+    DragBean(String text) {
         this.text = text;
     }
 

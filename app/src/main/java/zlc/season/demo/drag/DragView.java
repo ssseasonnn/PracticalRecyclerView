@@ -8,7 +8,7 @@ import java.util.List;
  * Time: 11:45
  * FIXME
  */
-public interface DragView {
+interface DragView {
     void onDataLoadSuccess(List<DragBean> list);
 
     void onDataLoadFailed();

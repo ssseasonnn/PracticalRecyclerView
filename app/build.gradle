@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "zlc.season.demo"
-        minSdkVersion 11
+        minSdkVersion 15
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
@@ -38,6 +38,8 @@ dependencies {
 
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'cn.bingoogolapple:bga-banner:2.0.9'
+
+    compile 'com.google.code.gson:gson:2.7'
 
     compile project(path: ':practicalrecyclerview')
 

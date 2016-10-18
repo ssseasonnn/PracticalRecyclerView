@@ -1,9 +1,11 @@
-package zlc.season.demo.drag;
+package zlc.season.demo.expand;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.util.Log;
 
-import java.util.ArrayList;
+import com.google.gson.Gson;
+
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -14,26 +16,26 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
+import zlc.season.demo.R;
 
 /**
  * Author: Season(ssseasonnn@gmail.com)
- * Date: 2016/10/12
- * Time: 11:46
+ * Date: 2016/10/10
+ * Time: 11:42
  * FIXME
  */
-class DragPresenter {
-
+class ExpandPresenter {
     private CompositeSubscription mSubscriptions;
-    private DragView mView;
+    private ExpandView mView;
     private Context mContext;
 
-    DragPresenter(Context context) {
+    ExpandPresenter(Context context) {
         mContext = context;
         mSubscriptions = new CompositeSubscription();
     }
 
-    void setDataLoadCallBack(DragView view) {
-        mView = view;
+    void setDataLoadCallBack(ExpandView gridView) {
+        mView = gridView;
     }
 
     void unsubscribeAll() {
@@ -45,7 +47,7 @@ class DragPresenter {
                 .subscribeOn(Schedulers.io())
                 .delay(2, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<DragBean>>() {
+                .subscribe(new Observer<MockResponse>() {
                     @Override
                     public void onCompleted() {
 
@@ -58,23 +60,22 @@ class DragPresenter {
                     }
 
                     @Override
-                    public void onNext(List<DragBean> list) {
-                        mView.onDataLoadSuccess(list);
+                    public void onNext(MockResponse response) {
+                        List<ParentBean> parent = response.mData;
+                        mView.onDataLoadSuccess(parent);
                     }
                 });
         mSubscriptions.add(subscription);
     }
 
-    private Observable<List<DragBean>> createObservable() {
-        return Observable.create(new Observable.OnSubscribe<List<DragBean>>() {
+    private Observable<MockResponse> createObservable() {
+        return Observable.create(new Observable.OnSubscribe<MockResponse>() {
             @Override
-            public void call(Subscriber<? super List<DragBean>> subscriber) {
-                List<DragBean> mData = new ArrayList<>();
-                for (int i = 0; i < 5; i++) {
-                    DragBean bean = new DragBean(i + "");
-                    mData.add(bean);
-                }
-                subscriber.onNext(mData);
+            public void call(Subscriber<? super MockResponse> subscriber) {
+                Resources res = mContext.getResources();
+                final String mockResponse = res.getString(R.string.mock_response);
+                MockResponse response = new Gson().fromJson(mockResponse, MockResponse.class);
+                subscriber.onNext(response);
                 subscriber.onCompleted();
             }
         });
