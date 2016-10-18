@@ -80,4 +80,18 @@ interface Bridge {
             host.manualLoadMoreIfEnabled();
         }
     }
+
+    class SwipeConflicts implements Bridge {
+
+        private boolean enabled;
+
+        SwipeConflicts(boolean enabled) {
+            this.enabled = enabled;
+        }
+
+        @Override
+        public void doSomething(PracticalRecyclerView host) {
+            host.resolveSwipeConflicts(enabled);
+        }
+    }
 }

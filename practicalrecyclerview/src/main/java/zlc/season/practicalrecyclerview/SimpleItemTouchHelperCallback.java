@@ -15,28 +15,31 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     private boolean isLongPressDragEnabled;
     private boolean isSwipeEnabled;
-    private PracticalRecyclerView mHost;
+    private AbstractAdapter mAdapter;
 
     /**
      * SimpleItemTouchHelperCallback
      *
-     * @param host                   PracticalRecyclerView
      * @param isLongPressDragEnabled 是否启用默认的长按拖动
      * @param isSwipeEnabled         是否启用默认的滑动删除
      */
-    public SimpleItemTouchHelperCallback(PracticalRecyclerView host, boolean isLongPressDragEnabled, boolean
-            isSwipeEnabled) {
-        mHost = host;
+    public SimpleItemTouchHelperCallback(boolean isLongPressDragEnabled, boolean isSwipeEnabled) {
         this.isLongPressDragEnabled = isLongPressDragEnabled;
         this.isSwipeEnabled = isSwipeEnabled;
     }
 
     @Override
     public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-        int currentPosition = viewHolder.getAdapterPosition();
-        if (!mHost.canDrag(currentPosition)) {
+        if (!(recyclerView.getAdapter() instanceof AbstractAdapter)) {
             return 0;
         }
+
+        mAdapter = (AbstractAdapter) recyclerView.getAdapter();
+        int currentPosition = viewHolder.getAdapterPosition();
+        if (!mAdapter.canDrag(currentPosition)) {
+            return 0;
+        }
+
         int dragFlags;
         int swipeFlags;
         RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
@@ -58,7 +61,10 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
     @Override
     public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
                           RecyclerView.ViewHolder target) {
-        mHost.onItemMove(viewHolder.getAdapterPosition(), target.getAdapterPosition());
+        if (!mAdapter.canDrag(viewHolder.getAdapterPosition()) || !mAdapter.canDrag(target.getAdapterPosition())) {
+            return true;
+        }
+        mAdapter.swap(viewHolder.getAdapterPosition(), target.getAdapterPosition());
         return true;
     }
 
@@ -74,7 +80,10 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-        mHost.onItemDismiss(viewHolder.getAdapterPosition());
+        if (!mAdapter.canDrag(viewHolder.getAdapterPosition())) {
+            return;
+        }
+        mAdapter.remove(viewHolder.getAdapterPosition());
     }
 
     @Override
@@ -82,6 +91,6 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
         super.onSelectedChanged(viewHolder, actionState);
         final boolean enabled = !(actionState == ItemTouchHelper.ACTION_STATE_DRAG ||
                 actionState == ItemTouchHelper.ACTION_STATE_SWIPE);
-        mHost.resolveSwipeConflicts(enabled);
+        mAdapter.resolveSwipeConflicts(enabled);
     }
 }

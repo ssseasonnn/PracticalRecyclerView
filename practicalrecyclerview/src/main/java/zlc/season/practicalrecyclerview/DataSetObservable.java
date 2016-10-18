@@ -97,17 +97,84 @@ class DataSetObservable<E> extends Observable {
         super.notifyObservers(new Bridge.ManualLoadMore());
     }
 
+    void notifyResolveSwipeConflicts(boolean enabled) {
+        super.setChanged();
+        super.notifyObservers(new Bridge.SwipeConflicts(enabled));
+    }
+
     abstract class Segment<T> {
 
-        abstract int size();
+        /**
+         * 正常的插入
+         *
+         * @param adapterPosition 待插入的位置
+         * @param item            待插入的数据
+         */
+        final void insert(int adapterPosition, T item) {
+            if (is(adapterPosition)) {
+                insertImpl(adapterPosition - positionImpl(), item);
+            } else {
+                throw new IndexOutOfBoundsException("Insert error,  insert position");
+            }
+        }
 
-        abstract void clear();
+        final void insertAll(int adapterPosition, List<? extends T> items) {
+            if (is(adapterPosition)) {
+                insertAllImpl(adapterPosition - positionImpl(), items);
+            } else {
+                throw new IndexOutOfBoundsException("Insert error, check your insert position");
+            }
+        }
 
-        abstract void add(T item);
+        /**
+         * 插入到position之后
+         *
+         * @param adapterPosition 待插入的位置的前一个
+         * @param item            待插入的数据
+         */
+        final void insertBack(int adapterPosition, T item) {
+            if (is(adapterPosition)) {
+                int insertPosition = adapterPosition - positionImpl() + 1;
+                if (insertPosition == size()) {
+                    add(item);
+                } else {
+                    insertImpl(insertPosition, item);
+                }
+            } else {
+                throw new IndexOutOfBoundsException("Insert error, check your insert position");
+            }
+        }
 
-        abstract void addAll(List<? extends T> items);
+        final boolean insertAllBack(int adapterPosition, List<? extends T> items) {
+            if (is(adapterPosition)) {
+                int insertPosition = adapterPosition - positionImpl() + 1;
+                if (insertPosition == size()) {
+                    addAll(items);
+                } else {
+                    insertAllImpl(insertPosition, items);
+                }
+                return true;
+            } else {
+                throw new IndexOutOfBoundsException("Insert error, check your insert position");
+            }
+        }
 
-        abstract List<T> getAll();
+        /**
+         * 从指定位置后删除size个数据
+         *
+         * @param adapterPosition 指定的位置
+         * @param removeSize      删除的大小
+         */
+        final void removeAllBack(int adapterPosition, int removeSize) {
+            if (is(adapterPosition)) {
+                int removePosition = adapterPosition - positionImpl() + 1;
+                for (int i = 0; i < removeSize; i++) {
+                    removeImpl(removePosition);
+                }
+            } else {
+                throw new IndexOutOfBoundsException("Remove error, check your remove position");
+            }
+        }
 
         final T get(int adapterPosition) {
             if (is(adapterPosition)) {
@@ -130,18 +197,24 @@ class DataSetObservable<E> extends Observable {
         final void set(int adapterPosition, T newItem) {
             if (is(adapterPosition)) {
                 setImpl(adapterPosition - positionImpl(), newItem);
+            } else {
+                throw new IndexOutOfBoundsException("Set error, check your set position");
             }
         }
 
         final void remove(int adapterPosition) {
             if (is(adapterPosition)) {
                 removeImpl(adapterPosition - positionImpl());
+            } else {
+                throw new IndexOutOfBoundsException("Remove error, check your remove position");
             }
         }
 
         final void remove(T needRemove) {
             if (size() != 0) {
                 removeImpl(needRemove);
+            } else {
+                throw new IndexOutOfBoundsException("Remove error, check your remove position");
             }
         }
 
@@ -153,7 +226,21 @@ class DataSetObservable<E> extends Observable {
             l.set(fromAdapterPosition, l.set(toAdapterPosition, l.get(fromAdapterPosition)));
         }
 
+        abstract int size();
+
+        abstract void clear();
+
+        abstract void add(T item);
+
+        abstract void addAll(List<? extends T> items);
+
+        abstract List<T> getAll();
+
         abstract int positionImpl();
+
+        abstract void insertImpl(int position, T item);
+
+        abstract void insertAllImpl(int position, List<? extends T> items);
 
         abstract T getImpl(int position);
 
@@ -195,6 +282,16 @@ class DataSetObservable<E> extends Observable {
         @Override
         int positionImpl() {
             return 0;
+        }
+
+        @Override
+        void insertImpl(int position, SectionItem item) {
+            mHeader.add(position, item);
+        }
+
+        @Override
+        void insertAllImpl(int position, List<? extends SectionItem> items) {
+            mHeader.addAll(position, items);
         }
 
         @Override
@@ -251,6 +348,16 @@ class DataSetObservable<E> extends Observable {
         }
 
         @Override
+        void insertImpl(int position, E item) {
+            mData.add(position, item);
+        }
+
+        @Override
+        void insertAllImpl(int position, List<? extends E> items) {
+            mData.addAll(position, items);
+        }
+
+        @Override
         E getImpl(int position) {
             return mData.get(position);
         }
@@ -304,6 +411,16 @@ class DataSetObservable<E> extends Observable {
         }
 
         @Override
+        void insertImpl(int position, SectionItem item) {
+            mFooter.add(position, item);
+        }
+
+        @Override
+        void insertAllImpl(int position, List<? extends SectionItem> items) {
+            mFooter.addAll(position, items);
+        }
+
+        @Override
         SectionItem getImpl(int position) {
             return mFooter.get(position);
         }
@@ -354,6 +471,16 @@ class DataSetObservable<E> extends Observable {
         @Override
         int positionImpl() {
             return header.size() + data.size() + footer.size();
+        }
+
+        @Override
+        void insertImpl(int position, SectionItem item) {
+            mExtra.add(position, item);
+        }
+
+        @Override
+        void insertAllImpl(int position, List<? extends SectionItem> items) {
+            mExtra.addAll(position, items);
         }
 
         @Override

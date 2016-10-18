@@ -29,8 +29,20 @@ public abstract class AbstractAdapter<T extends ItemType, VH extends AbstractVie
         dataSet = new DataSetObservable<>();
     }
 
-    public T get(int position) {
-        return dataSet.data.get(position);
+    public void clear() {
+        dataSet.clear();
+    }
+
+    public void clearData() {
+        dataSet.data.clear();
+    }
+
+    public void clearHeader() {
+        dataSet.header.clear();
+    }
+
+    public void clearFooter() {
+        dataSet.footer.clear();
     }
 
     public void addHeader(SectionItem header) {
@@ -41,8 +53,12 @@ public abstract class AbstractAdapter<T extends ItemType, VH extends AbstractVie
         dataSet.footer.add(footer);
     }
 
-    public void clear() {
-        dataSet.clear();
+    public T get(int position) {
+        return dataSet.data.get(position);
+    }
+
+    public List<T> getData() {
+        return dataSet.data.getAll();
     }
 
     /**
@@ -67,10 +83,61 @@ public abstract class AbstractAdapter<T extends ItemType, VH extends AbstractVie
     }
 
     /**
-     * 手动触发加载更多
+     * 正常插入数据
+     *
+     * @param adapterPosition 插入的位置
+     * @param item            插入的数据
      */
-    public void manualLoadMore() {
-        dataSet.notifyManualLoadMore();
+    public void insert(int adapterPosition, T item) {
+        dataSet.data.insert(adapterPosition, item);
+        notifyItemInserted(adapterPosition);
+    }
+
+    public void insertAll(int adapterPosition, List<? extends T> items) {
+        dataSet.data.insertAll(adapterPosition, items);
+        notifyItemRangeInserted(adapterPosition, items.size());
+    }
+
+    /**
+     * 插入数据到position之后
+     *
+     * @param adapterPosition position
+     * @param item            插入的数据
+     */
+    public void insertBack(int adapterPosition, T item) {
+        dataSet.data.insertBack(adapterPosition, item);
+        notifyItemInserted(adapterPosition + 1);
+    }
+
+    public void insertAllBack(int adapterPosition, List<? extends T> items) {
+        dataSet.data.insertAllBack(adapterPosition, items);
+        notifyItemRangeInserted(adapterPosition + 1, items.size());
+    }
+
+    public void swap(int fromAdapterPosition, int toAdapterPosition) {
+        dataSet.data.swap(fromAdapterPosition, toAdapterPosition);
+        notifyItemMoved(fromAdapterPosition, toAdapterPosition);
+    }
+
+    /**
+     * 正常的删除
+     *
+     * @param adapterPosition 待删除的位置
+     */
+    public void remove(int adapterPosition) {
+        dataSet.data.remove(adapterPosition);
+        notifyItemRemoved(adapterPosition);
+    }
+
+    /**
+     * 从指定的position之后删除size个数据
+     *
+     * @param adapterPosition position
+     * @param removeSize      删除的数据大小
+     */
+    public void removeBack(int adapterPosition, int removeSize) {
+        dataSet.data.removeAllBack(adapterPosition, removeSize);
+        notifyItemRangeRemoved(adapterPosition + 1, removeSize);
     }
 
     /**
@@ -103,8 +170,11 @@ public abstract class AbstractAdapter<T extends ItemType, VH extends AbstractVie
         dataSet.notifyResumeLoadMore();
     }
 
-    public List<T> getData() {
-        return dataSet.data.getAll();
+    /**
+     * 手动触发加载更多, 显示LoadMoreView ,并执行loadMore逻辑
+     */
+    public void manualLoadMore() {
+        dataSet.notifyManualLoadMore();
     }
 
     @Override
@@ -197,18 +267,8 @@ public abstract class AbstractAdapter<T extends ItemType, VH extends AbstractVie
         }
     }
 
-    void moveItem(int fromAdapterPosition, int toAdapterPosition) {
-        if (!dataSet.data.is(fromAdapterPosition) || !dataSet.data.is(toAdapterPosition)) {
-            return;
-        }
-        dataSet.data.swap(fromAdapterPosition, toAdapterPosition);
-        notifyItemMoved(fromAdapterPosition, toAdapterPosition);
-    }
-
-    void removeItem(int adapterPosition) {
-        if (!dataSet.data.is(adapterPosition)) return;
-        dataSet.data.remove(adapterPosition);
-        notifyItemRemoved(adapterPosition);
+    void resolveSwipeConflicts(boolean enabled) {
+        dataSet.notifyResolveSwipeConflicts(enabled);
     }
 
     boolean canDrag(int adapterPosition) {

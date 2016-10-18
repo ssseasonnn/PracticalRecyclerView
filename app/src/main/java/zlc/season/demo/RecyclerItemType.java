@@ -7,7 +7,7 @@ package zlc.season.demo;
  * FIXME
  */
 public enum RecyclerItemType {
-    NORMAL(0), TYPE1(1), TYPE2(2), TYPE3(3);
+    NORMAL(0), TYPE1(1), TYPE2(2), TYPE3(3), PARENT(4), CHILD(5);
 
     // 定义私有变量
     private int nCode;

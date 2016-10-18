@@ -47,6 +47,11 @@
             android:label="@string/title_activity_item_drag"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        <activity
+            android:name=".expand.ExpandActivity"
+            android:label="@string/title_activity_expand"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>
