@@ -21,7 +21,7 @@ import rx.subscriptions.CompositeSubscription;
  * Time: 11:46
  * FIXME
  */
-public class DragPresenter {
+class DragPresenter {
 
     private CompositeSubscription mSubscriptions;
     private DragView mView;

@@ -10,7 +10,7 @@ import zlc.season.practicalrecyclerview.AbstractAdapter;
  * Time: 11:45
  * FIXME
  */
-public class DragAdapter extends AbstractAdapter<DragBean, DragViewHolder> {
+class DragAdapter extends AbstractAdapter<DragBean, DragViewHolder> {
     @Override
     protected DragViewHolder onNewCreateViewHolder(ViewGroup parent, int viewType) {
         return new DragViewHolder(parent);

@@ -67,6 +67,26 @@
 ### 2016-10-18 更新:
 
 - 向下支持到API 11(android 3.0)
+- AbstractAdapter增加更多操作数据接口, 如:
+
+```java
+    public void clearData() {}
+
+    public void clearHeader() {}
+
+    public void clearFooter() {}
+
+    public void insert(){}
+
+    public void insertBack(){}
+
+    //等等
+
+```
+- 增加ExpandItemList demo, 效果图:
+
+
+![ExpandItem](https://github.com/ssseasonnn/PracticalRecyclerView/blob/master/gif/expand.gif?raw=true)
 
 
 
@@ -78,7 +98,7 @@
 
 ```groovy
 	dependencies{
-   		 compile 'zlc.season:practicalrecyclerview:1.0.7'
+   		 compile 'zlc.season:practicalrecyclerview:1.0.8'
 	}
 ```
 2.在布局文件中添加PracticalRecyclerView

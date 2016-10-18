@@ -15,7 +15,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import zlc.season.demo.Header;
 import zlc.season.demo.R;
-import zlc.season.practicalrecyclerview.ItemTouchHelperProvider;
 import zlc.season.practicalrecyclerview.PracticalRecyclerView;
 import zlc.season.practicalrecyclerview.SimpleItemTouchHelperCallback;
 

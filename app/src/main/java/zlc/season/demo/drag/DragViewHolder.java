@@ -13,7 +13,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import zlc.season.demo.R;
 import zlc.season.practicalrecyclerview.AbstractViewHolder;
-import zlc.season.practicalrecyclerview.ItemTouchHelperProvider;
 
 /**
  * Author: Season(ssseasonnn@gmail.com)
@@ -21,14 +20,14 @@ import zlc.season.practicalrecyclerview.ItemTouchHelperProvider;
  * Time: 11:43
  * FIXME
  */
-public class DragViewHolder extends AbstractViewHolder<DragBean> {
+class DragViewHolder extends AbstractViewHolder<DragBean> {
     @BindView(R.id.text)
     TextView mText;
     @BindView(R.id.reorder)
     ImageView mReorder;
     private Context mContext;
 
-    public DragViewHolder(ViewGroup parent) {
+    DragViewHolder(ViewGroup parent) {
         super(parent, R.layout.drag_item);
         ButterKnife.bind(this, itemView);
         mContext = parent.getContext();
