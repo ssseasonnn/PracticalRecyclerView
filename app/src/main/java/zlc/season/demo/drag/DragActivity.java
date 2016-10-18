@@ -118,7 +118,7 @@ public class DragActivity extends AppCompatActivity {
 
         //初始化拖拽, 设置不启用默认的长按拖拽, 设置不启用默认的滑动删除
         //具体的拖拽实现在 ViewHolder 中
-        ItemTouchHelperProvider.init(new SimpleItemTouchHelperCallback(mRecycler, false, false));
+        ItemTouchHelperProvider.init(new SimpleItemTouchHelperCallback(false, false));
         mRecycler.attachItemTouchHelper(ItemTouchHelperProvider.getInstance());
     }
 

@@ -74,6 +74,18 @@ public abstract class AbstractAdapter<T extends ItemType, VH extends AbstractVie
         dataSet.data.insertAll(adapterPosition, items);
     }
 
+    public void insertDataBack(int adapterPosition, T item) {
+        dataSet.data.insertBack(adapterPosition, item);
+    }
+
+    public void insertAllDataBack(int adapterPosition, List<? extends T> items) {
+        dataSet.data.insertAllBack(adapterPosition, items);
+    }
+
+    public void removeDataBack(int adapterPosition, int removeSize) {
+        dataSet.data.removeAllBack(adapterPosition, removeSize);
+    }
+
     /**
      * 手动触发加载更多
      */
@@ -203,6 +215,10 @@ public abstract class AbstractAdapter<T extends ItemType, VH extends AbstractVie
                 }
             });
         }
+    }
+
+    void resolveSwipeConflicts(boolean enabled) {
+        dataSet.notifyResolveSwipeConflicts(enabled);
     }
 
     void moveItem(int fromAdapterPosition, int toAdapterPosition) {

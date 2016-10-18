@@ -9,7 +9,7 @@ import java.util.List;
  * FIXME
  */
 public interface ExpandView {
-    void onDataLoadSuccess(List<ParentBean> list, boolean isRefresh);
+    void onDataLoadSuccess(List<ParentBean> list);
 
-    void onDataLoadFailed(boolean isRefresh);
+    void onDataLoadFailed();
 }

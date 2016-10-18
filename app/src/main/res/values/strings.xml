@@ -15,6 +15,22 @@
     <string name="mock_empty_response">
 {
    "data":[
+        {
+        "text": 0,
+        "child": [
+            {"text": 0},
+            {"text": 1}
+        ]
+        },
+    {
+        "text": 1,
+        "child": [
+            {"text": 0},
+            {"text": 1}
+
+
+        ]
+    }
    ]
 }
     </string>

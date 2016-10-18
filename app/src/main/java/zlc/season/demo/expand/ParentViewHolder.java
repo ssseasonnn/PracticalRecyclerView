@@ -20,9 +20,11 @@ import zlc.season.practicalrecyclerview.AbstractViewHolder;
  */
 public class ParentViewHolder extends AbstractViewHolder<ParentBean> {
 
-    List<ChildBean> child;
     @BindView(R.id.text)
     TextView mText;
+
+    private boolean isExpand = false;
+    private List<ChildBean> child;
 
     private ExpandAdapter mAdapter;
 
@@ -34,13 +36,21 @@ public class ParentViewHolder extends AbstractViewHolder<ParentBean> {
 
     @Override
     public void setData(ParentBean data) {
-        mText.setText(data.text + "");
+        mText.setText(String.valueOf(data.text));
+        isExpand = false;
         child = data.mChild;
     }
 
     @OnClick(R.id.text)
     public void onClick() {
-        mAdapter.insertAllData(getAdapterPosition()+1, child);
-        mAdapter.notifyDataSetChanged();
+        if (isExpand) {
+            mAdapter.removeDataBack(getAdapterPosition(), child.size());
+            mAdapter.notifyDataSetChanged();
+            isExpand = false;
+        } else {
+            mAdapter.insertAllDataBack(getAdapterPosition(), child);
+            mAdapter.notifyDataSetChanged();
+            isExpand = true;
+        }
     }
 }

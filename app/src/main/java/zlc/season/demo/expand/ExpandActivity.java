@@ -9,7 +9,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import zlc.season.demo.Header;
 import zlc.season.demo.R;
 import zlc.season.practicalrecyclerview.PracticalRecyclerView;
 
@@ -37,38 +36,22 @@ public class ExpandActivity extends AppCompatActivity {
         mRecycler.setRefreshListener(new PracticalRecyclerView.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mPresenter.loadData(true);
-            }
-        });
-
-        mRecycler.setLoadMoreListener(new PracticalRecyclerView.OnLoadMoreListener() {
-            @Override
-            public void onLoadMore() {
-                mPresenter.loadData(false);
+                mPresenter.loadData();
             }
         });
 
         mPresenter = new ExpandPresenter(this);
         mPresenter.setDataLoadCallBack(new ExpandView() {
             @Override
-            public void onDataLoadSuccess(List<ParentBean> list, boolean isRefresh) {
-                if (isRefresh) {
-                    mAdapter.clear();
-                    mAdapter.addHeader(new Header());
-                    //                    mAdapter.addFooter(new Header());
-                    mAdapter.addAll(list);
-                } else {
-                    mAdapter.addAll(list);
-                }
+            public void onDataLoadSuccess(List<ParentBean> list) {
+                mAdapter.clear();
+//                mAdapter.addHeader(new Header());
+                //                    mAdapter.addFooter(new Header());
+                mAdapter.addAll(list);
             }
 
             @Override
-            public void onDataLoadFailed(boolean isRefresh) {
-                if (isRefresh) {
-                    mAdapter.showError();
-                } else {
-                    mAdapter.loadMoreFailed();
-                }
+            public void onDataLoadFailed() {
             }
         });
     }
@@ -82,6 +65,6 @@ public class ExpandActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        mPresenter.loadData(true);
+        mPresenter.loadData();
     }
 }

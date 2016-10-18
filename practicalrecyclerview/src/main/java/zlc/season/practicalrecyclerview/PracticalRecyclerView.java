@@ -220,24 +220,6 @@ public class PracticalRecyclerView extends FrameLayout {
         mRecyclerView.removeItemDecoration(decor);
     }
 
-    boolean canDrag(int position) {
-        if (!(mRecyclerView.getAdapter() instanceof AbstractAdapter)) return false;
-        AbstractAdapter adapter = (AbstractAdapter) mRecyclerView.getAdapter();
-        return adapter.canDrag(position);
-    }
-
-    void onItemMove(int fromPosition, int toPosition) {
-        if (!(mRecyclerView.getAdapter() instanceof AbstractAdapter)) return;
-        AbstractAdapter adapter = (AbstractAdapter) mRecyclerView.getAdapter();
-        adapter.moveItem(fromPosition, toPosition);
-    }
-
-    void onItemDismiss(int position) {
-        if (!(mRecyclerView.getAdapter() instanceof AbstractAdapter)) return;
-        AbstractAdapter adapter = (AbstractAdapter) mRecyclerView.getAdapter();
-        adapter.removeItem(position);
-    }
-
     void resolveSwipeConflicts(boolean enabled) {
         if (mRefreshListener == null) {
             return;

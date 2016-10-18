@@ -25,7 +25,6 @@ import zlc.season.demo.R;
  * FIXME
  */
 class ExpandPresenter {
-    private static int count = -1;
     private CompositeSubscription mSubscriptions;
     private ExpandView mView;
     private Context mContext;
@@ -43,7 +42,7 @@ class ExpandPresenter {
         mSubscriptions.clear();
     }
 
-    void loadData(final boolean isRefresh) {
+    void loadData() {
         Subscription subscription = createObservable()
                 .subscribeOn(Schedulers.io())
                 .delay(2, TimeUnit.SECONDS)
@@ -57,49 +56,22 @@ class ExpandPresenter {
                     @Override
                     public void onError(Throwable e) {
                         Log.w("SingleItemPresenter", e);
-                        mView.onDataLoadFailed(isRefresh);
+                        mView.onDataLoadFailed();
                     }
 
                     @Override
                     public void onNext(MockResponse response) {
                         List<ParentBean> parent = response.mData;
-                        mView.onDataLoadSuccess(parent, isRefresh);
+                        mView.onDataLoadSuccess(parent);
                     }
                 });
         mSubscriptions.add(subscription);
     }
 
-    private Observable<MockResponse> loadData() {
-        return Observable.create(new Observable.OnSubscribe<MockResponse>() {
-            @Override
-            public void call(Subscriber<? super MockResponse> subscriber) {
-                Resources res = mContext.getResources();
-                final String mockResponse = res.getString(R.string.mock_response);
-                MockResponse response = new Gson().fromJson(mockResponse, MockResponse.class);
-                subscriber.onNext(response);
-                subscriber.onCompleted();
-            }
-        });
-    }
-
     private Observable<MockResponse> createObservable() {
-        count++;
-        count %= 6;
         return Observable.create(new Observable.OnSubscribe<MockResponse>() {
             @Override
             public void call(Subscriber<? super MockResponse> subscriber) {
-                if (count == 3) {
-                    subscriber.onError(new Throwable("on error"));
-                    return;
-                }
-                if (count == 5) {
-                    Resources res = mContext.getResources();
-                    final String mockResponse = res.getString(R.string.mock_empty_response);
-                    MockResponse response = new Gson().fromJson(mockResponse, MockResponse.class);
-                    subscriber.onNext(response);
-                    return;
-                }
-
                 Resources res = mContext.getResources();
                 final String mockResponse = res.getString(R.string.mock_response);
                 MockResponse response = new Gson().fromJson(mockResponse, MockResponse.class);
