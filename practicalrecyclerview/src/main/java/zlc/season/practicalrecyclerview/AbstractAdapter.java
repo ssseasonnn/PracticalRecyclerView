@@ -62,12 +62,14 @@ public abstract class AbstractAdapter<T extends ItemType, VH extends AbstractVie
     }
 
     /**
-     * 添加单个数据,不会触发刷新
+     * 添加单个数据,并触发刷新
      *
      * @param item item
      */
     public void add(T item) {
         dataSet.data.add(item);
+        dataSet.notifyContent();
+        notifyDataSetChanged();
     }
 
     /**
