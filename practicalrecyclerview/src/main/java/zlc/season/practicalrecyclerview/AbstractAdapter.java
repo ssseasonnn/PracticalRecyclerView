@@ -62,6 +62,15 @@ public abstract class AbstractAdapter<T extends ItemType, VH extends AbstractVie
     }
 
     /**
+     * 添加单个数据,不会触发刷新
+     *
+     * @param item item
+     */
+    public void add(T item) {
+        dataSet.data.add(item);
+    }
+
+    /**
      * 添加数据, 并触发刷新.
      * 添加之后数据总数为0, 显示EmptyView;
      * 添加之后数据总数大于0, 当添加0个数据时,自动停止LoadMore;
