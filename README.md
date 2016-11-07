@@ -90,8 +90,8 @@
 
 
 ### 2016-11-7 更新:
-- 升级Gradle版本至2.2.2
-- 新增添加单个数据接口 add(T item);
+
+- 新增添加单个数据接口 void add(T item);
 
 
 
@@ -103,7 +103,7 @@
 
 ```groovy
 	dependencies{
-   		 compile 'zlc.season:practicalrecyclerview:1.1.0'
+   		 compile 'zlc.season:practicalrecyclerview:1.1.1'
 	}
 ```
 2.在布局文件中添加PracticalRecyclerView
