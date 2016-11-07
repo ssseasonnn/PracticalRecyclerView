@@ -89,6 +89,11 @@
 ![ExpandItem](https://github.com/ssseasonnn/PracticalRecyclerView/blob/master/gif/expand.gif?raw=true)
 
 
+### 2016-11-7 更新:
+- 升级Gradle版本至2.2.2
+- 新增添加单个数据接口 add(T item);
+
+
 
 ### 使用方式:
 
@@ -98,7 +103,7 @@
 
 ```groovy
 	dependencies{
-   		 compile 'zlc.season:practicalrecyclerview:1.0.8'
+   		 compile 'zlc.season:practicalrecyclerview:1.1.0'
 	}
 ```
 2.在布局文件中添加PracticalRecyclerView
