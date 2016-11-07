@@ -103,7 +103,7 @@
 
 ```groovy
 	dependencies{
-   		 compile 'zlc.season:practicalrecyclerview:1.0.8'
+   		 compile 'zlc.season:practicalrecyclerview:1.1.0'
 	}
 ```
 2.在布局文件中添加PracticalRecyclerView
