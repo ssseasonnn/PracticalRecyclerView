@@ -45,48 +45,6 @@ public abstract class AbstractAdapter<T extends ItemType, VH extends AbstractVie
         dataSet.footer.clear();
     }
 
-    public void addHeader(SectionItem header) {
-        dataSet.header.add(header);
-    }
-
-    public void addFooter(SectionItem footer) {
-        dataSet.footer.add(footer);
-    }
-
-    public T get(int position) {
-        return dataSet.data.get(position);
-    }
-
-    public List<T> getData() {
-        return dataSet.data.getAll();
-    }
-
-    /**
-     * get data set header size
-     *
-     * @return header size
-     */
-    public int getHeaderSize() {
-        return dataSet.header.size();
-    }
-
-    public int getFooterSize() {
-        return dataSet.footer.size();
-    }
-
-    /**
-     * Just get data size, doesn't include header footer.
-     *
-     * @return data size
-     */
-    public int getDataSize() {
-        return dataSet.data.size();
-    }
-
-    public int getExtraSize() {
-        return dataSet.extra.size();
-    }
-
     /**
      * 添加单个数据,并触发刷新
      *
@@ -117,6 +75,14 @@ public abstract class AbstractAdapter<T extends ItemType, VH extends AbstractVie
                 dataSet.notifyNoMore();
             }
         }
+    }
+
+    public void addHeader(SectionItem header) {
+        dataSet.header.add(header);
+    }
+
+    public void addFooter(SectionItem footer) {
+        dataSet.footer.add(footer);
     }
 
     /**
@@ -175,6 +141,77 @@ public abstract class AbstractAdapter<T extends ItemType, VH extends AbstractVie
     public void removeBack(int adapterPosition, int removeSize) {
         dataSet.data.removeAllBack(adapterPosition, removeSize);
         notifyItemRangeRemoved(adapterPosition + 1, removeSize);
+    }
+
+    public T get(int position) {
+        return dataSet.data.get(position);
+    }
+
+    public SectionItem getHeader(int position) {
+        return dataSet.header.get(position);
+    }
+
+    public SectionItem getFooter(int position) {
+        return dataSet.footer.get(position);
+    }
+
+    public List<T> getData() {
+        return dataSet.data.getAll();
+    }
+
+    public List<SectionItem> getHeader() {
+        return dataSet.header.getAll();
+    }
+
+    public List<SectionItem> getFooter() {
+        return dataSet.footer.getAll();
+    }
+
+    /**
+     * The method to judge whether the position is the header.
+     *
+     * @return true if is header, otherwise false.
+     */
+    public boolean isHeader(int position) {
+        return dataSet.header.is(position);
+    }
+
+    public boolean isFooter(int position) {
+        return dataSet.footer.is(position);
+    }
+
+    public boolean isData(int position) {
+        return dataSet.data.is(position);
+    }
+
+    public boolean isExtra(int position) {
+        return dataSet.extra.is(position);
+    }
+
+    /**
+     * get data set header size
+     *
+     * @return header size
+     */
+    public int getHeaderSize() {
+        return dataSet.header.size();
+    }
+
+    public int getFooterSize() {
+        return dataSet.footer.size();
+    }
+
+    /**
+     * Just get data size, doesn't include header footer.
+     *
+     * @return data size
+     */
+    public int getDataSize() {
+        return dataSet.data.size();
+    }
+
+    public int getExtraSize() {
+        return dataSet.extra.size();
     }
 
     /**
