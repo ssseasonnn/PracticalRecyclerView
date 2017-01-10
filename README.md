@@ -95,6 +95,7 @@
 
 
 
+
 ### 使用方式:
 
 1.添加Gradle依赖
@@ -103,7 +104,7 @@
 
 ```groovy
 	dependencies{
-   		 compile 'zlc.season:practicalrecyclerview:1.1.1'
+   		 compile 'zlc.season:practicalrecyclerview:1.1.2'
 	}
 ```
 2.在布局文件中添加PracticalRecyclerView
