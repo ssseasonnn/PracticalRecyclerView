@@ -1,24 +1,12 @@
 # PracticalRecyclerView
 
+Encapsulation RecyclerView, to create for the development of a very practical tool, add some commonly used in the development of function, such as drop-down refresh, paging, automatic loading, loading error, etc.More new functions will gradually add...
+
 标签（空格分隔）： Android RecyclerView
 
 ---
 
 ## 对RecyclerView的一个封装,添加一些实用的功能
-
-### 效果图与示例APK
-
-![single item](https://github.com/ssseasonnn/PracticalRecyclerView/blob/master/gif/GIF.gif?raw=true)
-
-![multi item](https://github.com/ssseasonnn/PracticalRecyclerView/blob/master/gif/multiitem.gif?raw=true)
-
-![grid](https://github.com/ssseasonnn/PracticalRecyclerView/blob/master/gif/grid.gif?raw=true)
-
-![stagger](https://github.com/ssseasonnn/PracticalRecyclerView/blob/master/gif/stagger.gif?raw=true)
-
-[APK下载地址](https://raw.githubusercontent.com/ssseasonnn/PracticalRecyclerView/master/app/demo.apk)
-
-![扫描二维码下载](http://tool.oschina.net/action/qrcode/generate?data=https%3A%2F%2Fraw.githubusercontent.com%2Fssseasonnn%2FPracticalRecyclerView%2Fmaster%2Fapp%2Fdemo.apk&output=image%2Fgif&error=L&type=0&margin=0&size=4&1476000940942)
 
 ### 主要功能:
 
@@ -34,17 +22,11 @@
 - 支持多种Item类型
 - 支持GridLayout和瀑布流
 
-
-
 ### 2016-10-11 更新:
 
 - 新增动态显示或关闭NoMoreView,LoadMoreView,LoadMoreFailedView功能
 - 新增打开或关闭自动加载功能
-- 新增手动触发加载demo,效果图:
-
-
-![manual](https://github.com/ssseasonnn/PracticalRecyclerView/blob/master/gif/manual.gif?raw=true)
-
+- 新增手动触发加载demo
 
 ### 2016-10-17 更新:
 
@@ -55,14 +37,7 @@
             return mRecyclerView;
     }
 ```
-- 增加拖拽功能与demo,效果图:
-
-
-
-![拖拽](https://github.com/ssseasonnn/PracticalRecyclerView/blob/master/gif/drag.gif?raw=true)
-
-
-
+- 增加拖拽功能与demo
 
 ### 2016-10-18 更新:
 
@@ -83,15 +58,29 @@
     //等等
 
 ```
-- 增加ExpandItemList demo, 效果图:
-
-
-![ExpandItem](https://github.com/ssseasonnn/PracticalRecyclerView/blob/master/gif/expand.gif?raw=true)
-
+- 增加ExpandItemList demo
 
 ### 2016-11-7 更新:
 
 - 新增添加单个数据接口 void add(T item);
+
+### 效果图
+
+<figure class="half">
+    <img width="300" src="https://github.com/ssseasonnn/PracticalRecyclerView/blob/master/gif/GIF.gif?raw=true">
+    <img width="300" src="https://github.com/ssseasonnn/PracticalRecyclerView/blob/master/gif/multiitem.gif?raw=true">
+</figure>
+
+<figure class="half">
+	<img width="300" src="https://github.com/ssseasonnn/PracticalRecyclerView/blob/master/gif/grid.gif?raw=true">
+	<img width="300" src="https://github.com/ssseasonnn/PracticalRecyclerView/blob/master/gif/stagger.gif?raw=true">
+</figure>
+
+<figure class="third">
+	<img width="300" src="https://github.com/ssseasonnn/PracticalRecyclerView/blob/master/gif/manual.gif?raw=true">
+	<img width="300" src="https://github.com/ssseasonnn/PracticalRecyclerView/blob/master/gif/drag.gif?raw=true">
+	<img width="300" src="https://github.com/ssseasonnn/PracticalRecyclerView/blob/master/gif/expand.gif?raw=true">
+</figure>
 
 
 
@@ -103,7 +92,7 @@
 
 ```groovy
 	dependencies{
-   		 compile 'zlc.season:practicalrecyclerview:1.1.1'
+   		 compile 'zlc.season:practicalrecyclerview:1.1.2'
 	}
 ```
 2.在布局文件中添加PracticalRecyclerView
