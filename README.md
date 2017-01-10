@@ -83,6 +83,7 @@ Encapsulation RecyclerView, to create for the development of a very practical to
 </figure>
 
 
+
 ### 使用方式:
 
 1.添加Gradle依赖
@@ -91,7 +92,7 @@ Encapsulation RecyclerView, to create for the development of a very practical to
 
 ```groovy
 	dependencies{
-   		 compile 'zlc.season:practicalrecyclerview:1.1.1'
+   		 compile 'zlc.season:practicalrecyclerview:1.1.2'
 	}
 ```
 2.在布局文件中添加PracticalRecyclerView

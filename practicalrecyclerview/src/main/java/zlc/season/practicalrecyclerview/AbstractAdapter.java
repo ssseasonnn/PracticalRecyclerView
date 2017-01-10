@@ -62,6 +62,32 @@ public abstract class AbstractAdapter<T extends ItemType, VH extends AbstractVie
     }
 
     /**
+     * get data set header size
+     *
+     * @return header size
+     */
+    public int getHeaderSize() {
+        return dataSet.header.size();
+    }
+
+    public int getFooterSize() {
+        return dataSet.footer.size();
+    }
+
+    /**
+     * Just get data size, doesn't include header footer.
+     *
+     * @return data size
+     */
+    public int getDataSize() {
+        return dataSet.data.size();
+    }
+
+    public int getExtraSize() {
+        return dataSet.extra.size();
+    }
+
+    /**
      * 添加单个数据,并触发刷新
      *
      * @param item item
@@ -236,7 +262,8 @@ public abstract class AbstractAdapter<T extends ItemType, VH extends AbstractVie
         //瀑布流的 Header Footer 宽度处理
         ViewGroup.LayoutParams lp = holder.itemView.getLayoutParams();
         if (lp != null && lp instanceof StaggeredGridLayoutManager.LayoutParams) {
-            StaggeredGridLayoutManager.LayoutParams p = (StaggeredGridLayoutManager.LayoutParams) lp;
+            StaggeredGridLayoutManager.LayoutParams p
+                    = (StaggeredGridLayoutManager.LayoutParams) lp;
             if (!dataSet.data.is(position)) {
                 p.setFullSpan(true);
             }
