@@ -64,7 +64,12 @@ Encapsulation RecyclerView, to create for the development of a very practical to
 
 - 新增添加单个数据接口 void add(T item);
 
+
+
 ### 效果图
+
+
+
 
 <figure class="half">
     <img width="300" src="https://github.com/ssseasonnn/PracticalRecyclerView/blob/master/gif/GIF.gif?raw=true">
@@ -84,6 +89,8 @@ Encapsulation RecyclerView, to create for the development of a very practical to
 
 
 
+
+
 ### 使用方式:
 
 1.添加Gradle依赖
@@ -92,7 +99,7 @@ Encapsulation RecyclerView, to create for the development of a very practical to
 
 ```groovy
 	dependencies{
-   		 compile 'zlc.season:practicalrecyclerview:1.1.2'
+   		 compile 'zlc.season:practicalrecyclerview:1.1.3'
 	}
 ```
 2.在布局文件中添加PracticalRecyclerView
