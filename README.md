@@ -71,16 +71,18 @@ Encapsulation RecyclerView, to create for the development of a very practical to
 
 ### 效果图
 
-    <img width="30%" src="https://raw.githubusercontent.com/ssseasonnn/PracticalRecyclerView/master/gif/GIF.gif">
-    <img width="30%" src="https://raw.githubusercontent.com/ssseasonnn/PracticalRecyclerView/master/gif/multiitem.gif">
+<img width="30%" src="https://raw.githubusercontent.com/ssseasonnn/PracticalRecyclerView/master/gif/GIF.gif">
+<img width="30%" src="https://raw.githubusercontent.com/ssseasonnn/PracticalRecyclerView/master/gif/multiitem.gif">
     
-    <img width="30%" src="https://raw.githubusercontent.com/ssseasonnn/PracticalRecyclerView/master/gif/grid.gif">
-    <img width="30%" src="https://raw.githubusercontent.com/ssseasonnn/PracticalRecyclerView/master/gif/stagger.gif">
+<img width="30%" src="https://raw.githubusercontent.com/ssseasonnn/PracticalRecyclerView/master/gif/grid.gif">
 
 
-	<img width="30%" src="https://raw.githubusercontent.com/ssseasonnn/PracticalRecyclerView/master/gif/manual.gif"> 
-	<img width="30%" src="https://raw.githubusercontent.com/ssseasonnn/PracticalRecyclerView/master/gif/drag.gif">  
-	<img width="30%" src="https://raw.githubusercontent.com/ssseasonnn/PracticalRecyclerView/master/gif/expand.gif">  
+<img width="30%" src="https://raw.githubusercontent.com/ssseasonnn/PracticalRecyclerView/master/gif/stagger.gif">
+<img width="30%" src="https://raw.githubusercontent.com/ssseasonnn/PracticalRecyclerView/master/gif/manual.gif"> 
+<img width="30%" src="https://raw.githubusercontent.com/ssseasonnn/PracticalRecyclerView/master/gif/drag.gif">  
+
+
+<img width="30%" src="https://raw.githubusercontent.com/ssseasonnn/PracticalRecyclerView/master/gif/expand.gif">  
 
 
 
