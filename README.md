@@ -64,28 +64,23 @@ Encapsulation RecyclerView, to create for the development of a very practical to
 
 - 新增添加单个数据接口 void add(T item);
 
+### 2017-1-22 更新
+
+- 修复需要滑动两次才能显示loadmore的bug.
 
 
 ### 效果图
 
+    <img width="30%" src="https://github.com/ssseasonnn/PracticalRecyclerView/blob/master/gif/GIF.gif?raw=true">
+    <img width="30%" src="https://github.com/ssseasonnn/PracticalRecyclerView/blob/master/gif/multiitem.gif?raw=true">
+    
+    <img width="30%" src="https://github.com/ssseasonnn/PracticalRecyclerView/blob/master/gif/grid.gif?raw=true">
+    <img width="30%" src="https://github.com/ssseasonnn/PracticalRecyclerView/blob/master/gif/stagger.gif?raw=true">
 
 
-
-<figure class="half">
-    <img width="300" src="https://github.com/ssseasonnn/PracticalRecyclerView/blob/master/gif/GIF.gif?raw=true">
-    <img width="300" src="https://github.com/ssseasonnn/PracticalRecyclerView/blob/master/gif/multiitem.gif?raw=true">
-</figure>
-
-<figure class="half">
-	<img width="300" src="https://github.com/ssseasonnn/PracticalRecyclerView/blob/master/gif/grid.gif?raw=true">
-	<img width="300" src="https://github.com/ssseasonnn/PracticalRecyclerView/blob/master/gif/stagger.gif?raw=true">
-</figure>
-
-<figure class="third">
-	<img width="300" src="https://github.com/ssseasonnn/PracticalRecyclerView/blob/master/gif/manual.gif?raw=true">
-	<img width="300" src="https://github.com/ssseasonnn/PracticalRecyclerView/blob/master/gif/drag.gif?raw=true">
-	<img width="300" src="https://github.com/ssseasonnn/PracticalRecyclerView/blob/master/gif/expand.gif?raw=true">
-</figure>
+	<img width="30%" src="https://github.com/ssseasonnn/PracticalRecyclerView/blob/master/gif/manual.gif?raw=true">
+	<img width="30%" src="https://github.com/ssseasonnn/PracticalRecyclerView/blob/master/gif/drag.gif?raw=true">
+	<img width="30%" src="https://github.com/ssseasonnn/PracticalRecyclerView/blob/master/gif/expand.gif?raw=true">
 
 
 
@@ -99,7 +94,7 @@ Encapsulation RecyclerView, to create for the development of a very practical to
 
 ```groovy
 	dependencies{
-   		 compile 'zlc.season:practicalrecyclerview:1.1.3'
+   		 compile 'zlc.season:practicalrecyclerview:1.1.5'
 	}
 ```
 2.在布局文件中添加PracticalRecyclerView
@@ -323,7 +318,7 @@ Gmail: ssseasonnn@gmail.com
 ### License
 
 > ```
-> Copyright 2015 Season.Zlc
+> Copyright 2016 Season.Zlc
 >
 > Licensed under the Apache License, Version 2.0 (the "License");
 > you may not use this file except in compliance with the License.
