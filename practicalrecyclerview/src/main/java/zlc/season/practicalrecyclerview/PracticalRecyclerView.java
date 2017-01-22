@@ -111,6 +111,10 @@ public class PracticalRecyclerView extends FrameLayout {
     public void setLoadMoreListener(OnLoadMoreListener loadMoreListener) {
         if (loadMoreListener == null) return;
         mLoadMoreListener = loadMoreListener;
+        /**
+         * 避免第一次滑动到底部时需要再次滑动才会显示load more
+         */
+        displayLoadMoreViewOrDisappear();
     }
 
     public void setLayoutManager(RecyclerView.LayoutManager layoutManager) {
